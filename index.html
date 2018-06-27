@@ -1,0 +1,319 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Axial Flux Generator Designer (mm)</legend>
+      <form onchange="draw()">
+        <!-- type="text" pattern="[0-9]+" maxlength="3" minlength="1" -->
+        <!-- type="number" min="1" max="9999" -->
+        <div>
+            <label for="vwidth">Viewport Width</label>
+            <input type="number" id="vwidth" name="vwidth"
+                   min="1" max="9999" value="300" required />
+        </div>
+        <div>
+            <label for="vheight">Viewport Height</label>
+            <input type="number" id="vheight" name="vheight"
+                   min="1" max="9999" value="300" required />
+        </div>
+        <div>
+            <label for="num_magnets">Number of Magnets</label>
+            <input type="number" id="num_magnets" name="num_magnets"
+                   min="1" max="9999" value="12" required />
+        </div>
+        <div>
+            <label for="dia_magnet">Dia of Magnet</label>
+            <input type="number" id="dia_magnet" name="dia_magnet"
+                   min="1" max="9999" value="20" required />
+        </div>
+        <div>
+            <label for="w_magnet">Width of Magnet</label>
+            <input type="number" id="w_magnet" name="w_magnet"
+                   min="1" max="9999" value="20" required />
+        </div>
+        <div>
+            <label for="h_magnet">Height of Magnet</label>
+            <input type="number" id="h_magnet" name="h_magnet"
+                   min="1" max="9999" value="15" required />
+        </div>
+        <div>
+          <label for="mag_shape">Shape of Magnet</label>
+          <input type = "radio"
+                 name = "mag_shape"
+                 id = "shapeRect"
+                 value = "rect"
+                 checked = "checked" />
+          <label for = "shapeRect">rect</label>
+          <input type = "radio"
+                 name = "mag_shape"
+                 id = "shapeCircle"
+                 value = "circle" />
+          <label for = "shapeCircle">circle</label>
+        </div>
+        <div>
+            <label for="outside_dia">Outside Diameter</label>
+            <input type="number" id="outside_dia" name="outside_dia"
+                   min="1" max="9999" value="150" required />
+        </div>
+        <div>
+            <label for="in_dia">Inside Diameter</label>
+            <input type="number" id="in_dia" name="in_dia"
+                   min="1" max="9999" value="30" required />
+        </div>
+        <div>
+          <label for="coil_type">Type of Coil</label>
+          <input type = "radio"
+                 name = "coil_type"
+                 id = "coilSerpintine"
+                 value = "serpintine"
+                 checked = "checked" />
+          <label for = "coilSerpintine">serpintine</label>
+          <input type = "radio"
+                 name = "coil_type"
+                 id = "coilLoops"
+                 value = "loops" disabled />
+          <label for = "coilLoops">loops</label>
+        </div>
+        <div>
+            <label for="mag_out_dia">Coil Outside Diameter</label>
+            <input type="number" id="mag_out_dia" name="mag_out_dia"
+                   min="1" max="9999" value="120" required />
+        </div>
+        <div>
+            <label for="mag_mid_dia">Mag Mid Diameter</label>
+            <input type="number" id="mag_mid_dia" name="mag_mid_dia"
+                   min="1" max="9999" value="90" required />
+        </div>
+        <div>
+            <label for="mag_in_dia">Coil Inside Diameter</label>
+            <input type="number" id="mag_in_dia" name="mag_in_dia"
+                   min="1" max="9999" value="60" required />
+        </div>
+      </form>
+    </fieldset>
+    <div id='errors' style="color:red"></div>
+    <!-- <canvas id="turbine" width="200" height="200"></canvas> -->
+    <svg id="svg" width="200" height="200">
+      <path id="svgcoilpath" d=""/>
+      <path id="svgdiscpath" d=""/>
+      <path id="svgmagpath" d=""/>
+      <path id="svgwrappath" d=""/>
+    </svg>
+    <div><a id='download' href="">Download .svg</a></div>
+    <div style="color:red">wire winder (pre serpintine)</div>
+    <div style="color:orange">serpintined wire</div>
+    <div style="color:lightblue">magnets</div>
+    <div style="color:grey">rotor/stator disc(s),   resin mold</div>
+    <script>
+      function clear(c="grey") {
+        //var c = document.getElementById("myCanvas");
+        var ctx = turbine.getContext("2d");
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, turbine.width, turbine.height);
+        ctx.strokeStyle = c;
+        ctx.fillStyle = c;
+        ctx.fill();
+        ctx.restore();
+      }
+      function arc( c, x,y, radius, start, end, ccw=false ) {
+        var ctx = turbine.getContext("2d");
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, start, end, ccw);
+        ctx.strokeStyle=c;
+        ctx.stroke();
+        ctx.restore();
+      }
+      function circle( c, x,y, radius ) {
+        var ctx = turbine.getContext("2d");
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2*Math.PI, false);
+        ctx.strokeStyle=c;
+        ctx.stroke();
+        ctx.restore();
+      }
+      function rect( c, x,y,w,h, a ) {
+        var ctx = turbine.getContext("2d");
+        ctx.save();
+        ctx.strokeStyle = c;
+        ctx.translate(x,y);
+        ctx.rotate(a);
+        ctx.strokeRect(-w*0.5,-h*0.5,w,h);
+        ctx.restore();
+      }
+      function line( c, x, y, x2, y2 ) {
+        var ctx = turbine.getContext("2d");
+        ctx.save();
+        ctx.strokeStyle=c;
+        ctx.beginPath();
+        ctx.moveTo( x, y );
+        ctx.lineTo( x2, y2 );
+        ctx.stroke();
+        ctx.restore();
+      }
+      function radialToCartesian( x,y,radius,angle_rad ) {
+        return {
+          x: x + radius * Math.cos( angle_rad ),
+          y: y + radius * Math.sin( angle_rad )
+        };
+      }
+      function makePath( path ) {
+        path[0] = "M" + path[0]; // warning, modifies array
+        path[1] = "L" + path[1];
+        path.push("Z");
+        return path.join(' ');
+      }
+      function setPath( c, svgpath, path ) {
+        svgpath.setAttribute('d',path);
+        svgpath.setAttribute('stroke', c);
+        svgpath.setAttribute('fill','none');
+      }
+      function arcPath( x, y, r, start, stop ) {
+        let path = [];
+        for (let s=start; s <= stop; s += 2*Math.PI/30) { // resolution of 30
+          let xy = radialToCartesian( x,y,r,s );
+          path.push(`${xy.x},${xy.y}`);
+        }
+        return makePath( path );
+      }
+      function circlePath( x, y, r ) {
+        return arcPath( x, y, r, 0, 2*Math.PI )
+      }
+      function rotPoint(ox,oy,x,y,a) {
+        return { x: ox + x*Math.cos(a) - y*Math.sin(a),   y: oy + x*Math.sin(a) + y*Math.cos(a) };
+      }
+      function rectPath( x,y,w,h, a ) {
+        let path = [];
+        let p0 = rotPoint( x,y,-w/2, -h/2, a );
+        let p1 = rotPoint( x,y,+w/2, -h/2, a );
+        let p2 = rotPoint( x,y,+w/2, +h/2, a );
+        let p3 = rotPoint( x,y,-w/2, +h/2, a );
+        path.push(`${p0.x},${p0.y}`);
+        path.push(`${p1.x},${p1.y}`);
+        path.push(`${p2.x},${p2.y}`);
+        path.push(`${p3.x},${p3.y}`);
+        return makePath(path);
+      }
+      function createSVGDownload(svg, ahref) {
+        // first create a clone of our svg node so we don't mess the original one
+        var clone = svg.cloneNode(true);
+        // parse the styles
+        //parseStyles(clone);
+
+        // create a doctype
+        var svgDocType = document.implementation.createDocumentType('svg', "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
+        // a fresh svg document
+        var svgDoc = document.implementation.createDocument('http://www.w3.org/2000/svg', 'svg', svgDocType);
+        // replace the documentElement with our clone 
+        svgDoc.replaceChild(clone, svgDoc.documentElement);
+        // get the data
+        var svgData = (new XMLSerializer()).serializeToString(svgDoc);
+
+        // now you've got your svg data, the following will depend on how you want to download it
+        // e.g yo could make a Blob of it for FileSaver.js
+        /*
+        var blob = new Blob([svgData.replace(/></g, '>\n\r<')]);
+        saveAs(blob, 'myAwesomeSVG.svg');
+        */
+        // here I'll just make a simple a with download attribute
+
+        ahref.href = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgData.replace(/></g, '>\n\r<'));
+        ahref.download = 'file.svg';
+        //ahref.innerHTML = 'download the svg file';
+      };
+      function sqr( n ) { return n*n; }
+      function dist( p0, p1 ) {
+        return Math.sqrt( sqr( p0.x - p1.x ) + sqr( p0.y - p1.y ) );
+      }
+      function draw() {
+        errors.innerHTML = '';
+        svg.setAttribute('width', vwidth.value );
+        svg.setAttribute('height', vheight.value );
+
+        //clear();
+        let c0 = "#aaaaaa";
+        let c1 = "#99bbff";
+        let c2 = "#ff9900";
+        let c3 = "#ff0000";
+        let pos = { x: parseInt(vwidth.value/2), y: parseInt(vheight.value/2) };
+        //arc( c0,pos.x,pos.y, outside_dia.value/2, 0, 2*Math.PI );
+        //arc( c0,pos.x,pos.y, in_dia.value/2, 0, 2*Math.PI );
+        setPath(c0, svgdiscpath,
+            [circlePath( pos.x,pos.y, outside_dia.value/2 ),
+            circlePath( pos.x,pos.y, in_dia.value/2 )].join(' ')
+        );
+
+        if (num_magnets.value % 2 == 1) errors.innerHTML = "serpintine doesn't support odd number of magnets";
+        let arc_len_deg = 360/(num_magnets.value*0.5);
+        let arc_len_rad = arc_len_deg * Math.PI/180;
+        let start = 0;
+        let end = 2*Math.PI - arc_len_rad*0.5;
+        {
+          let path = [];
+          let coilWinderCircumference = 0;
+          for (let x = start; x < end; x += arc_len_rad) {
+            let s = x;
+            let s1 = s+arc_len_rad*0.5;
+            let s2 = s+arc_len_rad;
+            let outer_start = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+            let outer_end   = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+            let inner_start = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+            let inner_end   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+            let inner_end_prev   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+            //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
+            //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
+            //line( c2,inner_end_prev.x, inner_end_prev.y, outer_start.x, outer_start.y );
+            //line( c2,outer_end.x, outer_end.y, inner_start.x, inner_start.y );
+            path.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+            path.push(`${outer_start.x},${outer_start.y}`);
+            path.push(`${outer_end.x},${outer_end.y}`);
+            path.push(`${inner_start.x},${inner_start.y}`);
+            path.push(`${inner_end.x},${inner_end.y}`);
+            coilWinderCircumference += dist( inner_end_prev, outer_start );
+            coilWinderCircumference += dist( outer_start, outer_end );
+            coilWinderCircumference += dist( outer_end, inner_start );
+            coilWinderCircumference += dist( inner_start, inner_end );
+          }
+          let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
+          setPath( c2, svgcoilpath, makePath( path ) );
+          setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
+        }
+
+        {
+          let path = [];
+          for (let x = start; x < end; x += arc_len_rad) {
+            let s = x;
+            let s1 = s+arc_len_rad*0.5;
+            let s2 = s+arc_len_rad;
+            let mag_centerN = radialToCartesian( pos.x,pos.y, mag_mid_dia.value/2, s );
+            let mag_centerS = radialToCartesian( pos.x,pos.y, mag_mid_dia.value/2, s1 );
+            if (shapeCircle.checked) {
+              //circle( c1,mag_centerN.x, mag_centerN.y, dia_magnet.value*0.5 );
+              //circle( c1,mag_centerS.x, mag_centerS.y, dia_magnet.value*0.5 );
+              path.push( circlePath( mag_centerN.x, mag_centerN.y, dia_magnet.value*0.5 ) );
+              path.push( circlePath( mag_centerS.x, mag_centerS.y, dia_magnet.value*0.5 ) );
+            } else {
+              //rect( c1,mag_centerN.x, mag_centerN.y, w_magnet.value, h_magnet.value, s );
+              //rect( c1,mag_centerS.x, mag_centerS.y, w_magnet.value, h_magnet.value, s1 );
+              path.push( rectPath( mag_centerN.x, mag_centerN.y, w_magnet.value, h_magnet.value, s ) );
+              path.push( rectPath( mag_centerS.x, mag_centerS.y, w_magnet.value, h_magnet.value, s1 ) );
+            }
+            setPath( c1, svgmagpath, path.join(' ') );
+          }
+        }
+
+        createSVGDownload( svg, download );
+      }
+      function init() {
+        draw();
+      }
+      window.onload = init();
+      //init();
+    </script>
+
+  </body>
+</html>
+
