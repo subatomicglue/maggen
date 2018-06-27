@@ -1,110 +1,153 @@
 <html>
   <head>
+    <!-- https://getbootstrap.com/docs/4.0/getting-started/introduction/ -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   </head>
   <body>
     <fieldset>
       <legend>Axial Flux Generator Designer (mm)</legend>
       <form onchange="draw()">
-        <!-- type="text" pattern="[0-9]+" maxlength="3" minlength="1" -->
-        <!-- type="number" min="1" max="9999" -->
-        <div>
-            <label for="vwidth">Viewport Width</label>
-            <input type="number" id="vwidth" name="vwidth"
-                   min="1" max="9999" value="300" required />
-        </div>
-        <div>
-            <label for="vheight">Viewport Height</label>
-            <input type="number" id="vheight" name="vheight"
-                   min="1" max="9999" value="300" required />
-        </div>
-        <div>
-            <label for="num_magnets">Number of Magnets</label>
-            <input type="number" id="num_magnets" name="num_magnets"
-                   min="1" max="9999" value="12" required />
-        </div>
-        <div>
-            <label for="dia_magnet">Dia of Magnet</label>
-            <input type="number" id="dia_magnet" name="dia_magnet"
-                   min="1" max="9999" value="20" required />
-        </div>
-        <div>
-            <label for="w_magnet">Width of Magnet</label>
-            <input type="number" id="w_magnet" name="w_magnet"
-                   min="1" max="9999" value="20" required />
-        </div>
-        <div>
-            <label for="h_magnet">Height of Magnet</label>
-            <input type="number" id="h_magnet" name="h_magnet"
-                   min="1" max="9999" value="15" required />
-        </div>
-        <div>
-          <label for="mag_shape">Shape of Magnet</label>
-          <input type = "radio"
-                 name = "mag_shape"
-                 id = "shapeRect"
-                 value = "rect"
-                 checked = "checked" />
-          <label for = "shapeRect">rect</label>
-          <input type = "radio"
-                 name = "mag_shape"
-                 id = "shapeCircle"
-                 value = "circle" />
-          <label for = "shapeCircle">circle</label>
-        </div>
-        <div>
-            <label for="outside_dia">Outside Diameter</label>
-            <input type="number" id="outside_dia" name="outside_dia"
-                   min="1" max="9999" value="150" required />
-        </div>
-        <div>
-            <label for="in_dia">Inside Diameter</label>
-            <input type="number" id="in_dia" name="in_dia"
-                   min="1" max="9999" value="30" required />
-        </div>
-        <div>
-          <label for="coil_type">Type of Coil</label>
-          <input type = "radio"
-                 name = "coil_type"
-                 id = "coilSerpintine"
-                 value = "serpintine"
-                 checked = "checked" />
-          <label for = "coilSerpintine">serpintine</label>
-          <input type = "radio"
-                 name = "coil_type"
-                 id = "coilLoops"
-                 value = "loops" disabled />
-          <label for = "coilLoops">loops</label>
-        </div>
-        <div>
-            <label for="mag_out_dia">Coil Outside Diameter</label>
-            <input type="number" id="mag_out_dia" name="mag_out_dia"
-                   min="1" max="9999" value="120" required />
-        </div>
-        <div>
-            <label for="mag_mid_dia">Mag Mid Diameter</label>
-            <input type="number" id="mag_mid_dia" name="mag_mid_dia"
-                   min="1" max="9999" value="90" required />
-        </div>
-        <div>
-            <label for="mag_in_dia">Coil Inside Diameter</label>
-            <input type="number" id="mag_in_dia" name="mag_in_dia"
-                   min="1" max="9999" value="60" required />
+        <div class="card-columns">
+          <!-- type="text" pattern="[0-9]+" maxlength="3" minlength="1" -->
+          <!-- type="number" min="1" max="9999" -->
+          <div class='card  text-nowrap'>
+            <div>
+                <label for="vwidth">Viewport Width</label>
+                <input type="number" id="vwidth" name="vwidth"
+                      min="1" max="9999" value="300" required />
+            </div>
+            <div>
+                <label for="vheight">Viewport Height</label>
+                <input type="number" id="vheight" name="vheight"
+                      min="1" max="9999" value="300" required />
+            </div>
+          </div>
+          <div class='card  text-nowrap'>
+            <div class=''>
+                <label for="num_magnets">Number of Magnets</label>
+                <input type="number" id="num_magnets" name="num_magnets"
+                      min="1" max="9999" value="12" required />
+            </div>
+            <div class=''>
+              <label for="mag_shape">Shape of Magnet</label>
+              <input type = "radio"
+                    name = "mag_shape"
+                    id = "shapeRect"
+                    value = "rect"
+                    checked = "checked" />
+              <label for = "shapeRect">rect</label>
+              <input type = "radio"
+                    name = "mag_shape"
+                    id = "shapeCircle"
+                    value = "circle" />
+              <label for = "shapeCircle">circle</label>
+            </div>
+            <div class=''>
+                <label for="dia_magnet">Dia of Magnet</label>
+                <input type="number" id="dia_magnet" name="dia_magnet"
+                      min="1" max="9999" value="20" required />
+            </div>
+            <div class=''>
+                <label for="w_magnet">Width of Magnet</label>
+                <input type="number" id="w_magnet" name="w_magnet"
+                      min="1" max="9999" value="20" required />
+            </div>
+            <div class=''>
+                <label for="h_magnet">Height of Magnet</label>
+                <input type="number" id="h_magnet" name="h_magnet"
+                      min="1" max="9999" value="15" required />
+            </div>
+          </div>
+          <div class='card  text-nowrap'>
+            <div class=''>
+                <label for="outside_dia">Outside Diameter</label>
+                <input type="number" id="outside_dia" name="outside_dia"
+                      min="1" max="9999" value="150" required />
+            </div>
+            <div class=''>
+                <label for="in_dia">Inside Diameter</label>
+                <input type="number" id="in_dia" name="in_dia"
+                      min="1" max="9999" value="30" required />
+            </div>
+          </div>
+          <div class='card  text-nowrap'>
+            <div class=''>
+              <label for="coil_type">Type of Coil</label>
+              <input type = "radio"
+                    name = "coil_type"
+                    id = "coilSerpintine"
+                    value = "serpintine"
+                    checked = "checked" />
+              <label for = "coilSerpintine">serpentine</label>
+              <input type = "radio"
+                    name = "coil_type"
+                    id = "coilLoops"
+                    value = "loops" disabled />
+              <label for = "coilLoops">loops</label>
+            </div>
+            <div class=''>
+                <label for="mag_out_dia">Coil Outside Diameter</label>
+                <input type="number" id="mag_out_dia" name="mag_out_dia"
+                      min="1" max="9999" value="120" required />
+            </div>
+            <div class=''>
+                <label for="mag_mid_dia">Mag Mid Diameter</label>
+                <input type="number" id="mag_mid_dia" name="mag_mid_dia"
+                      min="1" max="9999" value="90" required />
+            </div>
+            <div class=''>
+                <label for="mag_in_dia">Coil Inside Diameter</label>
+                <input type="number" id="mag_in_dia" name="mag_in_dia"
+                      min="1" max="9999" value="60" required />
+            </div>
+          </div>
         </div>
       </form>
     </fieldset>
     <div id='errors' style="color:red"></div>
-    <!-- <canvas id="turbine" width="200" height="200"></canvas> -->
-    <svg id="svg" width="200" height="200">
-      <path id="svgcoilpath" d=""/>
-      <path id="svgdiscpath" d=""/>
-      <path id="svgmagpath" d=""/>
-      <path id="svgwrappath" d=""/>
-    </svg>
-    <div><a id='download' href="">Download .svg</a></div>
-    <div style="color:red">wire winder (pre serpintine)</div>
-    <div style="color:orange">serpintined wire</div>
-    <div style="color:lightblue">magnets</div>
-    <div style="color:grey">rotor/stator disc(s),   resin mold</div>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-sm'>
+          <!-- <canvas id="turbine" width="200" height="200"></canvas> -->
+          <div style='width: 0%; background-color: #333333;'>
+            <svg id="svg" width="200" height="200">
+              <rect width="100%" height="100%" fill="grey"/>
+              <path id="svgcoilpath" d=""/>
+              <path id="svgdiscpath" d=""/>
+              <path id="svgmagpath" d=""/>
+              <path id="svgwrappath" d=""/>
+            </svg>
+          </div>
+        </div>
+        <div class='col-sm'>
+          <div><a id='download' href="">Download .svg</a></div>
+          <div>Legend:</div>
+          <ul>
+          <div style="color:red">wire winder (pre serpentine)</div>
+          <div style="color:orange">serpentined wire</div>
+          <div style="color:lightblue">magnets</div>
+          <div style="color:grey">rotor/stator disc(s),   resin mold</div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <style>
+      @media (min-width: 576px) {
+        .card-columns { column-count: 2; }
+      }
+      @media (min-width: 768px) {
+        .card-columns { column-count: 3; }
+      }
+      @media (min-width: 992px) {
+        .card-columns { column-count: 4; }
+      }
+      @media (min-width: 1200px) {
+        .card-columns { column-count: 5; }
+      }
+    </style>
     <script>
       function clear(c="grey") {
         //var c = document.getElementById("myCanvas");
