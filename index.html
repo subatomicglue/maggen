@@ -19,7 +19,7 @@
               <div class=''>
                   <label for="num_magnets">Number of Magnets</label>
                   <input type="number" id="num_magnets" name="num_magnets" placeholder="# magnets"
-                        min="1" max="9999" value="12" required />
+                        min="4" max="9999" step='2' value="12" required />
               </div>
               <div class=''>
                 <label for="mag_shape">Shape of Magnet</label>
@@ -75,7 +75,7 @@
                 <input type = "radio"
                       name = "coil_type"
                       id = "coilLoops"
-                      value = "loops" disabled />
+                      value = "loops"  />
                 <label for = "coilLoops">loops</label>
               </div>
               <div class=''>
@@ -107,10 +107,10 @@
         <div class='bg-secondary'>
           <svg id="svg" viewBox="-100 -100 100 100">
             <!--<rect width="100%" height="100%" fill="grey"/>-->
-            <path id="svgcoilpath" d=""/>
             <path id="svgdiscpath" d=""/>
-            <path id="svgmagpath" d=""/>
+            <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
+            <path id="svgmagpath" d=""/>
           </svg>
         </div>
       </div>
@@ -118,10 +118,10 @@
         <a id='download' class='btn btn-primary pointer btn-lg active' href="">Download .svg</a>
         <div>Legend:</div>
         <ul>
-        <div style="color:red">wire winder (pre serpentine)</div>
-        <div style="color:orange">serpentined wire</div>
+        <div style="color:red">wire winder tool</div>
+        <div style="color:orange">wire stator</div>
         <div style="color:lightblue">magnets</div>
-        <div style="color:grey">rotor/stator disc(s),   resin mold</div>
+        <div style="color:grey">rotor/stator disc(s), resin mold</div>
         </ul>
       </div>
     </div>
@@ -206,6 +206,9 @@
         svgpath.setAttribute('stroke', c);
         svgpath.setAttribute('fill','none');
       }
+      function clearPath( svgpath ) {
+        svgpath.setAttribute('d','');
+      }
       function arcPath( x, y, r, start, stop ) {
         let path = [];
         for (let s=start; s <= stop; s += 2*Math.PI/30) { // resolution of 30
@@ -280,6 +283,8 @@
         let c3 = "#ff0000";
         let vwidth = 0, vheight = 0;
         let pos = { x: 0, y: 0 };
+
+        // disc geometry
         //arc( c0,pos.x,pos.y, outside_dia.value/2, 0, 2*Math.PI );
         //arc( c0,pos.x,pos.y, in_dia.value/2, 0, 2*Math.PI );
         setPath(c0, svgdiscpath,
@@ -287,7 +292,8 @@
             circlePath( pos.x,pos.y, in_dia.value/2 )].join(' ')
         );
 
-        if (num_magnets.value % 2 == 1) errors.innerHTML = "serpentine doesn't support odd number of magnets";
+        // wire geometry
+        if (num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: please give an even number of magnets";
         let arc_len_deg = 360/(num_magnets.value*0.5);
         let arc_len_rad = arc_len_deg * Math.PI/180;
         let start = 0;
@@ -297,14 +303,19 @@
           let coilWinderCircumference = 0;
           let winder_path = [];
           for (let x = start; x < end; x += arc_len_rad) {
+            // generate some arc stats for this iteration
             let s = x;
-            let s1 = s+arc_len_rad*0.5;
-            let s2 = s+arc_len_rad;
-            let outer_start = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
-            let outer_end   = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
-            let inner_start = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
-            let inner_end   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
-            let inner_end_prev   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+            let s1d = arc_len_rad*0.5;
+            let s1 = s+s1d;
+            let s2d = arc_len_rad;
+            let s2 = s+s2d;
+            let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+            let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+            let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+            let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+            let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+            let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
+            // one big loop of wire (minimize waste, easier to wind, etc.)
             if (coilSerpentine.checked) {
               //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
               //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
@@ -319,6 +330,23 @@
               coilWinderCircumference += dist( outer_start, outer_end );
               coilWinderCircumference += dist( outer_end, inner_start );
               coilWinderCircumference += dist( inner_start, inner_end );
+            } else {
+              // individual loops
+              let subpath = [];
+              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+              subpath.push(`${outer_start.x},${outer_start.y}`);
+              subpath.push(`${outer_end.x},${outer_end.y}`);
+              subpath.push(`${inner_start.x},${inner_start.y}`);
+              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+              path.push( makePath( subpath ) );
+              subpath = [];
+              subpath.push(`${outer_end.x},${outer_end.y}`);
+              subpath.push(`${inner_start.x},${inner_start.y}`);
+              subpath.push(`${inner_end.x},${inner_end.y}`);
+              subpath.push(`${outer_start_next.x},${outer_start_next.y}`);
+              subpath.push(`${outer_end.x},${outer_end.y}`);
+              path.push( makePath( subpath ) );
+              winder_path = subpath; // we can use this shape for our winder geometry...
             }
           }
           if (coilSerpentine.checked) {
@@ -333,28 +361,32 @@
             // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
             // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
             for (let x = start; x < end; x += arc_len_rad) {
+              // generate some arc stats for this iteration
               let s = x;
               let s1d = arc_len_rad*0.5;
               let s1 = s+s1d;
               let s2d = arc_len_rad;
               let s2 = s+s2d;
-              let outer_start = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
-              let outer_end   = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
-              let inner_start = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
-              let inner_end   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
-              // we're going to project 2 segments to the coilWinderRadius circle
-              // get each segment's length
+              let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+              let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+              let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+              let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+              let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+              let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
+              // we're going to project (move w/ no scale) 2 segments to the coilWinderRadius circle
+              // the outer and the inner segments.  The segments inbetween will magically appear correct. :)
+              // * get each segment's length
               let i1 = dist( outer_start, outer_end );
               let i3 = dist( inner_start, inner_end );
-              // coilWinderRadius circle is always larger than mag_out_dia
-              // if we pushed the segment out to the larger coilWinderRadius circle (same length)
-              // calc the (now narrower) sweep angle that sweeps the segment length
+              // * coilWinderRadius circle is always larger than mag_out_dia
+              //   if we pushed the segment out to the larger coilWinderRadius circle (same length)
+              //   calc the (now narrower) sweep angle that sweeps the segment length
               let i1r_half = Math.asin(i1*0.5/coilWinderRadius); // sin(t) = o/a
               let i3r_half = Math.asin(i3*0.5/coilWinderRadius);
-              // calc the angle that passes through each segment's center point
+              // * calc the angle that passes through each segment's center point
               let s_s1 = s + s1d/2;
               let s1_s2 = s1 + s1d/2;
-              // calc the points for 3 segments, add to the path (4th segment we get for free next iteration)
+              // * calc the points for 3 segments, add to the path (4th segment we get for free next iteration)
               let p0 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 - i1r_half );
               let p1 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 + i1r_half );
               let p2 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 - i3r_half );
@@ -370,9 +402,18 @@
             // (inaccurate because the serpentine is chunky-polygonal, not smooth-curved,
             //  so your wire loop'll be _slightly_ too long this way)
             //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
+          } else {
+            // setup the svg's viewbox so it zooms in nice
+            vwidth = vheight = outside_dia.value;
+
+            setPath( c2, svgcoilpath, path.join(' ') );
+            //clearPath( svgcoilpath );
+            setPath( c3, svgwrappath, winder_path );
+            //clearPath( svgwrappath );
           }
         }
 
+        // magnet geometry
         {
           let path = [];
           for (let x = start; x < end; x += arc_len_rad) {
