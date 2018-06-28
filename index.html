@@ -35,18 +35,18 @@
                       value = "circle" />
                 <label for = "shapeCircle">circle</label>
               </div>
-              <div class=''>
+              <div id='dia_magnet_group' class=''>
                   <label for="dia_magnet">Dia of Magnet</label>
                   <input type="number" id="dia_magnet" name="dia_magnet" placeholder="Magnet Dia"
                         min="1" max="9999" value="20" required />
               </div>
-              <div class=''>
-                  <label for="w_magnet">Width of Magnet</label>
+              <div id='w_magnet_group' class=''>
+                  <label for="w_magnet">Magnet Width</label>
                   <input type="number" id="w_magnet" name="w_magnet" placeholder="Magnet Width"
                         min="1" max="9999" value="20" required />
               </div>
-              <div class=''>
-                  <label for="h_magnet">Height of Magnet</label>
+              <div id='h_magnet_group' class=''>
+                  <label for="h_magnet">Magnet Height</label>
                   <input type="number" id="h_magnet" name="h_magnet" placeholder="Magnet Height"
                         min="1" max="9999" value="15" required />
               </div>
@@ -68,10 +68,10 @@
                 <label for="coil_type">Type of Coil</label>
                 <input type = "radio"
                       name = "coil_type"
-                      id = "coilSerpintine"
+                      id = "coilSerpentine"
                       value = "serpintine"
                       checked = "checked" />
-                <label for = "coilSerpintine">serpentine</label>
+                <label for = "coilSerpentine">serpentine</label>
                 <input type = "radio"
                       name = "coil_type"
                       id = "coilLoops"
@@ -266,6 +266,13 @@
       function draw() {
         errors.innerHTML = '';
 
+        // update controls
+        dia_magnet_group.hidden = !shapeCircle.checked;
+        w_magnet_group.hidden = shapeCircle.checked;
+        h_magnet_group.hidden = shapeCircle.checked;
+
+        // construct the svg
+
         //clear();
         let c0 = "#aaaaaa";
         let c1 = "#99bbff";
@@ -280,7 +287,7 @@
             circlePath( pos.x,pos.y, in_dia.value/2 )].join(' ')
         );
 
-        if (num_magnets.value % 2 == 1) errors.innerHTML = "serpintine doesn't support odd number of magnets";
+        if (num_magnets.value % 2 == 1) errors.innerHTML = "serpentine doesn't support odd number of magnets";
         let arc_len_deg = 360/(num_magnets.value*0.5);
         let arc_len_rad = arc_len_deg * Math.PI/180;
         let start = 0;
@@ -288,6 +295,7 @@
         {
           let path = [];
           let coilWinderCircumference = 0;
+          let winder_path = [];
           for (let x = start; x < end; x += arc_len_rad) {
             let s = x;
             let s1 = s+arc_len_rad*0.5;
@@ -297,24 +305,68 @@
             let inner_start = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
             let inner_end   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
             let inner_end_prev   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
-            //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
-            //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
-            //line( c2,inner_end_prev.x, inner_end_prev.y, outer_start.x, outer_start.y );
-            //line( c2,outer_end.x, outer_end.y, inner_start.x, inner_start.y );
-            path.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-            path.push(`${outer_start.x},${outer_start.y}`);
-            path.push(`${outer_end.x},${outer_end.y}`);
-            path.push(`${inner_start.x},${inner_start.y}`);
-            path.push(`${inner_end.x},${inner_end.y}`);
-            coilWinderCircumference += dist( inner_end_prev, outer_start );
-            coilWinderCircumference += dist( outer_start, outer_end );
-            coilWinderCircumference += dist( outer_end, inner_start );
-            coilWinderCircumference += dist( inner_start, inner_end );
+            if (coilSerpentine.checked) {
+              //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
+              //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
+              //line( c2,inner_end_prev.x, inner_end_prev.y, outer_start.x, outer_start.y );
+              //line( c2,outer_end.x, outer_end.y, inner_start.x, inner_start.y );
+              path.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+              path.push(`${outer_start.x},${outer_start.y}`);
+              path.push(`${outer_end.x},${outer_end.y}`);
+              path.push(`${inner_start.x},${inner_start.y}`);
+              path.push(`${inner_end.x},${inner_end.y}`);
+              coilWinderCircumference += dist( inner_end_prev, outer_start );
+              coilWinderCircumference += dist( outer_start, outer_end );
+              coilWinderCircumference += dist( outer_end, inner_start );
+              coilWinderCircumference += dist( inner_start, inner_end );
+            }
           }
-          let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
-          setPath( c2, svgcoilpath, makePath( path ) );
-          setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
-          vwidth = vheight = Math.max( coilWinderRadius*2, outside_dia.value );
+          if (coilSerpentine.checked) {
+            setPath( c2, svgcoilpath, makePath( path ) );
+
+            // approx radius for the coil winder
+            let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
+
+            // setup the svg's viewbox so it zooms in nice
+            vwidth = vheight = Math.max( coilWinderRadius*2, outside_dia.value );
+
+            // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
+            // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
+            for (let x = start; x < end; x += arc_len_rad) {
+              let s = x;
+              let s1d = arc_len_rad*0.5;
+              let s1 = s+s1d;
+              let s2d = arc_len_rad;
+              let s2 = s+s2d;
+              let outer_start = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+              let outer_end   = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+              let inner_start = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+              let inner_end   = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+              // we're going to project 2 segments to the coilWinderRadius circle
+              // get each segment's length
+              let i1 = dist( outer_start, outer_end );
+              let i3 = dist( inner_start, inner_end );
+              // coilWinderRadius circle is always larger than mag_out_dia
+              // if we pushed the segment out to the larger coilWinderRadius circle (same length)
+              // calc the (now narrower) sweep angle that sweeps the segment length
+              let i1r_half = Math.asin(i1*0.5/coilWinderRadius); // sin(t) = o/a
+              let i3r_half = Math.asin(i3*0.5/coilWinderRadius);
+              // calc the angle that passes through each segment's center point
+              let s_s1 = s + s1d/2;
+              let s1_s2 = s1 + s1d/2;
+              // calc the points for 3 segments, add to the path (4th segment we get for free next iteration)
+              let p0 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 - i1r_half );
+              let p1 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 + i1r_half );
+              let p2 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 - i3r_half );
+              let p3 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 + i3r_half );
+              winder_path.push(`${p0.x},${p0.y}`);
+              winder_path.push(`${p1.x},${p1.y}`);
+              winder_path.push(`${p2.x},${p2.y}`);
+              winder_path.push(`${p3.x},${p3.y}`);
+            }
+            setPath( c3, svgwrappath, makePath( winder_path ) );
+            //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
+          }
         }
 
         {
