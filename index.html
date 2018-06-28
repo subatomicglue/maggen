@@ -365,6 +365,10 @@
               winder_path.push(`${p3.x},${p3.y}`);
             }
             setPath( c3, svgwrappath, makePath( winder_path ) );
+
+            // lazy approach, just make the winder a pure circle
+            // (inaccurate because the serpentine is chunky-polygonal, not smooth-curved,
+            //  so your wire loop'll be _slightly_ too long this way)
             //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
           }
         }
