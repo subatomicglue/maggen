@@ -16,18 +16,6 @@
             <!-- type="text" pattern="[0-9]+" maxlength="3" minlength="1" -->
             <!-- type="number" min="1" max="9999" -->
             <div class='card  text-nowrap'>
-              <div>
-                  <label for="vwidth">Viewport Width</label>
-                  <input type="number" id="vwidth" name="vwidth" placeholder="Viewport Width"
-                        min="1" max="9999" value="300" required />
-              </div>
-              <div>
-                  <label for="vheight">Viewport Height</label>
-                  <input type="number" id="vheight" name="vheight" placeholder="Viewport Height"
-                        min="1" max="9999" value="300" required />
-              </div>
-            </div>
-            <div class='card  text-nowrap'>
               <div class=''>
                   <label for="num_magnets">Number of Magnets</label>
                   <input type="number" id="num_magnets" name="num_magnets" placeholder="# magnets"
@@ -114,11 +102,11 @@
       <div id='errors' style="color:red"></div>
     </div>
     <div class='row'>
-      <div class='col-sm'>
+      <div class='col-sm bg-primary p-0 m-0'>
         <!-- <canvas id="turbine" width="200" height="200"></canvas> -->
-        <div class=''>
-          <svg id="svg" width="200" height="200">
-            <rect width="100%" height="100%" fill="grey"/>
+        <div class='bg-secondary'>
+          <svg id="svg" viewBox="-100 -100 100 100">
+            <!--<rect width="100%" height="100%" fill="grey"/>-->
             <path id="svgcoilpath" d=""/>
             <path id="svgdiscpath" d=""/>
             <path id="svgmagpath" d=""/>
@@ -277,15 +265,14 @@
       }
       function draw() {
         errors.innerHTML = '';
-        svg.setAttribute('width', vwidth.value );
-        svg.setAttribute('height', vheight.value );
 
         //clear();
         let c0 = "#aaaaaa";
         let c1 = "#99bbff";
         let c2 = "#ff9900";
         let c3 = "#ff0000";
-        let pos = { x: parseInt(vwidth.value/2), y: parseInt(vheight.value/2) };
+        let vwidth = 0, vheight = 0;
+        let pos = { x: 0, y: 0 };
         //arc( c0,pos.x,pos.y, outside_dia.value/2, 0, 2*Math.PI );
         //arc( c0,pos.x,pos.y, in_dia.value/2, 0, 2*Math.PI );
         setPath(c0, svgdiscpath,
@@ -327,6 +314,7 @@
           let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
           setPath( c2, svgcoilpath, makePath( path ) );
           setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
+          vwidth = vheight = Math.max( coilWinderRadius*2, outside_dia.value );
         }
 
         {
@@ -351,7 +339,7 @@
             setPath( c1, svgmagpath, path.join(' ') );
           }
         }
-
+        svg.setAttribute( 'viewBox', `${- +vwidth/2 - 2} ${- +vheight/2 - 2} ${+vwidth + 4} ${+vheight + 4}` );
         createSVGDownload( svg, download );
       }
       function init() {
