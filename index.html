@@ -19,7 +19,7 @@
               <div class=''>
                   <label for="num_magnets">Number of Magnets</label>
                   <input type="number" id="num_magnets" name="num_magnets" placeholder="# magnets"
-                        min="4" max="9999" step='2' value="12" required />
+                        min="4" max="9999" step='1' value="12" required />
               </div>
               <div class=''>
                 <label for="mag_shape">Shape of Magnet</label>
@@ -111,6 +111,7 @@
             <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
             <path id="svgmagpath" d=""/>
+            <path id="svgmagpath2" d=""/>
           </svg>
         </div>
       </div>
@@ -279,6 +280,7 @@
         //clear();
         let c0 = "#aaaaaa";
         let c1 = "#99bbff";
+        let c1b = "#99bb00";
         let c2 = "#ff9900";
         let c3 = "#ff0000";
         let vwidth = 0, vheight = 0;
@@ -293,18 +295,17 @@
         );
 
         // wire geometry
-        if (num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: please give an even number of magnets";
+        if (coilSerpentine.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for serpentine coils, please give an even number of magnets";
+        if (coilLoops.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for loop coils, please give an even number of magnets";
         let arc_len_deg = 360/(num_magnets.value*0.5);
         let arc_len_rad = arc_len_deg * Math.PI/180;
-        let start = 0;
-        let end = 2*Math.PI - arc_len_rad*0.5;
         {
           let path = [];
           let coilWinderCircumference = 0;
           let winder_path = [];
-          for (let x = start; x < end; x += arc_len_rad) {
+          for (let x = 0; x < (+num_magnets.value/2); ++x) {
             // generate some arc stats for this iteration
-            let s = x;
+            let s = x * arc_len_rad;
             let s1d = arc_len_rad*0.5;
             let s1 = s+s1d;
             let s2d = arc_len_rad;
@@ -360,9 +361,9 @@
 
             // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
             // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
-            for (let x = start; x < end; x += arc_len_rad) {
+            for (let x = 0; x < (+num_magnets.value/2 - 0.5); x += arc_len_rad) {
               // generate some arc stats for this iteration
-              let s = x;
+              let s = x * arc_len_rad;
               let s1d = arc_len_rad*0.5;
               let s1 = s+s1d;
               let s2d = arc_len_rad;
@@ -415,26 +416,26 @@
 
         // magnet geometry
         {
-          let path = [];
-          for (let x = start; x < end; x += arc_len_rad) {
-            let s = x;
-            let s1 = s+arc_len_rad*0.5;
-            let s2 = s+arc_len_rad;
+          let path1 = [];
+          let path2 = [];
+          for (let x = 0; x < +num_magnets.value; ++x) {
+            let path;
+            let s = x * arc_len_rad*0.5;
             let mag_centerN = radialToCartesian( pos.x,pos.y, mag_mid_dia.value/2, s );
-            let mag_centerS = radialToCartesian( pos.x,pos.y, mag_mid_dia.value/2, s1 );
             if (shapeCircle.checked) {
               //circle( c1,mag_centerN.x, mag_centerN.y, dia_magnet.value*0.5 );
-              //circle( c1,mag_centerS.x, mag_centerS.y, dia_magnet.value*0.5 );
-              path.push( circlePath( mag_centerN.x, mag_centerN.y, dia_magnet.value*0.5 ) );
-              path.push( circlePath( mag_centerS.x, mag_centerS.y, dia_magnet.value*0.5 ) );
+              path = circlePath( mag_centerN.x, mag_centerN.y, dia_magnet.value*0.5 );
             } else {
               //rect( c1,mag_centerN.x, mag_centerN.y, w_magnet.value, h_magnet.value, s );
-              //rect( c1,mag_centerS.x, mag_centerS.y, w_magnet.value, h_magnet.value, s1 );
-              path.push( rectPath( mag_centerN.x, mag_centerN.y, w_magnet.value, h_magnet.value, s ) );
-              path.push( rectPath( mag_centerS.x, mag_centerS.y, w_magnet.value, h_magnet.value, s1 ) );
+              path = rectPath( mag_centerN.x, mag_centerN.y, w_magnet.value, h_magnet.value, s );
             }
-            setPath( c1, svgmagpath, path.join(' ') );
+            if (x % 2 === 1)
+              path1.push( path );
+            else
+              path2.push( path );
           }
+          setPath( c1, svgmagpath, path1.join(' ') );
+          setPath( c1b, svgmagpath2, path2.join(' ') );
         }
         svg.setAttribute( 'viewBox', `${- +vwidth/2 - 2} ${- +vheight/2 - 2} ${+vwidth + 4} ${+vheight + 4}` );
         createSVGDownload( svg, download );
