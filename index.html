@@ -114,8 +114,8 @@
             <path id="svgdiscpath" d=""/>
             <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
-            <path id="svgmagpath" d=""/>
-            <path id="svgmagpath2" d=""/>
+            <path class='rot' id="svgmagpath" d=""/>
+            <path class='rot' id="svgmagpath2" d=""/>
           </svg>
         </div>
       </div>
@@ -143,6 +143,21 @@
       }
       @media (min-width: 1200px) {
         .card-columns { column-count: 4; }
+      }
+      .rot {
+        animation: rot 30.0s linear infinite;
+      }
+      @keyframes rot {
+        0% {
+          -webkit-transform:  rotate(180deg) rotate(0deg);
+          -moz-transform:  rotate(180deg) rotate(0deg);
+          transform: rotate(180deg) rotate(0deg);
+        }
+        100% {
+          -webkit-transform:  rotate(180deg) rotate(360deg);
+          -moz-transform:  rotate(180deg) rotate(360deg);
+          transform: rotate(180deg) rotate(360deg);
+        }
       }
     </style>
     <script>
@@ -356,7 +371,7 @@
 
             // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
             // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
-            for (let x = 0; x < (+num_magnets.value/2 - 0.5); x += arc_len_rad) {
+            for (let x = 0; x < (+num_magnets.value/2 - 0.5); ++x) {
               // generate some arc stats for this iteration
               let s = x * arc_len_rad;
               let s1d = arc_len_rad*0.5;
