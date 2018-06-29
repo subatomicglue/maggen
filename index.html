@@ -108,7 +108,7 @@
     </div>
     <div class='row'>
       <div class='col-sm bg-primary p-0 m-0'>
-        <div class='bg-secondary'>
+        <div style='background-color: #333333;'>
           <svg id="svg" viewBox="-100 -100 100 100">
             <!--<rect width="100%" height="100%" fill="grey"/>-->
             <path id="svgdiscpath" d=""/>
@@ -165,9 +165,10 @@
         return path.join(' ');
       }
       // setup the <svg><path> from a given color [c] and 'd' attribute [path].  (see makePath, circlePath, arcPath, rectPath)
-      function setPath( c, svgpath, path ) {
+      function setPath( c, svgpath, path, strokewidth=0.2 ) {
         svgpath.setAttribute('d',path);
         svgpath.setAttribute('stroke', c);
+        svgpath.setAttribute('stroke-width', strokewidth);
         svgpath.setAttribute('fill','none');
       }
       function clearPath( svgpath ) {
@@ -420,24 +421,45 @@
               let dn2 = inv( up2 );
               let lt = mul( dir( outer_start, outer_end ), vec( coilt ) );
               let rt = mul( dir( outer_end, outer_start ), vec( coilt ) );
-              inner_end_prev  = add( inner_end_prev, rt );
-              inner_end_prev  = add( inner_end_prev, up1 );
-              outer_start     = add( outer_start, dn1 );
-              outer_start     = add( outer_start, rt );
-              outer_end       = add( outer_end, dn2 );
-              outer_end       = add( outer_end, lt );
-              inner_start     = add( inner_start, up2 );
-              inner_start     = add( inner_start, lt );
 
-              let subpath = [];
-              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-              subpath.push(`${outer_start.x},${outer_start.y}`);
-              subpath.push(`${outer_end.x},${outer_end.y}`);
-              subpath.push(`${inner_start.x},${inner_start.y}`);
-              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-              path.push( makePath( subpath ) );
+              function coilshape( ox, oy ) {
+                let subpath = [];
+                {
+                  let p0 = add( inner_end_prev, vec(ox,oy) );
+                  let p1 = add( outer_start,    vec(ox,oy) );
+                  let p2 = add( outer_end,      vec(ox,oy) );
+                  let p3 = add( inner_start,    vec(ox,oy) );
+                  subpath.push(`${p0.x},${p0.y}`);
+                  subpath.push(`${p1.x},${p1.y}`);
+                  subpath.push(`${p2.x},${p2.y}`);
+                  subpath.push(`${p3.x},${p3.y}`);
+                  subpath.push(`${p0.x},${p0.y}`);
+                }
 
-              winder_path = subpath; // we can use this shape for our winder geometry...
+                let subpath2 = [];
+                {
+                  let p0 = add( add( add( inner_end_prev, rt ), up1 ), vec(ox,oy) );
+                  let p1 = add( add( add( outer_start, dn1 ),    rt ), vec(ox,oy) );
+                  let p2 = add( add( add( outer_end, dn2 ),      lt ), vec(ox,oy) );
+                  let p3 = add( add( add( inner_start, up2 ),    lt ), vec(ox,oy) );
+                  subpath2.push(`${p0.x},${p0.y}`);
+                  subpath2.push(`${p1.x},${p1.y}`);
+                  subpath2.push(`${p2.x},${p2.y}`);
+                  subpath2.push(`${p3.x},${p3.y}`);
+                  subpath2.push(`${p0.x},${p0.y}`);
+                }
+
+                return { subpath: makePath( subpath ), subpath2: makePath( subpath2 ) };
+              }
+              let shape = coilshape( 0,0 );
+              path.push( shape.subpath );
+              path.push( shape.subpath2 );
+
+              // we can use this shape for our winder geometry...  it'll just be the last one we draw...  lazy, me. this was easy.
+              let winder = coilshape( -4,4 );
+              winder_path = [];
+              winder_path.push( winder.subpath );
+              winder_path.push( winder.subpath2 );
             }
 
             // setup the svg's viewbox so it zooms in nice
@@ -445,7 +467,7 @@
 
             setPath( c2, svgcoilpath, path.join(' ') );
             //clearPath( svgcoilpath );
-            setPath( c3, svgwrappath, winder_path );
+            setPath( c3, svgwrappath, winder_path.join(' ') );
             //clearPath( svgwrappath );
           }
         }
