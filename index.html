@@ -50,6 +50,11 @@
                   <input type="number" id="h_magnet" name="h_magnet" placeholder="Magnet Height"
                         min="1" max="9999" value="15" required />
               </div>
+              <div class=''>
+                  <label for="mag_mid_dia">Magnet Placement Diameter</label>
+                  <input type="number" id="mag_mid_dia" name="mag_mid_dia" placeholder="Mag Mid Dia"
+                        min="1" max="9999" value="90" required />
+              </div>
             </div>
             <div class='card  text-nowrap'>
               <div class=''>
@@ -84,14 +89,14 @@
                         min="1" max="9999" value="120" required />
               </div>
               <div class=''>
-                  <label for="mag_mid_dia">Mag Mid Diameter</label>
-                  <input type="number" id="mag_mid_dia" name="mag_mid_dia" placeholder="Mag Mid Dia"
-                        min="1" max="9999" value="90" required />
-              </div>
-              <div class=''>
                   <label for="mag_in_dia">Coil Inside Diameter</label>
                   <input type="number" id="mag_in_dia" name="mag_in_dia" placeholder="Coil Inside Diameter"
                         min="1" max="9999" value="60" required />
+              </div>
+              <div class=''>
+                  <label for="coil_thickness">Coil Thickness (dia)</label>
+                  <input type="number" id="coil_thickness" name="coil_thickness" placeholder="Coil Thickness"
+                        min="1" max="9999" value="1" required />
               </div>
             </div>
           </div>
@@ -103,7 +108,6 @@
     </div>
     <div class='row'>
       <div class='col-sm bg-primary p-0 m-0'>
-        <!-- <canvas id="turbine" width="200" height="200"></canvas> -->
         <div class='bg-secondary'>
           <svg id="svg" viewBox="-100 -100 100 100">
             <!--<rect width="100%" height="100%" fill="grey"/>-->
@@ -119,10 +123,10 @@
         <a id='download' class='btn btn-primary pointer btn-lg active' href="">Download .svg</a>
         <div>Legend:</div>
         <ul>
-        <div style="color:red">wire winder tool</div>
-        <div style="color:orange">wire</div>
-        <div style="color:lightblue">magnets</div>
-        <div style="color:grey">rotor/stator disc(s), resin mold</div>
+        <div style="color:#ff00aa">wire winder tool</div>
+        <div style="color:#ff9900">wire</div>
+        <div style="color:#99bbff">magnets</div>
+        <div style="color:#aaaaaa">rotor/stator disc(s), resin mold</div>
         </ul>
       </div>
     </div>
@@ -142,66 +146,25 @@
       }
     </style>
     <script>
-      function clear(c="grey") {
-        //var c = document.getElementById("myCanvas");
-        var ctx = turbine.getContext("2d");
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(0, 0, turbine.width, turbine.height);
-        ctx.strokeStyle = c;
-        ctx.fillStyle = c;
-        ctx.fill();
-        ctx.restore();
-      }
-      function arc( c, x,y, radius, start, end, ccw=false ) {
-        var ctx = turbine.getContext("2d");
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(x, y, radius, start, end, ccw);
-        ctx.strokeStyle=c;
-        ctx.stroke();
-        ctx.restore();
-      }
-      function circle( c, x,y, radius ) {
-        var ctx = turbine.getContext("2d");
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2*Math.PI, false);
-        ctx.strokeStyle=c;
-        ctx.stroke();
-        ctx.restore();
-      }
-      function rect( c, x,y,w,h, a ) {
-        var ctx = turbine.getContext("2d");
-        ctx.save();
-        ctx.strokeStyle = c;
-        ctx.translate(x,y);
-        ctx.rotate(a);
-        ctx.strokeRect(-w*0.5,-h*0.5,w,h);
-        ctx.restore();
-      }
-      function line( c, x, y, x2, y2 ) {
-        var ctx = turbine.getContext("2d");
-        ctx.save();
-        ctx.strokeStyle=c;
-        ctx.beginPath();
-        ctx.moveTo( x, y );
-        ctx.lineTo( x2, y2 );
-        ctx.stroke();
-        ctx.restore();
-      }
-      function radialToCartesian( x,y,radius,angle_rad ) {
-        return {
-          x: x + radius * Math.cos( angle_rad ),
-          y: y + radius * Math.sin( angle_rad )
-        };
-      }
+      let c0 = "#aaaaaa";
+      let c1 = "#99bbff";
+      let c1b = "#99bb00";
+      let c2 = "#ff9900";
+      let c3 = "#ff00aa";
+
+
+      //////////////////////////////////////
+      // SVG generators
+      //////////////////////////////////////
+
+      // generate the 'd' attribute for a <path> from an array of points in `${x},${y}` (or 'x,y' or "x,y") string format.
       function makePath( path ) {
         path[0] = "M" + path[0]; // warning, modifies array
         path[1] = "L" + path[1];
         path.push("Z");
         return path.join(' ');
       }
+      // setup the <svg><path> from a given color [c] and 'd' attribute [path].  (see makePath, circlePath, arcPath, rectPath)
       function setPath( c, svgpath, path ) {
         svgpath.setAttribute('d',path);
         svgpath.setAttribute('stroke', c);
@@ -210,6 +173,7 @@
       function clearPath( svgpath ) {
         svgpath.setAttribute('d','');
       }
+      // generate the 'd' attribute for a <svg><path> in the shape of an arc.  Use (0, 2*Math.PI) for circle.
       function arcPath( x, y, r, start, stop ) {
         let path = [];
         for (let s=start; s <= stop; s += 2*Math.PI/30) { // resolution of 30
@@ -218,12 +182,16 @@
         }
         return makePath( path );
       }
-      function circlePath( x, y, r ) {
-        return arcPath( x, y, r, 0, 2*Math.PI )
+      // generate the 'd' attribute for a <svg><path> in the shape of a circle.
+      function circlePath( x, y, radius ) {
+        return arcPath( x, y, radius, 0, 2*Math.PI )
       }
+      // rotate a point x,y by a (rad), then offset by ox,oy
       function rotPoint(ox,oy,x,y,a) {
         return { x: ox + x*Math.cos(a) - y*Math.sin(a),   y: oy + x*Math.sin(a) + y*Math.cos(a) };
       }
+      // generate the 'd' attribute for a <svg><path> in the shaped of a rectangle.
+      // use a (rad) to rotate the rectangle.  x,y is the center point.  w,h is the size.
       function rectPath( x,y,w,h, a ) {
         let path = [];
         let p0 = rotPoint( x,y,-w/2, -h/2, a );
@@ -263,10 +231,58 @@
         ahref.download = 'file.svg';
         //ahref.innerHTML = 'download the svg file';
       };
-      function sqr( n ) { return n*n; }
-      function dist( p0, p1 ) {
-        return Math.sqrt( sqr( p0.x - p1.x ) + sqr( p0.y - p1.y ) );
+
+      //////////////////////////////////////
+      // math and vector math  {x: 0, y: 0}
+      //////////////////////////////////////
+
+      // given an x,y offset, a radius and an angle (rad)
+      // return the computed x,y point
+      function radialToCartesian( x,y,radius,angle_rad ) {
+        return {
+          x: x + radius * Math.cos( angle_rad ),
+          y: y + radius * Math.sin( angle_rad )
+        };
       }
+      // create a vector from a scalar (number)
+      function vec( n, n2=n ) { return {x: n, y: n2}; }
+      // square the number
+      function sqr( n ) { return n*n; }
+      // return the magnitude of the vector
+      function mag( v ) {
+        return Math.sqrt( sqr( v.x ) + sqr( v.y ) );
+      }
+      // reverse (invert) the direction of the vector
+      function inv( v ) {
+        return {x: -v.x, y: -v.y};
+      }
+      // return the distance from p0 to p1
+      function dist( p0, p1 ) {
+        return mag( sub( p0, p1 ) );
+      }
+      // return the unnormalized vector from p1 to p0
+      function sub( p0, p1 ) {
+        return {x: p0.x - p1.x, y: p0.y - p1.y};
+      }
+      // add p1 to p0
+      function add( p0, p1 ) {
+        return {x: p0.x + p1.x, y: p0.y + p1.y};
+      }
+      // multiply p1 & p0
+      function mul( p0, p1 ) {
+        return {x: p0.x * p1.x, y: p0.y * p1.y};
+      }
+      // normalize the vector
+      function norm( v ) {
+        let d = mag( v );
+        return {x: v.x/d, y: v.y/d};
+      }
+      // return the normalized direction vector for the two points.
+      function dir( p0, p1 ) {
+        return norm( sub( p0, p1 ) );
+      }
+
+      // draw the diagram into the <svg>
       function draw() {
         errors.innerHTML = '';
 
@@ -278,11 +294,6 @@
         // construct the svg
 
         //clear();
-        let c0 = "#aaaaaa";
-        let c1 = "#99bbff";
-        let c1b = "#99bb00";
-        let c2 = "#ff9900";
-        let c3 = "#ff0000";
         let vwidth = 0, vheight = 0;
         let pos = { x: 0, y: 0 };
 
@@ -297,27 +308,28 @@
         // wire geometry
         if (coilSerpentine.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for serpentine coils, please give an even number of magnets";
         if (coilLoops.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for loop coils, please give an even number of magnets";
-        let arc_len_deg = 360/(num_magnets.value*0.5);
-        let arc_len_rad = arc_len_deg * Math.PI/180;
         {
           let path = [];
           let coilWinderCircumference = 0;
           let winder_path = [];
-          for (let x = 0; x < (+num_magnets.value/2); ++x) {
+
+          // one big loop of wire (minimize waste, easier to wind, etc.)
+          if (coilSerpentine.checked) {
+            let arc_len_deg = 360/(num_magnets.value*0.5);
+            let arc_len_rad = arc_len_deg * Math.PI/180;
             // generate some arc stats for this iteration
-            let s = x * arc_len_rad;
-            let s1d = arc_len_rad*0.5;
-            let s1 = s+s1d;
-            let s2d = arc_len_rad;
-            let s2 = s+s2d;
-            let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
-            let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
-            let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
-            let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
-            let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
-            let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
-            // one big loop of wire (minimize waste, easier to wind, etc.)
-            if (coilSerpentine.checked) {
+            for (let x = 0; x < (+num_magnets.value/2); ++x) {
+              let s = x * arc_len_rad;
+              let s1d = arc_len_rad*0.5;
+              let s1 = s+s1d;
+              let s2d = arc_len_rad;
+              let s2 = s+s2d;
+              let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+              let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+              let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+              let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+              let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+              let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
               //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
               //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
               //line( c2,inner_end_prev.x, inner_end_prev.y, outer_start.x, outer_start.y );
@@ -331,26 +343,8 @@
               coilWinderCircumference += dist( outer_start, outer_end );
               coilWinderCircumference += dist( outer_end, inner_start );
               coilWinderCircumference += dist( inner_start, inner_end );
-            } else {
-              // individual loops
-              let subpath = [];
-              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-              subpath.push(`${outer_start.x},${outer_start.y}`);
-              subpath.push(`${outer_end.x},${outer_end.y}`);
-              subpath.push(`${inner_start.x},${inner_start.y}`);
-              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-              path.push( makePath( subpath ) );
-              subpath = [];
-              subpath.push(`${outer_end.x},${outer_end.y}`);
-              subpath.push(`${inner_start.x},${inner_start.y}`);
-              subpath.push(`${inner_end.x},${inner_end.y}`);
-              subpath.push(`${outer_start_next.x},${outer_start_next.y}`);
-              subpath.push(`${outer_end.x},${outer_end.y}`);
-              path.push( makePath( subpath ) );
-              winder_path = subpath; // we can use this shape for our winder geometry...
             }
-          }
-          if (coilSerpentine.checked) {
+
             setPath( c2, svgcoilpath, makePath( path ) );
 
             // approx radius for the coil winder
@@ -404,6 +398,48 @@
             //  so your wire loop'll be _slightly_ too long this way)
             //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
           } else {
+            let arc_len_deg = 360/num_magnets.value;
+            let arc_len_rad = arc_len_deg * Math.PI/180;
+            // individual loops
+            for (let x = 0; x < (+num_magnets.value); ++x) {
+              // generate some arc stats for this iteration
+              let s = x * arc_len_rad;
+              let s1d = arc_len_rad;
+              let s1 = s+s1d;
+              // 1 2
+              // 0 3
+              let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+              let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+              let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+              let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+
+              let coilt = +coil_thickness.value;
+              let up1 = mul( dir( outer_start, inner_end_prev ), vec( coilt ) );
+              let up2 = mul( dir( outer_end, inner_start ), vec( coilt ) );
+              let dn1 = inv( up1 );
+              let dn2 = inv( up2 );
+              let lt = mul( dir( outer_start, outer_end ), vec( coilt ) );
+              let rt = mul( dir( outer_end, outer_start ), vec( coilt ) );
+              inner_end_prev  = add( inner_end_prev, rt );
+              inner_end_prev  = add( inner_end_prev, up1 );
+              outer_start     = add( outer_start, dn1 );
+              outer_start     = add( outer_start, rt );
+              outer_end       = add( outer_end, dn2 );
+              outer_end       = add( outer_end, lt );
+              inner_start     = add( inner_start, up2 );
+              inner_start     = add( inner_start, lt );
+
+              let subpath = [];
+              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+              subpath.push(`${outer_start.x},${outer_start.y}`);
+              subpath.push(`${outer_end.x},${outer_end.y}`);
+              subpath.push(`${inner_start.x},${inner_start.y}`);
+              subpath.push(`${inner_end_prev.x},${inner_end_prev.y}`);
+              path.push( makePath( subpath ) );
+
+              winder_path = subpath; // we can use this shape for our winder geometry...
+            }
+
             // setup the svg's viewbox so it zooms in nice
             vwidth = vheight = outside_dia.value;
 
@@ -420,6 +456,8 @@
           let path2 = [];
           for (let x = 0; x < +num_magnets.value; ++x) {
             let path;
+            let arc_len_deg = 360/(num_magnets.value*0.5);
+            let arc_len_rad = arc_len_deg * Math.PI/180;
             let s = x * arc_len_rad*0.5;
             let mag_centerN = radialToCartesian( pos.x,pos.y, mag_mid_dia.value/2, s );
             if (shapeCircle.checked) {
