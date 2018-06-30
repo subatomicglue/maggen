@@ -114,8 +114,8 @@
             <path id="svgdiscpath" d=""/>
             <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
-            <path class='rot' id="svgmagpath" d=""/>
-            <path class='rot' id="svgmagpath2" d=""/>
+            <path id="svgmagpath" d=""/>
+            <path id="svgmagpath2" d=""/>
           </svg>
         </div>
       </div>
@@ -128,6 +128,7 @@
         <div style="color:#99bbff">magnets</div>
         <div style="color:#aaaaaa">rotor/stator disc(s), resin mold</div>
         </ul>
+        <button type="button" class="btn btn-dark" onclick="onAnimate()">Animate</button>
       </div>
     </div>
     </div>
@@ -185,6 +186,16 @@
         svgpath.setAttribute('stroke', c);
         svgpath.setAttribute('stroke-width', strokewidth);
         svgpath.setAttribute('fill','none');
+      }
+      function onAnimate() {
+        console.log( svgmagpath.getAttribute('class') );
+        if (svgmagpath.getAttribute('class') == 'rot') {
+          svgmagpath.setAttribute('class', '');
+          svgmagpath2.setAttribute('class', '');
+        } else {
+          svgmagpath.setAttribute('class', 'rot');
+          svgmagpath2.setAttribute('class', 'rot');
+        }
       }
       function clearPath( svgpath ) {
         svgpath.setAttribute('d','');
