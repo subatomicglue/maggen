@@ -15,4 +15,5 @@ Axial Flux Generator Designer
 permanent magnet generator for wind turbine](http://iopscience.iop.org/article/10.1088/1742-6596/439/1/012039) [PDF](http://iopscience.iop.org/article/10.1088/1742-6596/439/1/012039/pdf)
 * [Dynamic modeling of wind turbine based axial flux permanent magnetic synchronous generator connected to the grid with switch reduced converter](https://www.sciencedirect.com/science/article/pii/S209044791500177X)
 * [Design and Analysis of Axial Flux Permanent Magnet Generator for Direct-Driven Wind Turbines](https://www.iaras.org/iaras/journals/caijps/design-and-analysis-of-axial-flux-permanent-magnet-generator-for-direct-driven-wind-turbines)
+* [What are Eddy Currents](https://www.magcraft.com/blog/what-are-eddy-currents)
 
