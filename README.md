@@ -31,6 +31,7 @@ permanent magnet generator for wind turbine](http://iopscience.iop.org/article/1
 * [Design and Analysis of Axial Flux Permanent Magnet Generator for Direct-Driven Wind Turbines](https://www.iaras.org/iaras/journals/caijps/design-and-analysis-of-axial-flux-permanent-magnet-generator-for-direct-driven-wind-turbines)
 * [What are Eddy Currents](https://www.magcraft.com/blog/what-are-eddy-currents)
 * [What is GOES steel](https://en.wikipedia.org/wiki/Electrical_steel) Suppliers: [Thyssenkrupp](https://www.thyssenkrupp-steel.com/en/products/electrical-steel/electrical-steel-grain-oriented/electrical-steel-grain-oriented.html) [AKSteel](https://www.aksteel.com/our-products/electrical-steel/grain-oriented-electrical-steels) [Arnold](http://www.arnoldmagnetics.com/materials/grain-oriented-electrical-steel-goes/) [Cogent](https://cogent-power.com/products/grain-oriented-electrical-steel)
+* [Caleb Engineering - Resources](https://www.calebengineering.com/generator-design.html) - Several resources on wind/magnets/generators/air-core/userful-links.
 * TODO: rectifier circuits...
 
 Inspiring work
