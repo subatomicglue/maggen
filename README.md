@@ -34,7 +34,7 @@ permanent magnet generator for wind turbine](http://iopscience.iop.org/article/1
 * TODO: rectifier circuits...
 
 Inspiring work
-* [Axial Drone Motor](https://www.youtube.com/watch?v=JkwLpAAfBVI)
-* [Axial Flux Generator](https://www.thingiverse.com/thing:1416740) and her amazing [Halbach Array](https://www.thingiverse.com/thing:1693579)
-* [Caleb Engineering - Serpentine Windings](https://www.calebengineering.com/new-wind-generator.html)
+* 3D Printed [Axial Drone Motor](https://www.youtube.com/watch?v=JkwLpAAfBVI)
+* 3D Printed [Axial Flux Generator](https://www.thingiverse.com/thing:1416740) and her amazing [Halbach Array](https://www.thingiverse.com/thing:1693579)
+* Wind Turbine from [Caleb Engineering - Serpentine Windings](https://www.calebengineering.com/new-wind-generator.html)
 
