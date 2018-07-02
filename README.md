@@ -1,5 +1,6 @@
 # MAGGEN - A designer for Axial Flux Generators.
-Output SVG vector paths for laser cutting acrylic or LDF wood parts needed for electrical generators.  Use these vectors to cut production-ready forms for your rotors, stators, wirewrapping tools.
+A design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
+Cut out production-ready forms for your rotors, stators, custom wirewrapping tools.  Plasma-Cut iron discs, Laser-Cut acrylic, delrin, LDF wood, etc...
 
 ## Demo
 [Try out a live version of the designer here](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/index.html)
@@ -9,6 +10,12 @@ Output SVG vector paths for laser cutting acrylic or LDF wood parts needed for e
 
 ## Contribute!
 Ideas?  Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues) here!
+
+## Future Work
+
+* Calculator tools for how # windings, magnet dimensions / strength / number, relate to power generated.
+* Document some methods of rotor attachment to axel: set-screw collar, etc.
+* 3D vis of the cell (or at least a side view), for air-gap design as a parameter input
 
 ## Resources for Learning
 
@@ -24,5 +31,5 @@ permanent magnet generator for wind turbine](http://iopscience.iop.org/article/1
 * [What are Eddy Currents](https://www.magcraft.com/blog/what-are-eddy-currents)
 * [What is GOES steel](https://en.wikipedia.org/wiki/Electrical_steel) Suppliers: [Thyssenkrupp](https://www.thyssenkrupp-steel.com/en/products/electrical-steel/electrical-steel-grain-oriented/electrical-steel-grain-oriented.html) [AKSteel](https://www.aksteel.com/our-products/electrical-steel/grain-oriented-electrical-steels) [Arnold](http://www.arnoldmagnetics.com/materials/grain-oriented-electrical-steel-goes/) [Cogent](https://cogent-power.com/products/grain-oriented-electrical-steel)
 * TODO: rectifier circuits...
-* TODO: turbine blade design
+
 
