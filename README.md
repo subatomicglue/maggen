@@ -14,7 +14,7 @@ Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues)
 
 ## Future Work
 
-* Calculator tools for how # windings, magnet dimensions / strength / number, relate to power generated.
+* Calculator tools for how parameters relate to power generated:  (# windings, wire thickness, magnet dimensions / strength / number, speeds, force).
 * Document some methods of rotor attachment to axel: set-screw collar, etc.
 * 3D vis of the cell (or at least a side view), for air-gap design as a parameter input
 
