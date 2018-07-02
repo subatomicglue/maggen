@@ -111,6 +111,7 @@
         <div style='background-color: #333333;'>
           <svg id="svg" viewBox="-100 -100 100 100">
             <!--<rect width="100%" height="100%" fill="grey"/>-->
+            <path id="svgdebug" d=""/>
             <path id="svgdiscpath" d=""/>
             <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
@@ -182,7 +183,14 @@
       }
       // setup the <svg><path> from a given color [c] and 'd' attribute [path].  (see makePath, circlePath, arcPath, rectPath)
       function setPath( c, svgpath, path, strokewidth=0.2 ) {
+        //console.error( path );
         svgpath.setAttribute('d',path);
+        svgpath.setAttribute('stroke', c);
+        svgpath.setAttribute('stroke-width', strokewidth);
+        svgpath.setAttribute('fill','none');
+      }
+      function addPath( c, svgpath, path, strokewidth=0.2 ) {
+        svgpath.setAttribute('d', svgpath.getAttribute('d') + path);
         svgpath.setAttribute('stroke', c);
         svgpath.setAttribute('stroke-width', strokewidth);
         svgpath.setAttribute('fill','none');
@@ -287,6 +295,16 @@
       function dist( p0, p1 ) {
         return mag( sub( p0, p1 ) );
       }
+      // perpendicular vector (rotated 90 deg)
+      function perp( v ) {
+         let theta = -90 * Math.PI / 180;
+         let cs = Math.cos(theta);
+         let sn = Math.sin(theta);
+         return {
+            x: v.x * cs - v.y * sn,
+            y: v.x * sn + v.y * cs,
+         }
+      }
       // return the unnormalized vector from p1 to p0
       function sub( p0, p1 ) {
         return {x: p0.x - p1.x, y: p0.y - p1.y};
@@ -307,6 +325,21 @@
       // return the normalized direction vector for the two points.
       function dir( p0, p1 ) {
         return norm( sub( p0, p1 ) );
+      }
+      // http://paulbourke.net/geometry/pointlineplane/
+      function line_intersect(v1, v2, v3, v4) {
+         let denom = (v4.y - v3.y)*(v2.x - v1.x) - (v4.x - v3.x)*(v2.y - v1.y);
+         if (denom == 0) {
+            return null; // parallel lines;
+         }
+         let ua = ((v4.x - v3.x)*(v1.y - v3.y) - (v4.y - v3.y)*(v1.x - v3.x))/denom;
+         let ub = ((v2.x - v1.x)*(v1.y - v3.y) - (v2.y - v1.y)*(v1.x - v3.x))/denom;
+         return {
+            x: v1.x + ua * (v2.x - v1.x),
+            y: v1.y + ua * (v2.y - v1.y),
+            seg1: ua >= 0 && ua <= 1, // if both are true, then line SEGMENTS intersect, 
+            seg2: ub >= 0 && ub <= 1  // if either are false, then lines intersect
+         };
       }
 
       // draw the diagram into the <svg>
@@ -342,37 +375,58 @@
 
           // one big loop of wire (minimize waste, easier to wind, etc.)
           if (coilSerpentine.checked) {
-            let arc_len_deg = 360/(num_magnets.value*0.5);
-            let arc_len_rad = arc_len_deg * Math.PI/180;
-            // generate some arc stats for this iteration
-            for (let x = 0; x < (+num_magnets.value/2); ++x) {
-              let s = x * arc_len_rad;
-              let s1d = arc_len_rad*0.5;
-              let s1 = s+s1d;
-              let s2d = arc_len_rad;
-              let s2 = s+s2d;
-              let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
-              let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
-              let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
-              let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
-              let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
-              let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
-              //line( c2,outer_start.x, outer_start.y, outer_end.x, outer_end.y );
-              //line( c2,inner_start.x, inner_start.y, inner_end.x, inner_end.y );
-              //line( c2,inner_end_prev.x, inner_end_prev.y, outer_start.x, outer_start.y );
-              //line( c2,outer_end.x, outer_end.y, inner_start.x, inner_start.y );
-              path.push(`${inner_end_prev.x},${inner_end_prev.y}`);
-              path.push(`${outer_start.x},${outer_start.y}`);
-              path.push(`${outer_end.x},${outer_end.y}`);
-              path.push(`${inner_start.x},${inner_start.y}`);
-              path.push(`${inner_end.x},${inner_end.y}`);
-              coilWinderCircumference += dist( inner_end_prev, outer_start );
-              coilWinderCircumference += dist( outer_start, outer_end );
-              coilWinderCircumference += dist( outer_end, inner_start );
-              coilWinderCircumference += dist( inner_start, inner_end );
+            function makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
+              let path2 = []
+              let coilWinderCircumference = 0;
+              let arc_len_deg = 360/(num_magnets.value*0.5);
+              let arc_len_rad = arc_len_deg * Math.PI/180;
+              clearPath( svgdebug );
+              // generate some arc stats for this iteration
+              for (let x = 0; x < (+num_magnets.value/2); ++x) {
+                let s = x * arc_len_rad;
+                let s1d = arc_len_rad*0.5;
+                let s1 = s+s1d;
+                let s2d = arc_len_rad;
+                let s2 = s+s2d;
+                let sneg = s-s1d;
+                let inner_start_prev= radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, sneg );
+                let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
+                let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
+                let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
+                let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
+                let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+                let rt = mul( perp( dir( inner_end_prev, outer_start ) ), vec( coilt ) );
+                let lt = mul( perp( dir( outer_end, inner_start ) ), vec( coilt ) );
+                let dnp = mul( perp( dir( inner_start_prev, inner_end_prev ) ), vec( coilt ) );
+                let dn = mul( perp( dir( outer_start, outer_end ) ), vec( coilt ) );
+                let dnn = mul( perp( dir( inner_start, inner_end ) ), vec( coilt ) );
+                let ox=0, oy=0; // in case you need an offset... here it is, move it up to the inputs.
+                let p0 = add( line_intersect( add( inner_start_prev, dnp ), add( inner_end_prev, dnp ),
+                                              add( inner_end_prev, rt ), add( outer_start, rt ) ), vec(ox,oy) );
+                let p1 = add( line_intersect( add( inner_end_prev, rt ), add( outer_start, rt ),
+                                              add( outer_start, dn ), add( outer_end, dn ) ), vec(ox,oy) );
+                let p2 = add( line_intersect( add( outer_start, dn ), add( outer_end, dn ),
+                                              add( outer_end, lt ), add( inner_start, lt ) ), vec(ox,oy) );
+                let p3 = add( line_intersect( add( outer_end, lt ), add( inner_start, lt ),
+                                              add( inner_start, dnn ), add( inner_end, dnn ) ), vec(ox,oy) );
+                path2.push(`${p0.x},${p0.y}`);
+                path2.push(`${p1.x},${p1.y}`);
+                path2.push(`${p2.x},${p2.y}`);
+                path2.push(`${p3.x},${p3.y}`);
+                coilWinderCircumference += dist( inner_end_prev, outer_start );
+                coilWinderCircumference += dist( outer_start, outer_end );
+                coilWinderCircumference += dist( outer_end, inner_start );
+                coilWinderCircumference += dist( inner_start, inner_end );
+              }
+              path.push( makePath( path2 ) );
+              return coilWinderCircumference;
             }
+            coilWinderCircumference = makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, 0 );
+            makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, (+coil_thickness.value)/2 );
+            makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, -(+coil_thickness.value)/2 );
 
-            setPath( c2, svgcoilpath, makePath( path ) );
+            //console.error( path );
+            setPath( c2, svgcoilpath, path.join( ' ' ) );
 
             // approx radius for the coil winder
             let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
@@ -382,6 +436,8 @@
 
             // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
             // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
+            let arc_len_deg = 360/(num_magnets.value*0.5);
+            let arc_len_rad = arc_len_deg * Math.PI/180;
             for (let x = 0; x < (+num_magnets.value/2 - 0.5); ++x) {
               // generate some arc stats for this iteration
               let s = x * arc_len_rad;
@@ -389,12 +445,10 @@
               let s1 = s+s1d;
               let s2d = arc_len_rad;
               let s2 = s+s2d;
-              let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
               let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
               let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
               let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
               let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
-              let outer_start_next= radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s2 );
               // we're going to project (move w/ no scale) 2 segments to the coilWinderRadius circle
               // the outer and the inner segments.  The segments inbetween will magically appear correct. :)
               // * get each segment's length
