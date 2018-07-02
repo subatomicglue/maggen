@@ -1,5 +1,5 @@
-# MAGGEN - A designer for Axial Flux Generators.
-A design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
+# MAGGEN - Designer for Axial Flux Generators.
+MAGGEN is a design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
 Cut out production-ready forms for your rotors, stators, custom wirewrapping tools.  Plasma-Cut iron discs, Laser-Cut acrylic, delrin, LDF wood, etc...
 
 ## Demo
