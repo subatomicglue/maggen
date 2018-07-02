@@ -1,8 +1,9 @@
-# maggen
-Axial Flux Generator Designer
+# MAGGEN - A designer for Axial Flux Generators.
+Output SVG vector paths for laser cutting acrylic or LDF wood parts needed for electrical generators.  Rotors, stators, wirewrapping.
 
 [try it](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/index.html)
 
+![6 magnets SVG design](examples/6.svg "6 magnets SVG design")![8 magnets SVG design](examples/8.svg "8 magnets SVG design")![12 magnets SVG design](examples/12.svg "12 magnets SVG design")
 
 ## Resources for Learning
 
