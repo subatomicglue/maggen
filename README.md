@@ -33,4 +33,8 @@ permanent magnet generator for wind turbine](http://iopscience.iop.org/article/1
 * [What is GOES steel](https://en.wikipedia.org/wiki/Electrical_steel) Suppliers: [Thyssenkrupp](https://www.thyssenkrupp-steel.com/en/products/electrical-steel/electrical-steel-grain-oriented/electrical-steel-grain-oriented.html) [AKSteel](https://www.aksteel.com/our-products/electrical-steel/grain-oriented-electrical-steels) [Arnold](http://www.arnoldmagnetics.com/materials/grain-oriented-electrical-steel-goes/) [Cogent](https://cogent-power.com/products/grain-oriented-electrical-steel)
 * TODO: rectifier circuits...
 
+Inspiring work
+* [Axial Drone Motor](https://www.youtube.com/watch?v=JkwLpAAfBVI)
+* [Axial Flux Generator](https://www.thingiverse.com/thing:1416740) and her amazing [Halbach Array](https://www.thingiverse.com/thing:1693579)
+* [Caleb Engineering - Serpentine Windings](https://www.calebengineering.com/new-wind-generator.html)
 
