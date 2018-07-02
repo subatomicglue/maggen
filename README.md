@@ -3,7 +3,7 @@ Output SVG vector paths for laser cutting acrylic or LDF wood parts needed for e
 
 [try it](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/index.html)
 
-<img alt='Vectors for 6-magnet "axial flux generator" cell (loop coils)' title='Vectors for 6-magnet "axial flux generator" cell (loop coils)' src="examples/6loop.svg" width='200px'><img alt='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' title='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' src="examples/8serpentine.svg" width='200px'><img alt='Vectors for 10-magnet "axial flux generator" cell (loop coils)' title='Vectors for 10-magnet "axial flux generator (loop coils)" cell' src="examples/10serpentine.svg" width='200px'><img alt='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' title='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' src="examples/12serpentine.svg" width='200px'>
+<img alt='Vectors for 6-magnet "axial flux generator" cell (loop coils)' title='Vectors for 6-magnet "axial flux generator" cell (loop coils)' src="examples/6loops.svg" width='200px'><img alt='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' title='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' src="examples/8serpentine.svg" width='200px'><img alt='Vectors for 10-magnet "axial flux generator" cell (loop coils)' title='Vectors for 10-magnet "axial flux generator (loop coils)" cell' src="examples/10loops.svg" width='200px'><img alt='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' title='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' src="examples/12serpentine.svg" width='200px'>
 
 ## Resources for Learning
 
