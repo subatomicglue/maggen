@@ -63,9 +63,14 @@
                         min="1" max="9999" value="130" required />
               </div>
               <div class=''>
-                  <label for="in_dia">Inside Diameter</label>
+                  <label for="in_dia">Coil Disc Inside Diameter</label>
                   <input type="number" id="in_dia" name="in_dia" placeholder="Inside Dia"
                         min="1" max="9999" value="30" required />
+              </div>
+              <div class=''>
+                  <label for="in_dia2">Magnet Disc Inside Diameter</label>
+                  <input type="number" id="in_dia2" name="in_dia2" placeholder="Inside Dia"
+                        min="1" max="9999" value="25" required />
               </div>
             </div>
             <div class='card  text-nowrap'>
@@ -113,6 +118,7 @@
             <!--<rect width="100%" height="100%" fill="grey"/>-->
             <path id="svgdebug" d=""/>
             <path id="svgdiscpath" d=""/>
+            <path id="svgcoilposts" d=""/>
             <path id="svgcoilpath" d=""/>
             <path id="svgwrappath" d=""/>
             <path id="svgmagpath" d=""/>
@@ -144,7 +150,7 @@
         .card-columns { column-count: 3; }
       }
       @media (min-width: 1200px) {
-        .card-columns { column-count: 4; }
+        .card-columns { column-count: 3; }
       }
       .rot {
         animation: rot 30.0s linear infinite;
@@ -362,7 +368,8 @@
         //arc( c0,pos.x,pos.y, in_dia.value/2, 0, 2*Math.PI );
         setPath(c0, svgdiscpath,
             [circlePath( pos.x,pos.y, outside_dia.value/2 ),
-            circlePath( pos.x,pos.y, in_dia.value/2 )].join(' ')
+            circlePath( pos.x,pos.y, in_dia.value/2 ),
+            circlePath( pos.x,pos.y, in_dia2.value/2 )].join(' ')
         );
 
         // wire geometry
