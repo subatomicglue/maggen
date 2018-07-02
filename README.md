@@ -3,7 +3,7 @@ Output SVG vector paths for laser cutting acrylic or LDF wood parts needed for e
 
 [try it](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/index.html)
 
-<img alt='"6 magnets SVG design"' src="examples/6.svg" width='300px'><img alt='"8 magnets SVG design"' src="examples/8.svg" width='300px'><img alt='"12 magnets SVG design"' src="examples/12.svg" width='300px'>
+<img alt='"6 magnets SVG design"' src="examples/6.svg" width='150px'><img alt='"8 magnets SVG design"' src="examples/8.svg" width='150px'><img alt='"12 magnets SVG design"' src="examples/12.svg" width='150px'>
 
 ## Resources for Learning
 
