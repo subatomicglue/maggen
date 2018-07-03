@@ -88,6 +88,11 @@
                       value = "loops"  />
                 <label for = "coilLoops">loops</label>
               </div>
+              <div id='num_serpents_group' class=''>
+                  <label for="num_serpents">Number of Coils</label>
+                  <input type="number" id="num_serpents" name="num_serpents" placeholder="# serpents"
+                        min="4" max="9999" step='1' value="1" required />
+              </div>
               <div class=''>
                   <label for="mag_out_dia">Coil Outside Diameter</label>
                   <input type="number" id="mag_out_dia" name="mag_out_dia" placeholder="Coil Outside Dia"
@@ -116,13 +121,6 @@
         <div style='background-color: #333333;'>
           <svg id="svg" viewBox="-100 -100 100 100">
             <!--<rect width="100%" height="100%" fill="grey"/>-->
-            <path id="svgdebug" d=""/>
-            <path id="svgdiscpath" d=""/>
-            <path id="svgcoilposts" d=""/>
-            <path id="svgcoilpath" d=""/>
-            <path id="svgwrappath" d=""/>
-            <path id="svgmagpath" d=""/>
-            <path id="svgmagpath2" d=""/>
           </svg>
         </div>
       </div>
@@ -179,7 +177,20 @@
       //////////////////////////////////////
       // SVG generators
       //////////////////////////////////////
-
+      // clear out the svg
+      function clearSvg( svg ) {
+         while (svg.lastChild) {
+            svg.removeChild(svg.lastChild);
+         }
+      }
+      function newPath( svg, id ) {
+         let path = document.createElementNS('http://www.w3.org/2000/svg',"path");
+         path.id = id;
+         //path.setAttribute( 'id', id );
+         path.setAttribute( 'd', '' );
+         svg.appendChild( path );
+         return path;
+      }
       // generate the 'd' attribute for a <path> from an array of points in `${x},${y}` (or 'x,y' or "x,y") string format.
       function makePath( path ) {
         path[0] = "M" + path[0]; // warning, modifies array
@@ -356,8 +367,12 @@
         dia_magnet_group.hidden = !shapeCircle.checked;
         w_magnet_group.hidden = shapeCircle.checked;
         h_magnet_group.hidden = shapeCircle.checked;
+        num_serpents_group.hidden = !coilSerpentine.checked;
 
         // construct the svg
+        clearSvg( svg );
+        let svgdebug = newPath( svg, "svgdebug" );
+        let svgdiscpath = newPath( svg, "svgdiscpath" );
 
         //clear();
         let vwidth = 0, vheight = 0;
@@ -376,32 +391,31 @@
         if (coilSerpentine.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for serpentine coils, please give an even number of magnets";
         if (coilLoops.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for loop coils, please give an even number of magnets";
         {
-          let path = [];
           let coilWinderCircumference = 0;
           let winder_path = [];
 
           // one big loop of wire (minimize waste, easier to wind, etc.)
           if (coilSerpentine.checked) {
-            function makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
+            function makeSerpent( path, rot, pos, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
               let path2 = []
               let coilWinderCircumference = 0;
-              let arc_len_deg = 360/(num_magnets.value*0.5);
+              let arc_len_deg = 360/(num_magnets*0.5);
               let arc_len_rad = arc_len_deg * Math.PI/180;
               clearPath( svgdebug );
               // generate some arc stats for this iteration
-              for (let x = 0; x < (+num_magnets.value/2); ++x) {
-                let s = x * arc_len_rad;
+              for (let x = 0; x < (num_magnets/2); ++x) {
+                let s = rot + x * arc_len_rad;
                 let s1d = arc_len_rad*0.5;
                 let s1 = s+s1d;
                 let s2d = arc_len_rad;
                 let s2 = s+s2d;
                 let sneg = s-s1d;
-                let inner_start_prev= radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, sneg );
-                let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s );
-                let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s );
-                let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia.value/2, s1 );
-                let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s1 );
-                let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia.value/2, s2 );
+                let inner_start_prev= radialToCartesian( pos.x,pos.y, mag_in_dia/2, sneg );
+                let inner_end_prev  = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s );
+                let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s );
+                let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s1 );
+                let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s1 );
+                let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s2 );
                 let rt = mul( perp( dir( inner_end_prev, outer_start ) ), vec( coilt ) );
                 let lt = mul( perp( dir( outer_end, inner_start ) ), vec( coilt ) );
                 let dnp = mul( perp( dir( inner_start_prev, inner_end_prev ) ), vec( coilt ) );
@@ -428,12 +442,21 @@
               path.push( makePath( path2 ) );
               return coilWinderCircumference;
             }
-            coilWinderCircumference = makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, 0 );
-            makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, (+coil_thickness.value)/2 );
-            makeSerpent( path, pos, num_magnets, mag_in_dia, mag_out_dia, -(+coil_thickness.value)/2 );
+             let coilWinderCircumference;
+             for (let snake = 0; snake < +num_serpents.value; ++snake) {
+               let path = [];
+               let svgcoilpath = newPath( svg, `svgcoilpath${snake}` );
+               let rotoffset = (1/+num_magnets.value) * (snake/(+num_serpents.value)) * 2 * Math.PI;
+                console.log( rotoffset );
+               let result = makeSerpent( path, rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
+               if (coilWinderCircumference == undefined)
+                 coilWinderCircumference = result;
+               makeSerpent( path, rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, (+coil_thickness.value)/2 );
+               makeSerpent( path, rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, -(+coil_thickness.value)/2 );
+               setPath( c2, svgcoilpath, path.join( ' ' ) );
+             }
 
             //console.error( path );
-            setPath( c2, svgcoilpath, path.join( ' ' ) );
 
             // approx radius for the coil winder
             let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
@@ -443,6 +466,8 @@
 
             // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
             // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
+            let winder_path = [];
+            let svgwrappath = newPath( svg, `svgwrappath` );
             let arc_len_deg = 360/(num_magnets.value*0.5);
             let arc_len_rad = arc_len_deg * Math.PI/180;
             for (let x = 0; x < (+num_magnets.value/2 - 0.5); ++x) {
@@ -486,6 +511,10 @@
             //  so your wire loop'll be _slightly_ too long this way)
             //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
           } else {
+            let path = [];
+            let winder_path = [];
+            let svgcoilpath = newPath( svg, `svgcoilpath` );
+            let svgwrappath = newPath( svg, `svgwrappath` );
             let arc_len_deg = 360/num_magnets.value;
             let arc_len_rad = arc_len_deg * Math.PI/180;
             // individual loops
@@ -561,6 +590,8 @@
 
         // magnet geometry
         {
+          let svgmagpath = newPath( svg, `svgmagpath` );
+          let svgmagpath2 = newPath( svg, `svgmagpath2` );
           let path1 = [];
           let path2 = [];
           for (let x = 0; x < +num_magnets.value; ++x) {
