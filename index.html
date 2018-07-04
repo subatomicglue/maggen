@@ -175,49 +175,6 @@
       let c2 = "#ff9900";
       let c3 = "#ff00aa";
 
-      // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
-      // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
-      function makeSerpentWinder( path, rot, pos, num_magnets, mag_in_dia, mag_out_dia, coilWinderRadius ) {
-         let path2 = [];
-         let arc_len_deg = 360/(num_magnets*0.5);
-         let arc_len_rad = arc_len_deg * Math.PI/180;
-         for (let x = 0; x < (num_magnets/2 - 0.5); ++x) {
-            // generate some arc stats for this iteration
-            let s = x * arc_len_rad;
-            let s1d = arc_len_rad*0.5;
-            let s1 = s+s1d;
-            let s2d = arc_len_rad;
-            let s2 = s+s2d;
-            let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s );
-            let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s1 );
-            let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s1 );
-            let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s2 );
-            // we're going to project (move w/ no scale) 2 segments to the coilWinderRadius circle
-            // the outer and the inner segments.  The segments inbetween will magically appear correct. :)
-            // * get each segment's length
-            let i1 = dist( outer_start, outer_end );
-            let i3 = dist( inner_start, inner_end );
-            // * coilWinderRadius circle is always larger than mag_out_dia
-            //   if we pushed the segment out to the larger coilWinderRadius circle (same length)
-            //   calc the (now narrower) sweep angle that sweeps the segment length
-            let i1r_half = Math.asin(i1*0.5/coilWinderRadius); // sin(t) = o/a
-            let i3r_half = Math.asin(i3*0.5/coilWinderRadius);
-            // * calc the angle that passes through each segment's center point
-            let s_s1 = s + s1d/2;
-            let s1_s2 = s1 + s1d/2;
-            // * calc the points for 3 segments, add to the path (4th segment we get for free next iteration)
-            let p0 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 - i1r_half );
-            let p1 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 + i1r_half );
-            let p2 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 - i3r_half );
-            let p3 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 + i3r_half );
-            path2.push( p0 );
-            path2.push( p1 );
-            path2.push( p2 );
-            path2.push( p3 );
-         }
-         path.push( path2 );
-      }
-
       // make a serpent shaped wire coil
       // coilt is the offset used for coilthickness (call makeSerpent multiple times)
       // return path (that is appended with the new serpent)
@@ -270,6 +227,49 @@
          // approx radius for the coil winder
          let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
          return coilWinderRadius;
+      }
+
+      // as much as we can, unwind the serpentine so we have a big (almost round) polygon,
+      // so it will tend to crimp the wire in the right places to guide in bending the serpentine shape
+      function makeSerpentWinder( path, rot, pos, num_magnets, mag_in_dia, mag_out_dia, coilWinderRadius ) {
+         let path2 = [];
+         let arc_len_deg = 360/(num_magnets*0.5);
+         let arc_len_rad = arc_len_deg * Math.PI/180;
+         for (let x = 0; x < (num_magnets/2 - 0.5); ++x) {
+            // generate some arc stats for this iteration
+            let s = x * arc_len_rad;
+            let s1d = arc_len_rad*0.5;
+            let s1 = s+s1d;
+            let s2d = arc_len_rad;
+            let s2 = s+s2d;
+            let outer_start     = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s );
+            let outer_end       = radialToCartesian( pos.x,pos.y, mag_out_dia/2, s1 );
+            let inner_start     = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s1 );
+            let inner_end       = radialToCartesian( pos.x,pos.y, mag_in_dia/2, s2 );
+            // we're going to project (move w/ no scale) 2 segments to the coilWinderRadius circle
+            // the outer and the inner segments.  The segments inbetween will magically appear correct. :)
+            // * get each segment's length
+            let i1 = dist( outer_start, outer_end );
+            let i3 = dist( inner_start, inner_end );
+            // * coilWinderRadius circle is always larger than mag_out_dia
+            //   if we pushed the segment out to the larger coilWinderRadius circle (same length)
+            //   calc the (now narrower) sweep angle that sweeps the segment length
+            let i1r_half = Math.asin(i1*0.5/coilWinderRadius); // sin(t) = o/a
+            let i3r_half = Math.asin(i3*0.5/coilWinderRadius);
+            // * calc the angle that passes through each segment's center point
+            let s_s1 = s + s1d/2;
+            let s1_s2 = s1 + s1d/2;
+            // * calc the points for 3 segments, add to the path (4th segment we get for free next iteration)
+            let p0 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 - i1r_half );
+            let p1 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s_s1 + i1r_half );
+            let p2 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 - i3r_half );
+            let p3 = radialToCartesian( pos.x,pos.y, coilWinderRadius, s1_s2 + i3r_half );
+            path2.push( p0 );
+            path2.push( p1 );
+            path2.push( p2 );
+            path2.push( p3 );
+         }
+         path.push( path2 );
       }
 
       // create one single-coil loop
