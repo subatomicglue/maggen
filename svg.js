@@ -8,6 +8,15 @@ function clearSvg( svg ) {
       svg.removeChild(svg.lastChild);
    }
 }
+// convert [[{x:0,y:0},..,{x:0,y:0}],[{x:0,y:0},..,..]] to <path d=''> data
+function vecArraysToSvgPathData( paths ) {
+   return paths.map( p => vecArrayToSvgPathData( p ) ).join(' ');
+}
+// convert [{x:0,y:0},..,{x:0,y:0}] to <path d=''> data
+function vecArrayToSvgPathData( path ) {
+   return makePath( path.map( r => { return `${r.x},${r.y}` } ) );
+}
+// append a <path id='id'> to the <svg>
 function newPath( svg, id ) {
    let path = document.createElementNS('http://www.w3.org/2000/svg',"path");
    path.id = id;
