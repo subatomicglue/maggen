@@ -9,7 +9,7 @@ function clearSvg( svg ) {
    }
 }
 // convert [[{x:0,y:0},..,{x:0,y:0}],[{x:0,y:0},..,..]] to <path d=''> data
-function vecArraysToSvgPathData( paths ) {
+function arrayOfVecArraysToSvgPathData( paths ) {
    return paths.map( p => vecArrayToSvgPathData( p ) ).join(' ');
 }
 // convert [{x:0,y:0},..,{x:0,y:0}] to <path d=''> data
@@ -33,15 +33,15 @@ function makePath( path ) {
    return path.join(' ');
 }
 // setup the <svg><path> from a given color [c] and 'd' attribute [path].  (see makePath, circlePath, arcPath, rectPath)
-function setPath( c, svgpath, path, strokewidth=0.2 ) {
+function setPath( svgpath, c, pathdata, strokewidth=0.2 ) {
    //console.error( path );
-   svgpath.setAttribute('d',path);
+   svgpath.setAttribute('d',pathdata);
    svgpath.setAttribute('stroke', c);
    svgpath.setAttribute('stroke-width', strokewidth);
    svgpath.setAttribute('fill','none');
 }
-function addPath( c, svgpath, path, strokewidth=0.2 ) {
-   svgpath.setAttribute('d', svgpath.getAttribute('d') + path);
+function addPath( svgpath, c, pathdata, strokewidth=0.2 ) {
+   svgpath.setAttribute('d', svgpath.getAttribute('d') + pathdata);
    svgpath.setAttribute('stroke', c);
    svgpath.setAttribute('stroke-width', strokewidth);
    svgpath.setAttribute('fill','none');
