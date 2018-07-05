@@ -118,3 +118,4 @@ function createSVGDownload(svg, ahref) {
    //ahref.innerHTML = 'download the svg file';
 };
 
+

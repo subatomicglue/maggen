@@ -5,6 +5,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3-selection.v1.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="math.js"></script>
     <script src="svg.js"></script>
   </head>
@@ -139,6 +141,20 @@
         <div style="color:#aaaaaa">rotor/stator disc(s), resin mold</div>
         </ul>
         <button type="button" class="btn btn-dark" onclick="onAnimate()">Animate</button>
+        <!-- settings panel -->
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="false" aria-controls="collapseSettings"><i class="material-icons">settings</i></button>
+        <fieldset class="collapse" id="collapseSettings">
+          <form onchange="draw()">
+            <div class='card  text-nowrap'>
+              <h3>Settings</h3>
+              <div id='num_serpents_group' class=''>
+                <label for="line_thickness">Line Thickness</label>
+                <input type="number" id="line_thickness" name="line_thickness" placeholder="thickness"
+                       min="0.05" max="3" step='0.05' value="0.2" required />
+              </div>
+            </div>
+          </form>
+        </fieldset>
       </div>
     </div>
     </div>
@@ -350,9 +366,24 @@
         let pos = { x: 0, y: 0 };
 
         // disc geometry
-        setPath( newPath( svg, "disc_out" ), c0, circlePath( pos.x,pos.y, outside_dia.value/2 ) );
-        setPath( newPath( svg, "disc_in" ),  c0, circlePath( pos.x,pos.y, in_dia.value/2 ) );
-        setPath( newPath( svg, "disc_in2" ), c0, circlePath( pos.x,pos.y, in_dia2.value/2 ) );
+        d3.select('#svg')
+          .append('path', 'disc_out')
+            .attr('stroke', c0)
+            .attr('stroke-width', +line_thickness.value)
+            .attr('fill', 'none')
+            .attr('d', circlePath( pos.x,pos.y, outside_dia.value/2 ))
+        d3.select('#svg')
+          .append('path', 'disc_in')
+            .attr('stroke', c0)
+            .attr('stroke-width', +line_thickness.value)
+            .attr('fill', 'none')
+            .attr('d', circlePath( pos.x,pos.y, in_dia.value/2 ))
+        d3.select('#svg')
+          .append('path', 'disc_in2')
+            .attr('stroke', c0)
+            .attr('stroke-width', +line_thickness.value)
+            .attr('fill', 'none')
+            .attr('d', circlePath( pos.x,pos.y, in_dia2.value/2 ))
 
         // wire geometry
         if (coilSerpentine.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for serpentine coils, please give an even number of magnets";
