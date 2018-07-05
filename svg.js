@@ -2,6 +2,17 @@
 //////////////////////////////////////
 // SVG generators
 //////////////////////////////////////
+
+// add a path <newPathID> to <svgID>
+function addPath( svgID, newPathID, color, line_thickness, pathdata ) {
+   d3.select(`#${svgID}`)
+      .append('path', newPathID)
+         .attr('stroke', color)
+         .attr('stroke-width', line_thickness)
+         .attr('fill', 'none')
+         .attr('d', pathdata)
+}
+
 // clear out the svg
 function clearSvg( svg ) {
    while (svg.lastChild) {
@@ -40,7 +51,7 @@ function setPath( svgpath, c, pathdata, strokewidth=0.2 ) {
    svgpath.setAttribute('stroke-width', strokewidth);
    svgpath.setAttribute('fill','none');
 }
-function addPath( svgpath, c, pathdata, strokewidth=0.2 ) {
+function appendPath( svgpath, c, pathdata, strokewidth=0.2 ) {
    svgpath.setAttribute('d', svgpath.getAttribute('d') + pathdata);
    svgpath.setAttribute('stroke', c);
    svgpath.setAttribute('stroke-width', strokewidth);
