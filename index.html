@@ -253,7 +253,7 @@
          }
 
          // approx radius for the coil winder
-         let coilWinderRadius = coilWinderCircumference / (2*Math.PI);
+         let coilWinderRadius = (coilWinderCircumference / (2*Math.PI));
          return {path, coilWinderRadius};
       }
 
@@ -405,9 +405,9 @@
               addPath( 'svg', `coil_in${snake}`, c2, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
             }
 
-            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius, 0 );
+            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius - +coil_thickness.value/2, 0 );
             addPath( 'svg', `winder_inner`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
-            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius, +coil_thickness.value );
+            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius - +coil_thickness.value/2, +coil_thickness.value );
             addPath( 'svg', `winder_outer`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
             // lazy approach, just make the winder a pure circle
