@@ -1,3 +1,4 @@
+mantis.png -filter -diff -merge -text
 *.PSD filter=lfs diff=lfs merge=lfs -text
 *.ai filter=lfs diff=lfs merge=lfs -text
 *.AI filter=lfs diff=lfs merge=lfs -text
