@@ -120,9 +120,9 @@
                 <label for = "coilLoops">loops</label>
               </div>
               <div id='num_serpents_group' class=''>
-                  <label for="num_serpents">Number of Coils</label>
+                  <label for="num_serpents">Coil Overlap</label>
                   <input type="number" id="num_serpents" name="num_serpents" placeholder="# serpents"
-                        min="1" max="9999" step='1' value="1" required />
+                        min="1" max="9999" step='1' value="1" required />x
               </div>
               <div id='num_loops_group' class=''>
                   <label for="num_loops">Number of Coils</label>
@@ -413,10 +413,8 @@
         for (let hole = 0; hole < +num_disc_holes.value; ++hole) {
           let rot = (hole/+num_disc_holes.value) * 2 * Math.PI;
           let holep = radialToCartesian( pos.x,pos.y, +discmount_hole_placement_dia.value/2, rot );
-          console.log( holep, rot, +discmount_hole_size_dia.value / 2 );
           discmount_hole_paths.push( circlePath( holep.x,holep.y, +discmount_hole_size_dia.value / 2 ) );
         }
-         console.log( discmount_hole_paths );
         addPath( 'svg', 'disc_holes', c0, +line_thickness.value, discmount_hole_paths.join(' ') )
 
         // wire geometry
@@ -469,7 +467,6 @@
               addPath( 'svg', `coils_inner${overlap}${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
             }
 
-              //console.log( rot, overlap, +num_loops.value, (2 * Math.PI / +num_loops.value) );
             // winder
             result = makeLoop( -4,4, 0, pos, 0, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
             addPath( 'svg', `winder_outer`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
