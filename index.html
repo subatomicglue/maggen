@@ -87,6 +87,21 @@
                   <input type="number" id="in_dia2" name="in_dia2" placeholder="Inside Dia"
                         min="1" max="9999" value="8" required />
               </div>
+              <div class=''>
+                  <label for="num_disc_holes">Magnet Disc Mounting Holes</label>
+                  <input type="number" id="num_disc_holes" name="num_disc_holes" placeholder="Holes"
+                        min="1" max="9999" value="8" required />
+              </div>
+              <div class=''>
+                  <label for="discmount_hole_size_dia">Magnet Disc Single Hole Size (dia)</label>
+                  <input type="number" id="discmount_hole_size_dia" name="discmount_hole_size_dia" placeholder="Hole Size Dia"
+                        min="1" max="9999" value="3" required />
+              </div>
+              <div class=''>
+                  <label for="discmount_hole_placement_dia">Magnet Disc Hole Placement (dia)</label>
+                  <input type="number" id="discmount_hole_placement_dia" name="discmount_hole_placement_dia" placeholder="Hole Placement Dia"
+                        min="1" max="9999" value="20" required />
+              </div>
             </div>
             <div class='card  text-nowrap'>
               <h3>Coil</h3>
@@ -393,6 +408,16 @@
         addPath( 'svg', 'disc_out', c0, +line_thickness.value, circlePath( pos.x,pos.y, outside_dia.value/2 ) )
         addPath( 'svg', 'disc_in', c0, +line_thickness.value, circlePath( pos.x,pos.y, in_dia.value/2 ) )
         addPath( 'svg', 'disc_in2', c0, +line_thickness.value, circlePath( pos.x,pos.y, in_dia2.value/2 ) )
+
+        let discmount_hole_paths = [];
+        for (let hole = 0; hole < +num_disc_holes.value; ++hole) {
+          let rot = (hole/+num_disc_holes.value) * 2 * Math.PI;
+          let holep = radialToCartesian( pos.x,pos.y, +discmount_hole_placement_dia.value/2, rot );
+          console.log( holep, rot, +discmount_hole_size_dia.value / 2 );
+          discmount_hole_paths.push( circlePath( holep.x,holep.y, +discmount_hole_size_dia.value / 2 ) );
+        }
+         console.log( discmount_hole_paths );
+        addPath( 'svg', 'disc_holes', c0, +line_thickness.value, discmount_hole_paths.join(' ') )
 
         // wire geometry
         if (coilSerpentine.checked && +num_magnets.value % 2 == 1) errors.innerHTML = "ERROR: for serpentine coils, please give an even number of magnets";

@@ -7,6 +7,7 @@
 function addPath( svgID, newPathID, color, line_thickness, pathdata ) {
    d3.select(`#${svgID}`)
       .append('path', newPathID)
+         .attr('id', newPathID)
          .attr('stroke', color)
          .attr('stroke-width', line_thickness)
          .attr('fill', 'none')
