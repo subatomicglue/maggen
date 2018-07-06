@@ -22,7 +22,7 @@
     </div>
       <div class='row'>
       <fieldset>
-        <legend><img src='./mantis.png' width='32px' height='32px'></legend>
+        <legend><img src='./mantis.png' width='32px' height='32px'> Axial Flux Generator Designer</legend>
          <!--<legend>Axial Flux Generator Designer (mm)</legend>-->
         <form onchange="draw()">
           <div class="card-columns">
@@ -109,6 +109,17 @@
                   <input type="number" id="num_serpents" name="num_serpents" placeholder="# serpents"
                         min="1" max="9999" step='1' value="1" required />
               </div>
+              <div id='num_loops_group' class=''>
+                  <label for="num_loops">Number of Coils</label>
+                  <input type="number" id="num_loops" name="num_loops" placeholder="# loops"
+                        min="4" max="9999" step='1' value="12" required />
+                  <input type="checkbox" class="form-check-input position-static" data-toggle="tooltip" id="lock_coil_number" title='Lock to Number of Magnets' checked/>
+              </div>
+              <div id='num_coiloverlap_group' class=''>
+                  <label for="num_coiloverlaps">Coil Overlap</label>
+                  <input type="number" id="num_coiloverlaps" name="num_coiloverlaps" placeholder="X overlaps"
+                        min="1" max="9999" step='1' value="1" required />x
+              </div>
               <div class=''>
                   <label for="mag_out_dia">Coil Outside Diameter</label>
                   <input type="number" id="mag_out_dia" name="mag_out_dia" placeholder="Coil Outside Dia"
@@ -156,7 +167,7 @@
           <form onchange="draw()">
             <div class='card  text-nowrap'>
               <h3>Settings</h3>
-              <div id='num_serpents_group' class=''>
+              <div class=''>
                 <label for="line_thickness">Line Thickness</label>
                 <input type="number" id="line_thickness" name="line_thickness" placeholder="thickness"
                        min="0.05" max="3" step='0.05' value="0.4" required />
@@ -314,13 +325,13 @@
       }
 
       // create one single-coil loop
-      function makeLoop( ox, oy, x, pos, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
+      function makeLoop( ox, oy, x, pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
          let path = [];
          let arc_len_deg = 360/num_magnets;
          let arc_len_rad = arc_len_deg * Math.PI/180;
 
          // generate some arc stats for this iteration
-         let s = x * arc_len_rad;
+         let s = rot + x * arc_len_rad;
          let s1d = arc_len_rad;
          let s1 = s+s1d;
          // 1 2
@@ -349,10 +360,10 @@
       }
 
       // create all the single-coil loops in a ring
-      function makeLoops( pos, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
+      function makeLoops( pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
          let paths = [];
          for (let x = 0; x < num_magnets; ++x) {
-            paths.push( makeLoop( 0,0, x, pos, num_magnets, mag_in_dia, mag_out_dia, coilt ).path );
+            paths.push( makeLoop( 0,0, x, pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt ).path );
          }
          return {paths};
       }
@@ -366,6 +377,10 @@
         w_magnet_group.hidden = shapeCircle.checked;
         h_magnet_group.hidden = shapeCircle.checked;
         num_serpents_group.hidden = !coilSerpentine.checked;
+        num_loops_group.hidden = coilSerpentine.checked;
+        num_coiloverlap_group.hidden = coilSerpentine.checked;
+        if (lock_coil_number.checked)
+          num_loops.value = num_magnets.value;
 
         // construct the svg
         clearSvg( svg );
@@ -418,15 +433,19 @@
             // setup the svg's viewbox so it zooms in nice
             vwidth = vheight = Math.max( (coilWinderRadius + +coil_thickness.value) * 2, outside_dia.value );
           } else {
-            result = makeLoops( pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
-            addPath( 'svg', `coils_outer${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
-            result = makeLoops( pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
-            addPath( 'svg', `coils_inner${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
+            for (let overlap = 0; overlap < +num_coiloverlaps.value; ++overlap) {
+              let rot = overlap * (2 * Math.PI / +num_loops.value) / +num_coiloverlaps.value;
+              console.log( rot, overlap, +num_loops.value, (2 * Math.PI / +num_loops.value) );
+              result = makeLoops( pos, rot, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
+              addPath( 'svg', `coils_outer${overlap}${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
+              result = makeLoops( pos, rot, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
+              addPath( 'svg', `coils_inner${overlap}${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
+            }
 
             // winder
-            result = makeLoop( -4,4, 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
+            result = makeLoop( -4,4, 0, pos, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
             addPath( 'svg', `winder_outer`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
-            result = makeLoop( -4,4, 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
+            result = makeLoop( -4,4, 0, pos, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
             addPath( 'svg', `winder_inner`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
             // setup the svg's viewbox so it zooms in nice
