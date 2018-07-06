@@ -428,26 +428,29 @@
           // one big loop of wire (minimize waste, easier to wind, etc.)
           if (coilSerpentine.checked) {
             let coilWinderRadius;
+            let coilt = +coil_thickness.value;
+            let mod = +mag_out_dia.value - coilt;
+            let mid = +mag_in_dia.value + coilt;
             for (let snake = 0; snake < +num_serpents.value; ++snake) {
               let rotoffset = (1/+num_magnets.value) * (snake/(+num_serpents.value)) * 2 * Math.PI;
 
-              result = makeSerpent( rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
+              result = makeSerpent( rotoffset, pos, +num_magnets.value, mid, mod, 0 );
               //addPath( 'svg', `coil_center${snake}`, c2, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
               // capture one of these for later...
               if (coilWinderRadius == undefined)
                 coilWinderRadius = result.coilWinderRadius;
 
-              result = makeSerpent( rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, (+coil_thickness.value)/2 );
+              result = makeSerpent( rotoffset, pos, +num_magnets.value, mid, mod, coilt * 0.5 );
               addPath( 'svg', `coil_out${snake}`, c2, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
-              result = makeSerpent( rotoffset, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, -(+coil_thickness.value)/2 );
+              result = makeSerpent( rotoffset, pos, +num_magnets.value, mid, mod, -coilt * 0.5 );
               addPath( 'svg', `coil_in${snake}`, c2, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
             }
 
-            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius - +coil_thickness.value/2, 0 );
+            result = makeSerpentWinder( 0, pos, +num_magnets.value, mid, mod, coilWinderRadius - coilt * 0.5, 0 );
             addPath( 'svg', `winder_inner`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
-            result = makeSerpentWinder( 0, pos, +num_magnets.value, +mag_in_dia.value, +mag_out_dia.value, coilWinderRadius - +coil_thickness.value/2, +coil_thickness.value );
+            result = makeSerpentWinder( 0, pos, +num_magnets.value, mid, mod, coilWinderRadius - coilt * 0.5, coilt );
             addPath( 'svg', `winder_outer`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
             // lazy approach, just make the winder a pure circle
@@ -456,7 +459,7 @@
             //setPath( c3, svgwrappath, circlePath( pos.x, pos.y, coilWinderRadius ) );
 
             // setup the svg's viewbox so it zooms in nice
-            vwidth = vheight = Math.max( (coilWinderRadius + +coil_thickness.value) * 2, outside_dia.value );
+            vwidth = vheight = Math.max( (coilWinderRadius + coilt) * 2, outside_dia.value );
           } else {
             for (let overlap = 0; overlap < +num_coiloverlaps.value; ++overlap) {
               let rot = overlap * (2 * Math.PI / +num_loops.value) / +num_coiloverlaps.value;
