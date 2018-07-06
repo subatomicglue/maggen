@@ -463,17 +463,17 @@
           } else {
             for (let overlap = 0; overlap < +num_coiloverlaps.value; ++overlap) {
               let rot = overlap * (2 * Math.PI / +num_loops.value) / +num_coiloverlaps.value;
-              console.log( rot, overlap, +num_loops.value, (2 * Math.PI / +num_loops.value) );
               result = makeLoops( pos, rot, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
               addPath( 'svg', `coils_outer${overlap}${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
               result = makeLoops( pos, rot, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
               addPath( 'svg', `coils_inner${overlap}${0}`, c2, +line_thickness.value, arrayOfVecArraysToSvgPathData( result.paths ) );
             }
 
+              //console.log( rot, overlap, +num_loops.value, (2 * Math.PI / +num_loops.value) );
             // winder
-            result = makeLoop( -4,4, 0, pos, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
+            result = makeLoop( -4,4, 0, pos, 0, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, 0 );
             addPath( 'svg', `winder_outer`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
-            result = makeLoop( -4,4, 0, pos, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
+            result = makeLoop( -4,4, 0, pos, 0, +num_loops.value, +mag_in_dia.value, +mag_out_dia.value, +coil_thickness.value );
             addPath( 'svg', `winder_inner`, c3, +line_thickness.value, vecArrayToSvgPathData( result.path ) );
 
             // setup the svg's viewbox so it zooms in nice
