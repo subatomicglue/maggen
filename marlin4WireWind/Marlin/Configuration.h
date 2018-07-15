@@ -540,9 +540,9 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200/360, 3200/360, 3200/360, 3200/360 } 
-// this is actually steps per motor revolution, not steps/mm!
-// NEMA 17 has 200 steps in a revolution = 360deg / Step Angle: 1.8 deg
-// 200 / (1/16 microstepping) == 200 * 16 = 3200 steps per revolution
+// coilbot: This is in steps/degree
+// NEMA 17 has 200 steps in a revolution (360deg / Step Angle: 1.8 deg)
+// 200 with 1/16 microstepping == 200 * 16 = 3200 steps per revolution
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -557,7 +557,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 10000, 10000, 10000, 10000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -567,9 +567,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          100    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  100    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   100    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          400    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  400    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   400    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
