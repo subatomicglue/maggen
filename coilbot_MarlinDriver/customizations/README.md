@@ -1,7 +1,7 @@
 
 # Customizations to Marlin:
 
-## RepRapDiscount Full Graphic Smart Controller
+## Enable LCD display (RepRapDiscount Full Graphic Smart Controller)
 We used this 12864 "RepRapDiscount Full Graphic Smart Controller":
 
 `Configuration.h`
