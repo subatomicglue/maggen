@@ -89,7 +89,7 @@ Relevant commands for spinning coils are listed here:
    - `G0 E180000 F172800` (500 turns at 8 rev/sec == 500 * 360, 8 * 21600)
    - feedrate is in deg/min: 360deg/min == 21600deg/sec.  Acceleration set by `M204 RXXX`
 - `M31` Print time
-- `M117` Set LCD Message (`M117` done)
+- `M117` Set LCD Message (`M117 done`)
 - `M300` Play a Tone  (`M300 S220 P200`)
 
 Setup:
