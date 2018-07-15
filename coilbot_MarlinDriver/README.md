@@ -1,3 +1,8 @@
+# maggen:coilbot driver - Marlin 3D Printer Firmware
+[Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
+
+Here is a fork of the 1.1.8 Marlin firmware customized for the [maggen](https://github.com/subatomicglue/maggen) coilbot, magnetic coil winder.
+
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
 
