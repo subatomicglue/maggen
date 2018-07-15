@@ -1,5 +1,5 @@
 # maggen:coilbot driver - based on Marlin 3D Printer Firmware
-Here is a fork of the 1.1.8 Marlin firmware customized for the [maggen](https://github.com/subatomicglue/maggen) coilbot, magnetic coil winder.
+Here is a fork of the 1.1.8 [Marlin](https://github.com/MarlinFirmware/Marlin) firmware customized for the [maggen](https://github.com/subatomicglue/maggen) coilbot, magnetic coil winder for axial flux generators.
 
 Hardware List:
  - 1x RAMPS 1.4 Controller
