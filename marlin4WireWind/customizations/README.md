@@ -82,7 +82,7 @@ Relevant commands for spinning coils are listed here:
 - `M203` Set Max Feed Rate    (`M203 E2800`) (feedrate is in deg/sec: 8 * 360deg/sec = 8 rev/sec = 2800)
 - `M204` Set Starting Accel   (`M204 P400 R400 T400`)
    - NOTE: 400 seems to be the lowest we can go, or you get weird non-smooth acceleration, abrupt velocity changes, etc.
-      - (almost like somewherein Marlin we're overflowing a 16 bit integer value and it wraps back around to 0)
+      - (almost like somewhere in Marlin we're overflowing a 16 bit integer value and it wraps back around to 0)
 - `G0` Move
    - `G0 E360 F21600`     (  1 turn  at 1 rev/sec ==   1*360, 1*21600)
    - `G0 E7200 F172800`   ( 20 turns at 8 rev/sec ==  20*360, 8*21600)
