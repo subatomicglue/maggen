@@ -1,6 +1,4 @@
 # maggen:coilbot driver - based on Marlin 3D Printer Firmware
-[Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
-
 Here is a fork of the 1.1.8 Marlin firmware customized for the [maggen](https://github.com/subatomicglue/maggen) coilbot, magnetic coil winder.
 
 Hardware List:
@@ -11,6 +9,8 @@ Hardware List:
  - 1x NEMA17 stepper motor
 
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Our customizations to Marlin accomplishes this by making Axis E controlable with `G0 E<deg>` gcode, where `deg` is number of degrees to rotate (usually 360 * number of turns).
+
+[Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
 
 The structure to house the hardware above is an exercise left to the reader :)
 
