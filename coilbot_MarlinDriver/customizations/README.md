@@ -33,6 +33,8 @@ $ cp _Bootscreen.h ../Marlin
 ```
 Then Recompile
 
+You can find `LCDAssistant.exe` [here](http://en.radzio.dxp.pl/bitmap_converter/)
+
 ## Customize the Machine name and UUID:
 ```
 #define CUSTOM_MACHINE_NAME "maggen:coilbot"
