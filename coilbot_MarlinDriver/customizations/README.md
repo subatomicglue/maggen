@@ -84,9 +84,9 @@ Relevant commands for spinning coils are listed here:
    - NOTE: 400 seems to be the lowest we can go, or you get weird non-smooth acceleration, abrupt velocity changes, etc.
       - (almost like somewhere in Marlin we're overflowing a 16 bit integer value and it wraps back around to 0)
 - `G0` Move
-   - `G0 E360 F21600`     (  1 turn  at 1 rev/sec ==   1*360, 1*21600)
-   - `G0 E7200 F172800`   ( 20 turns at 8 rev/sec ==  20*360, 8*21600)
-   - `G0 E180000 F172800` (500 turns at 8 rev/sec == 500*360, 8*21600)
+   - `G0 E360 F21600`     (  1 turn  at 1 rev/sec ==   1 * 360, 1 * 21600)
+   - `G0 E7200 F172800`   ( 20 turns at 8 rev/sec ==  20 * 360, 8 * 21600)
+   - `G0 E180000 F172800` (500 turns at 8 rev/sec == 500 * 360, 8 * 21600)
    - feedrate is in deg/min: 360deg/min == 21600deg/sec.  Acceleration set by `M204 RXXX`
 - `M31` Print time
 - `M117` Set LCD Message (`M117` done)
