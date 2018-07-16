@@ -12,6 +12,9 @@ Cut out production-ready forms for your rotors, stators, custom wirewrapping too
 Ideas?  Discussion?  Edits?
 Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues) here, or submit a [Pull Request](https://github.com/subatomicglue/maggen/pulls) with your changes!
 
+## Build Something
+[Notes for actully building something!](build_notes)
+
 ## Future Work
 
 * Calculator tools for how parameters relate to power generated:  (# windings, wire thickness, magnet dimensions / strength / number, speeds, force).
