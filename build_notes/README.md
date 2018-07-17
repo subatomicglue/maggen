@@ -29,7 +29,7 @@ So we can route away this wild curvy flux on the rotor back, which keeps it from
 - **Stator**
 - **Rotor #2 w/ Terminator** (adds an IronDisc backing)
 
-We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.  Now we have a closed "circuit" of flux, which maximizes the field lines through the coils, 1. magnet to magnet straight through the coils, 2. magnet to magnet on the terminating ends to the neighbor magnet.
+We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.  Now we have a closed "circuit" of flux: 1. magnet to magnet straight through the coils, 2. magnet to magnet on the terminating ends to the neighbor magnet.  This maximizes the field lines through the coils.
 
 ### Scaling it up
 Of course, we can then mass produce these amazing cells, and stack them together to get even more power output:
