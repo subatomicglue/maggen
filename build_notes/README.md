@@ -9,7 +9,7 @@ The parts to a maggen generator are as follows:
 The simplest cell you can create is a rotor spinning against a stator:
 
 - *Rotor* (spinning disc with magnets)
-- *Stator* (stationary disc with magnets)
+- *Stator* (stationary disc with wire coils)
 
 This has some issues with curved fields that make this configuration not optimal.
 
@@ -17,7 +17,7 @@ This has some issues with curved fields that make this configuration not optimal
 So to do it efficiently & maximize output, we need to straighten out the magnetic fields (flux) across the stator coils.  Normally flux curves around a magnet "in the shape of an apple".  We can ensure the flux runs straight (uncurved) through the stator by putting magnetically mating (attracting N to S) rotors on both sides of the stator:
 
 - Rotor #1 (spinning disc with magnets)
-- Stator   (stationary disc with magnets)
+- Stator   (stationary disc with wire coils)
 - Rotor #2 (spinning disc with magnets)
 
 There is still an issue with curved fields on the backs of the rotors. That same apple-shaped flux is looping there too.
@@ -69,50 +69,52 @@ In an axial flux generator with mating rotors (magnetic N/S poles on either side
 
 ### Tools
 
-- Coilbot: Coil winding robot
-  - Bobbins [..](maggen designer)
+- Coilbot: Coil winding robot (counts # of turns)
+  - Bobbins [..](design with maggen)
   - Case (CAD files TBD)
   - Electronics [../coilbot_MarlinDriver](coilbot firmware + Arduino/RAMPS)
 
-- Stator Mold [..](maggen designer)
+- Stator Mold [..](design with maggen)
 
 ### notes for individual parts...
 todo: organize this...
 ```
-- rotor (acrylic for interior rotors, acrylic/iron for endcaps)
+- Rotor (acrylic for interior rotors, acrylic + iron for end terminators)
    Magnet shapes (cut through acrylic for taping or as template for iron disc)
    Hole cut for axle
    Mounting holes for hub part
-- hub shape (3D printed)
-   mounting holes 
+- Hub shape (3D printed)
+   mounting holes
    set screw location, for center axis
    Axle hole
    Compress style with split
-- stator (epoxy mold, wood or acrylic, waxed to prevent sticking)
-   - round bottom/top of mold with outer dia circle and coil outlines scored for positioning, and a center hole for bearing or axle passthrough 
+- Stator (epoxy mold, wood or acrylic, waxed to prevent sticking)
+   - round bottom/top of mold with outer dia circle and coil outlines scored for positioning, and a center hole for bearing or axle passthrough
    - round 'keeper plates' for the bearing (mold with them in)
    - round middle wall plates (outer dia disc cut out of sheets)
    - central Hole mold insert
-- coil winder shapes
-   Wire lead catches
-   Tape notches
-   Hub shapes
+- Coil bobbin/winder
+   Axle hole (square, to mate with square metal bar axle driven by stepper motor)
+   Inner hub coil shaper
+   Coil keeper plates, 1 attached, 1 removable
+   Notches
+   - for Wire lead catches
+   - tape slots (for taping coil while on bobbin)
+- Hub for coil winder
    Mounting holes
-- hub for coil winder
-   mounting holes 
-   set screw location, for center axis
+   Set screw location, for center axis
    Axle hole
    Compress style, with split
-- axle for winder robot
-- axle for generator 
-
-See coilbot for designs and parts to order.  
-- Arduino
-- ramps 1.4
-- lcd
-- power supply
-- stepper nema17
-- stepper drivers
-- marlin firmware (with coilbot customizations)
-- case/chassis (openscad or svg file)
+- Axle for winder robot
+- Axle for generator
+- Coilbot hardware
+  See coilbot for designs and parts to order.
+  - Arduino
+  - ramps 1.4
+  - lcd
+  - power supply
+  - stepper nema17
+  - stepper drivers
+  - marlin firmware (with coilbot customizations)
+  - case/chassis (openscad or svg file)
 ```
