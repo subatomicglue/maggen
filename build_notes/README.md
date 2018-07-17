@@ -23,7 +23,7 @@ So to do it efficiently & maximize output, we need to straighten out the magneti
 There is still an issue with curved fields on the backs of the rotors. That same apple-shaped flux is looping there too, which still keeps some of the flux lines away from the coils.
 
 ### More Efficient Rotors With Terminators:
-So we can route away this wild curvy flux on the rotor back, which keeps it from disturbing the productive (straight) end of the rotor's flux field.  This furthers maximizes power output by maximizing number of field lines passing through the coils.  We can conduct the flux simply to the neighbor magnet (since we alternate NSNSNS magnets around the disc).  Iron conducts flux well, if thick enough.  Giving us a cell design that looks like this:
+So we can route away this wild curvy flux on the rotor back, which keeps it from disturbing the productive (straight) end of the rotor's flux field.  This further maximizes power output by maximizing number of field lines passing through the coils.  We can conduct the flux simply to the neighbor magnet (since we alternate NSNSNS magnets around the disc).  Iron conducts flux well, if thick enough.  Giving us a cell design that looks like this:
 
 - **Rotor #1 w/ Terminator** (adds an IronDisc backing)
 - **Stator**
