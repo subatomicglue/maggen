@@ -8,39 +8,39 @@ The parts to a maggen generator are as follows:
 ### Simplest Cell Structure
 The simplest cell you can create is a rotor spinning against a stator:
 
-- *Rotor* (spinning disc with magnets)
-- *Stator* (stationary disc with wire coils)
+- **Rotor** (spinning disc with magnets)
+- **Stator** (stationary disc with wire coils)
 
 This has some issues with curved fields that make this configuration not optimal.
 
 ### More Efficient Cell Structure:
 So to do it efficiently & maximize output, we need to straighten out the magnetic fields (flux) across the stator coils.  Normally flux curves around a magnet "in the shape of an apple".  We can ensure the flux runs straight (uncurved) through the stator by putting magnetically mating (attracting N to S) rotors on both sides of the stator:
 
-- Rotor #1 (spinning disc with magnets)
-- Stator   (stationary disc with wire coils)
-- Rotor #2 (spinning disc with magnets)
+- **Rotor #1** (spinning disc with magnets)
+- **Stator**   (stationary disc with wire coils)
+- **Rotor #2** (spinning disc with magnets)
 
 There is still an issue with curved fields on the backs of the rotors. That same apple-shaped flux is looping there too.
 
 ### More Efficient Rotors With Terminators:
 So we can route away this wild curvy flux on the rotor back, which keeps it from disturbing the productive (straight) end of the rotor's flux field.  This furthers maximizes power output.  We can conduct the flux simply to the neighbor magnet (since we alternate NSNSNS magnets around the disc).  Iron conducts flux well, if thick enough.  Giving us a cell design that looks like this:
 
-- Rotor #1 w/ terminator (spinning disc with magnets w/ IronDisc backing)
-- Stator (stationary disc with magnets)
-- Rotor #2 w/ terminator (spinning disc with magnets w/ IronDisc backing)
+- **Rotor #1 w/ Terminator** (adds an IronDisc backing)
+- **Stator**
+- **Rotor #2 w/ Terminator** (adds an IronDisc backing)
 
 We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.
 
 ### Scaling it up
 Of course, we can then mass produce these amazing cells, and stack them together to get even more power output:
 
-- Rotor Terminator
+- Rotor + Terminator
 - Stator
 - Rotor
 - Stator
 - Rotor
 - Stator
-- Rotor Terminator
+- Rotor + Terminator
 
 As you can see, we only need the expensive iron for the ends, to 'terminate them'.  You can also choose to skip terminators, if you can't find or afford the Iron.
 
