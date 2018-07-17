@@ -11,7 +11,7 @@ The simplest cell you can create is a rotor spinning against a stator:
 - **Rotor** (spinning disc with magnets)
 - **Stator** (stationary disc with wire coils)
 
-This has some issues with curved fields that make this configuration not optimal.  Not all the flux lines eminating from the magnet will pass through the coils.  This can be optimized with cores inside the coils, or simply using a more efficient cell structure.
+This has some issues with curved fields that make this configuration not optimal.  Not all the flux lines eminating from the magnet will pass through the coils.  This can be optimized with cores inside the coils which concentrate the flux lines, or simply using a more efficient cell structure.
 
 ### More Efficient Cell Structure:
 So to do it efficiently & maximize output, we need to straighten out the magnetic fields (flux) across the stator coils.  Normally flux curves around a magnet "in the shape of an apple".  We can ensure the flux runs straight (uncurved) through the stator by putting magnetically mating (attracting N to S) rotors on both sides of the stator:
