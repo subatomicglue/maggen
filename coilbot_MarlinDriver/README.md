@@ -8,7 +8,7 @@ Hardware List:
  - 1x LCD 12864 (RepRapDiscount Full Graphic Smart Controller Display)
  - 1x NEMA17 stepper motor
 
-The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Our customizations to Marlin accomplishes this by making Axis E controlable with `G0 E<deg>` gcode, where `deg` is number of degrees to rotate (usually 360 * number of turns).
+The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Our customizations to Marlin accomplishes this by making Axis E controlable with `G0 E<rev>` gcode, where `rev` is number of revolutions to rotate.
 
 [Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
 
