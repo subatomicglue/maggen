@@ -573,9 +573,9 @@
 //#define DEFAULT_ACCELERATION          400.0    // X, Y, Z and E acceleration for printing moves
 //#define DEFAULT_RETRACT_ACCELERATION  400.0    // E acceleration for retracts
 //#define DEFAULT_TRAVEL_ACCELERATION   400.0    // X, Y, Z acceleration for travel (non printing) moves
-#define DEFAULT_ACCELERATION          400.0/360.0    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  400.0/360.0    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   400.0/360.0    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          2    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  2    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   2    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)

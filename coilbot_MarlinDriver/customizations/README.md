@@ -67,9 +67,9 @@ This way we can say `G0 E1 F60` to make the stepper rotate once around at a rate
 
 #define DEFAULT_MAX_FEEDRATE          { 16.0, 16.0, 16.0, 16.0 } // coilbot 16 rotations per sec
 #define DEFAULT_MAX_ACCELERATION      { 10000/360, 10000/360, 10000/360, 10000/360 }
-#define DEFAULT_ACCELERATION          400/360.0    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  400/360.0    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   400/360.0    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          2    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  2    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   2    // X, Y, Z acceleration for travel (non printing) movess
 #define DEFAULT_XJERK                 0.0 // always use acceleration
 #define DEFAULT_YJERK                 0.0 // always use acceleration
 #define DEFAULT_ZJERK                 0.0 // always use acceleration
@@ -94,8 +94,8 @@ void coilbot_menu() {
    MENU_ITEM(gcode, "Turn 20", PSTR("G0 E20 F480")); // coilbot
    MENU_ITEM(gcode, "Turn 50", PSTR("G0 E50 F600")); // coilbot
    MENU_ITEM(gcode, "Turn 100", PSTR("G0 E100 F4000")); // coilbot
-   MENU_ITEM(gcode, "Turn 150", PSTR("G0 E150 F4000")); // coilbot
-   MENU_ITEM(gcode, "Turn 200", PSTR("G0 E200 F4000")); // coilbot
+   MENU_ITEM(gcode, "Turn 150", PSTR("G0 E150 F6000")); // coilbot
+   MENU_ITEM(gcode, "Turn 200", PSTR("G0 E200 F9000")); // coilbot
    END_MENU();
 }
 
