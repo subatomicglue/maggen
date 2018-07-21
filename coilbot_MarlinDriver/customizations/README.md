@@ -83,6 +83,29 @@ This way we can say `G0 E1 F60` to make the stepper rotate once around at a rate
 static bool relative_mode = true; // coilbot: relative mode
 ```
 
+## Add menu items to the LCD screen (near `lcd_main_menu`)
+`ultralcd.cpp`
+```
+void coilbot_menu() {
+   START_MENU();
+   MENU_BACK(MSG_MAIN);
+   MENU_ITEM(gcode, "Turn 1", PSTR("G0 E1 F60")); // coilbot
+   MENU_ITEM(gcode, "Turn 5", PSTR("G0 E5 F120")); // coilbot
+   MENU_ITEM(gcode, "Turn 20", PSTR("G0 E20 F480")); // coilbot
+   MENU_ITEM(gcode, "Turn 50", PSTR("G0 E50 F600")); // coilbot
+   MENU_ITEM(gcode, "Turn 100", PSTR("G0 E100 F6000")); // coilbot
+   MENU_ITEM(gcode, "Turn 150", PSTR("G0 E150 F6000")); // coilbot
+   MENU_ITEM(gcode, "Turn 200", PSTR("G0 E200 F6000")); // coilbot
+   END_MENU();
+}
+
+void lcd_main_menu() {
+   START_MENU();
+   MENU_BACK(MSG_WATCH);
+
+   MENU_ITEM(submenu, "Coilbot", coilbot_menu); // coilbot submenu
+```
+
 # Useful Gcode for using coilbot
 For now, you use coilbot by connecting [Pronterface](http://www.pronterface.com/) and issuing Gcode Commands.
 Relevant commands for spinning coils are listed here:
