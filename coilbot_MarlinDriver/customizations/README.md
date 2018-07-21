@@ -66,7 +66,7 @@ This way we can say `G0 E1 F60` to make the stepper rotate once around at a rate
 // 200 with 1/16 microstepping == 200 * 16 = 3200 steps per revolution
 
 #define DEFAULT_MAX_FEEDRATE          { 16.0, 16.0, 16.0, 16.0 } // coilbot 16 rotations per sec
-#define DEFAULT_MAX_ACCELERATION      { 10000.0/360.0, 10000.0/360.0, 10000.0/360.0, 10000.0/360.0 }
+#define DEFAULT_MAX_ACCELERATION      { 10000/360, 10000/360, 10000/360, 10000/360 }
 #define DEFAULT_ACCELERATION          400/360.0    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  400/360.0    // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION   400/360.0    // X, Y, Z acceleration for travel (non printing) moves
@@ -74,6 +74,13 @@ This way we can say `G0 E1 F60` to make the stepper rotate once around at a rate
 #define DEFAULT_YJERK                 0.0 // always use acceleration
 #define DEFAULT_ZJERK                 0.0 // always use acceleration
 #define DEFAULT_EJERK                 0.0 // always use acceleration
+```
+
+## Enable relative mode by default:
+`Marlin_main.cpp`
+```
+// Relative Mode. Enable with G91, disable with G90.
+static bool relative_mode = true; // coilbot: relative mode
 ```
 
 # Useful Gcode for using coilbot
@@ -102,7 +109,7 @@ Relevant commands for spinning coils are listed here:
 - `M117` Set LCD Message (`M117 done`)
 - `M300` Play a Tone  (`M300 S220 P200`)
 
-Setup for 1 unit per revolution:
+Setup for 1 unit per revolution (optional, these should already be default in Marlin changes above):
 ```
 G91
 G21

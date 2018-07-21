@@ -478,7 +478,7 @@ float soft_endstop_min[XYZ] = { X_MIN_BED, Y_MIN_BED, Z_MIN_POS },
 uint8_t active_extruder = 0;
 
 // Relative Mode. Enable with G91, disable with G90.
-static bool relative_mode = false;
+static bool relative_mode = true; // coilbot: relative mode
 
 // For M109 and M190, this flag may be cleared (by M108) to exit the wait loop
 volatile bool wait_for_heatup = true;
