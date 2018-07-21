@@ -539,8 +539,9 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200/360, 3200/360, 3200/360, 3200/360 } 
-// coilbot: This is in steps/degree
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200/360, 3200/360, 3200/360, 3200/360 }  // steps/degree
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200, 3200, 3200, 3200 }                    // steps/rev
+// coilbot: This is in steps/revolution
 // NEMA 17 has 200 steps in a revolution (360deg / Step Angle: 1.8 deg)
 // 200 with 1/16 microstepping == 200 * 16 = 3200 steps per revolution
 
@@ -549,7 +550,8 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 360.0*16.0, 360.0*16.0, 360.0*16.0, 360.0*16.0 } // coilbot 16 rotations per sec
+//#define DEFAULT_MAX_FEEDRATE          { 360.0*16.0, 360.0*16.0, 360.0*16.0, 360.0*16.0 } // coilbot 16 rotations per sec
+#define DEFAULT_MAX_FEEDRATE          { 16.0, 16.0, 16.0, 16.0 } // coilbot 16 rotations per sec
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -557,7 +559,8 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 10000, 10000, 10000, 10000 }
+//#define DEFAULT_MAX_ACCELERATION      { 10000, 10000, 10000, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 10000.0/360.0, 10000.0/360.0, 10000.0/360.0, 10000.0/360.0 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -567,9 +570,12 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          400    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  400    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   400    // X, Y, Z acceleration for travel (non printing) moves
+//#define DEFAULT_ACCELERATION          400.0    // X, Y, Z and E acceleration for printing moves
+//#define DEFAULT_RETRACT_ACCELERATION  400.0    // E acceleration for retracts
+//#define DEFAULT_TRAVEL_ACCELERATION   400.0    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          400.0/360.0    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  400.0/360.0    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   400.0/360.0    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
@@ -579,10 +585,10 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define DEFAULT_XJERK                 10.0
-#define DEFAULT_YJERK                 10.0
-#define DEFAULT_ZJERK                  0.3
-#define DEFAULT_EJERK                  5.0
+#define DEFAULT_XJERK                 0.0 // always use acceleration
+#define DEFAULT_YJERK                 0.0 // always use acceleration
+#define DEFAULT_ZJERK                 0.0 // always use acceleration
+#define DEFAULT_EJERK                 0.0 // always use acceleration
 
 //===========================================================================
 //============================= Z Probe Options =============================

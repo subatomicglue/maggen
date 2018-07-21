@@ -57,17 +57,23 @@ Set MACHINE_UUID to unique UID from http://www.uuidgenerator.net/version4
 ```
 
 ## steps per unit
+Let's define 1unit == 1revolution (full 360deg) of the stepper motor.
+This way we can say `G0 E1 F60` to make the stepper rotate once around at a rate of 60/min (1/sec).
 ```
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200/360, 3200/360, 3200/360, 3200/360 }
-// coilbot: This is in steps/degree
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 3200, 3200, 3200, 3200 }
+// coilbot: This is in steps/revolution
 // NEMA 17 has 200 steps in a revolution (360deg / Step Angle: 1.8 deg)
 // 200 with 1/16 microstepping == 200 * 16 = 3200 steps per revolution
 
-#define DEFAULT_MAX_FEEDRATE          { 360.0*16.0, 360.0*16.0, 360.0*16.0, 360.0*16.0 } // coilbot 16 rotations per sec
-#define DEFAULT_MAX_ACCELERATION      { 10000, 10000, 10000, 10000 }
-#define DEFAULT_ACCELERATION          400    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  400    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   400    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_MAX_FEEDRATE          { 16.0, 16.0, 16.0, 16.0 } // coilbot 16 rotations per sec
+#define DEFAULT_MAX_ACCELERATION      { 10000.0/360.0, 10000.0/360.0, 10000.0/360.0, 10000.0/360.0 }
+#define DEFAULT_ACCELERATION          400/360.0    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  400/360.0    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   400/360.0    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_XJERK                 0.0 // always use acceleration
+#define DEFAULT_YJERK                 0.0 // always use acceleration
+#define DEFAULT_ZJERK                 0.0 // always use acceleration
+#define DEFAULT_EJERK                 0.0 // always use acceleration
 ```
 
 # Useful Gcode for using coilbot
@@ -85,6 +91,8 @@ Relevant commands for spinning coils are listed here:
 - `M204` Set Starting Accel   (`M204 P400 R400 T400`)
    - NOTE: 400 seems to be the lowest we can go, or you get weird non-smooth acceleration, abrupt velocity changes, etc.
       - (almost like somewhere in Marlin we're overflowing a 16 bit integer value and it wraps back around to 0)
+- `M205` advanced settings `[B<µs>] [E<jerk>] [S<feedrate>] [T<feedrate>] [X<jerk>] [Y<jerk>] [Z<jerk>]`
+  (`M205 E0 X0 Y0 Z0`  and `M205 S0 T0`)
 - `G0` Move
    - `G0 E360 F21600`     (  1 turn  at 1 rev/sec ==   1 * 360, 1 * 21600)
    - `G0 E7200 F172800`   ( 20 turns at 8 rev/sec ==  20 * 360, 8 * 21600)
@@ -94,25 +102,28 @@ Relevant commands for spinning coils are listed here:
 - `M117` Set LCD Message (`M117 done`)
 - `M300` Play a Tone  (`M300 S220 P200`)
 
-Setup:
+Setup for 1 unit per revolution:
 ```
 G91
 G21
-M92 E8.88889
-M201 E10000
-M203 E2800
-M204 P400 R400 T400
+M92 E3200
+M201 E27.77777778
+M203 E8
+M204 P1.11 R1.11 T1.11
+M205 E0 X0 Y0 Z0
+M205 S0 T0
 ```
 
-Spin me round!
+Spin me round!  (1 rev, at a rate of 60rev/min)
 ```
-G0 E360 F21600
+G0 E1 F60
 ```
 
-Spin me round like a record baby round round right round!
+Spin me round like a record baby round round right round!  (20 rev at a rate of 480rev/min)
 ```
-G0 E7200 F172800
+G0 E20 F480
 ```
+
 
 Play a tune:
 ```
@@ -122,3 +133,30 @@ M300 S880 P200
 M300 S110 P200
 ```
 
+
+## other units setup:
+
+Setup for 360 units per revolution:
+```
+G91
+G21
+M92 E8.88889
+M201 E10000
+M203 E2800
+M204 P400 R400 T400
+M205 E0 X0 Y0 Z0
+M205 S0 T0
+```
+Spin me round!  (1 rev, at a rate of 21600deg/min)
+```
+G0 E360 F21600
+```
+
+Spin me round like a record baby round round right round!  (20 rev, at a rate of 172800deg/min)
+```
+G0 E7200 F172800
+```
+
+# FUTURE WORK
+
+ - Need to add a menu to Marlin that takes a number of turns, and executes `G0 Exxx` with that number...  That way we can skip pronterface completely, making this solution truely embedded in the hardware.
