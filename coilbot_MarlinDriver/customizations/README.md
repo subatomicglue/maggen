@@ -93,9 +93,9 @@ void coilbot_menu() {
    MENU_ITEM(gcode, "Turn 5", PSTR("G0 E5 F120")); // coilbot
    MENU_ITEM(gcode, "Turn 20", PSTR("G0 E20 F480")); // coilbot
    MENU_ITEM(gcode, "Turn 50", PSTR("G0 E50 F600")); // coilbot
-   MENU_ITEM(gcode, "Turn 100", PSTR("G0 E100 F6000")); // coilbot
-   MENU_ITEM(gcode, "Turn 150", PSTR("G0 E150 F6000")); // coilbot
-   MENU_ITEM(gcode, "Turn 200", PSTR("G0 E200 F6000")); // coilbot
+   MENU_ITEM(gcode, "Turn 100", PSTR("G0 E100 F4000")); // coilbot
+   MENU_ITEM(gcode, "Turn 150", PSTR("G0 E150 F4000")); // coilbot
+   MENU_ITEM(gcode, "Turn 200", PSTR("G0 E200 F4000")); // coilbot
    END_MENU();
 }
 
