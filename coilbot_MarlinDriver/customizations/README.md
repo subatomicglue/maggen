@@ -88,6 +88,15 @@ For now, you use coilbot by connecting [Pronterface](http://www.pronterface.com/
 Relevant commands for spinning coils are listed here:
 
 [Marlin GCode Reference](http://marlinfw.org/docs/gcode/G010.html)
+
+Typical Use:
+- `G0` Move
+   - `G0 E1 F60`          (  1 turn  at 1 rev/sec  )
+   - `G0 E20 F480`        ( 20 turns at 8 rev/sec  )
+   - `G0 E500 F480`       (500 turns at 8 rev/sec  )
+   - feedrate is in rev/min: 60rev/min == 1rev/sec.  Acceleration set by `M204 RXXX`
+
+Advanced/Setup:
 - `G21` MM units   (for coilbot mm = degrees. so 360mm == 360deg == 1rev)
 - `G91` Relative Positioning
 - `M92` Set Axis Steps-per-unit (`M92 E8.88889`)
@@ -99,12 +108,7 @@ Relevant commands for spinning coils are listed here:
    - NOTE: 400 seems to be the lowest we can go, or you get weird non-smooth acceleration, abrupt velocity changes, etc.
       - (almost like somewhere in Marlin we're overflowing a 16 bit integer value and it wraps back around to 0)
 - `M205` advanced settings `[B<µs>] [E<jerk>] [S<feedrate>] [T<feedrate>] [X<jerk>] [Y<jerk>] [Z<jerk>]`
-  (`M205 E0 X0 Y0 Z0`  and `M205 S0 T0`)
-- `G0` Move
-   - `G0 E360 F21600`     (  1 turn  at 1 rev/sec ==   1 * 360, 1 * 21600)
-   - `G0 E7200 F172800`   ( 20 turns at 8 rev/sec ==  20 * 360, 8 * 21600)
-   - `G0 E180000 F172800` (500 turns at 8 rev/sec == 500 * 360, 8 * 21600)
-   - feedrate is in deg/min: 360deg/min == 21600deg/sec.  Acceleration set by `M204 RXXX`
+  (disable with `M205 E0 X0 Y0 Z0`  and `M205 S0 T0`)
 - `M31` Print time
 - `M117` Set LCD Message (`M117 done`)
 - `M300` Play a Tone  (`M300 S220 P200`)
