@@ -11,6 +11,8 @@ The simplest cell you can create is a rotor spinning against a stator:
 - **Rotor** (spinning disc with magnets)
 - **Stator** (stationary disc with wire coils)
 
+![Example of an Inefficiently configured Cell](1.png)
+
 This has some issues with curved fields that make this configuration not optimal.  Not all the flux lines eminating from the magnet will pass through the coils.  This can be optimized with cores inside the coils which concentrate the flux lines, or simply using a more efficient cell structure.
 
 ### More Efficient Cell Structure:
@@ -20,6 +22,8 @@ So to do it efficiently & maximize output, we need to straighten out the magneti
 - **Stator**   (stationary disc with wire coils)
 - **Rotor #2** (spinning disc with magnets)
 
+![Example of a More Efficiently configured Cell - due to partial flux routing](2.png)
+
 There is still an issue with curved fields on the backs of the rotors. That same apple-shaped flux is looping there too, which still keeps some of the flux lines away from the coils.
 
 ### More Efficient Rotors With Terminators:
@@ -28,6 +32,8 @@ So we can route away this wild curvy flux on the rotor back, which keeps it from
 - **Rotor #1 w/ Terminator** (adds an IronDisc backing)
 - **Stator**
 - **Rotor #2 w/ Terminator** (adds an IronDisc backing)
+
+![Example of an Efficiently configured Cell - due to full routing of magnetic flux](3.png)
 
 We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.  Now we have a closed "circuit" of flux: 1. magnet to magnet straight through the coils, 2. magnet to magnet on the terminating ends to the neighbor magnet.  This maximizes the field lines through the coils.
 
@@ -41,6 +47,8 @@ Of course, we can then mass produce these amazing cells, and stack them together
 - Rotor
 - Stator
 - Rotor + Terminator
+
+![How to scale up power out by Stacking Cells](4.png)
 
 As you can see, we only need the expensive iron for the ends, to 'terminate them'.  You can also choose to skip terminators, if you can't find or afford the Iron.
 
