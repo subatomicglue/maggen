@@ -34,7 +34,7 @@ So we can route away this wild curvy flux on the rotor back, which keeps it from
 - **Stator**
 - **Rotor #2 w/ Terminator** (adds an IronDisc backing)
 
-<img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils" src="3.png" height="300"><img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils (3D)" src="3-3d.png" height="300">
+<img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils" src="3.png" height="250"><img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils (3D)" src="3-3d.png" height="250">
 
 We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.  Now we have a closed "circuit" of flux: 1. magnet to magnet straight through the coils, 2. magnet to magnet on the terminating ends to the neighbor magnet.  This maximizes the field lines through the coils.
 
@@ -49,7 +49,7 @@ Of course, we can then mass produce these amazing cells, and stack them together
 - Stator
 - Rotor + Terminator
 
-<img alt="How to scale up power out by Stacking Cells" src="4.png" height="300"><img alt="How to scale up power out by Stacking Cells (3D)" src="4-3d.png" height="300">
+<img alt="How to scale up power out by Stacking Cells" src="4.png" height="250"><img alt="How to scale up power out by Stacking Cells (3D)" src="4-3d.png" height="250">
 
 As you can see, we only need the expensive iron for the ends, to 'terminate them'.  You can also choose to skip terminators, if you can't find or afford the Iron.
 
