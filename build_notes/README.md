@@ -69,7 +69,7 @@ In an axial flux generator with mating rotors (magnetic N/S poles on either side
 
 #### Eddy currents & loss:
 
-The flux is not constant in an axial flux alternator.  When acting as a motor, the coils introduce AC magnetic fields and depend on EMF to move the rotor, when acting as a generator, the current induced in the windings, especially under load, generate back EMF.  Both EM fields interact with the permanent magnets and will cause magnetic fields to move in the keepers causing eddy currents and losses.
+The flux is not constant in an axial flux alternator.  When acting as a motor, the coils introduce AC magnetic fields and depend on EMF to move the rotor, when acting as a generator, the current induced in the windings, especially under load, generate back EMF.  Both EM fields interact with the permanent magnets and will cause magnetic fields to move in the iron cores causing eddy currents and losses.
 
 ### Complete Generator Structure
 
