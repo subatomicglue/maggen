@@ -79,7 +79,7 @@ The flux is not constant in an axial flux alternator.  When acting as a motor, t
 - Disk Shaft Mounting Collars (mount Rotor to Axle)
 - Case  (to hold the stators, protect fingers / hair, etc...)
 
-![3D Printed Shaft Mount Collar - Rotor Mount](routormount.png)
+![3D Printed Shaft Mount Collar - Rotor Mount](rotormount.png)
 
 ### Tools
 
