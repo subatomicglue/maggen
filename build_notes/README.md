@@ -11,7 +11,7 @@ The simplest cell you can create is a rotor spinning against a stator:
 - **Rotor** (spinning disc with magnets)
 - **Stator** (stationary disc with wire coils)
 
-![Example of a simple Cell](1.png)![Example of an Inefficiently configured Cell (3D)](1-3d.png)
+<img alt="Example of a simple Cell" src="1.png" height="300"><img alt="Example of a simple Cell (3D)" src="1-3d.png" height="300">
 
 
 This has some issues with curved fields that make this configuration not optimal.  Not all the flux lines eminating from the magnet will pass through the coils.  This can be optimized with cores inside the coils which concentrate the flux lines, or simply using a more efficient cell structure.
@@ -23,7 +23,7 @@ So to do it efficiently & maximize output, we need to straighten out the magneti
 - **Stator**   (stationary disc with wire coils)
 - **Rotor #2** (spinning disc with magnets)
 
-![Example of a More Efficiently configured Cell - due to routing flux through Coils](2.png)![Example of a More Efficiently configured Cell - due to routing flux through Coils (3D)](2-3d.png)
+<img alt="Example of a More Efficiently configured Cell - due to routing flux through Coils" src="2.png" height="300"><img alt="Example of a More Efficiently configured Cell - due to routing flux through Coils (3D)" src="2-3d.png" height="300">
 
 There is still an issue with curved fields on the backs of the rotors. That same apple-shaped flux is looping there too, which still keeps some of the flux lines away from the coils.
 
@@ -34,7 +34,7 @@ So we can route away this wild curvy flux on the rotor back, which keeps it from
 - **Stator**
 - **Rotor #2 w/ Terminator** (adds an IronDisc backing)
 
-![Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils](3.png)![Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils (3D)](3-3d.png)
+<img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils" src="3.png" height="300"><img alt="Example of an Efficiently configured Cell - due to routing of magnetic flux through Iron and Coils (3D)" src="3-3d.png" height="300">
 
 We'll call this Iron a "terminator", since it sort of "ends" the unconnected flux eminating from the rotor backs.  Now we have a closed "circuit" of flux: 1. magnet to magnet straight through the coils, 2. magnet to magnet on the terminating ends to the neighbor magnet.  This maximizes the field lines through the coils.
 
@@ -49,8 +49,7 @@ Of course, we can then mass produce these amazing cells, and stack them together
 - Stator
 - Rotor + Terminator
 
-![How to scale up power out by Stacking Cells](4.png)![How to scale up power out by Stacking Cells (3D)](4-3d.png)
-
+<img alt="How to scale up power out by Stacking Cells" src="4.png" height="300"><img alt="How to scale up power out by Stacking Cells (3D)" src="4-3d.png" height="300">
 
 As you can see, we only need the expensive iron for the ends, to 'terminate them'.  You can also choose to skip terminators, if you can't find or afford the Iron.
 
