@@ -6,10 +6,10 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 [Read about the maggen Designer for axial flux generator cells](https://github.com/subatomicglue/maggen/tree/master/)
 
 ## CAD Files:
- - 1x [Lasercut Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)
- - 1x [shaft coupler](shaft-coupler-squareToD.scad)  (unfinished - in progress)
- - 6x [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl)
- - 4x [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
+ - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)
+ - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad)  (unfinished - in progress)
+ - 6x 3D Printed [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl)
+ - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
 
 ## Hardware List:
  - 1x  ABEC skatebearing
@@ -19,6 +19,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
  - 6x  M3 standoffs (8mm tall) - for arduino mount
  - 4x  M3 spacers   (5mm tall) - for display mount
  - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13)
+ - 1/4" (6.3mm) square rod (10" long) - spinning axle for coil winding
 
 ## Electronics:
  - [OSOYOO 3D Printer Kit](https://www.amazon.com/gp/product/B0111ZSS2O/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
