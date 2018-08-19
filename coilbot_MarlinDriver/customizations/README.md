@@ -170,7 +170,7 @@ M300 S110 P200
 
 ## other units setup:
 
-Setup for 360 units per revolution:
+You can also customize the coilbot for other units, i.e. for 360 units per revolution:
 ```
 G91
 G21
@@ -181,12 +181,12 @@ M204 P400 R400 T400
 M205 E0 X0 Y0 Z0
 M205 S0 T0
 ```
-Spin me round!  (1 rev, at a rate of 21600deg/min)
+And this is how you'd spin it 1 rev  (1 rev, at a rate of 21600deg/min)
 ```
 G0 E360 F21600
 ```
 
-Spin me round like a record baby round round right round!  (20 rev, at a rate of 172800deg/min)
+And this is how you'd spin it 20 revs  (20 rev, at a rate of 172800deg/min)
 ```
 G0 E7200 F172800
 ```

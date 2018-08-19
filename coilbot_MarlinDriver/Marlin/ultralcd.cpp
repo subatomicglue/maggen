@@ -952,9 +952,32 @@ void kill_screen(const char* lcd_msg) {
    *
    */
 
+
+void _coilbot_lcd_user_gcode(const char * const cmd) {
+  enqueue_and_echo_commands_P(cmd);
+  #if ENABLED(USER_SCRIPT_AUDIBLE_FEEDBACK)
+    lcd_completion_feedback();
+  #endif
+  #if ENABLED(USER_SCRIPT_RETURN)
+    lcd_return_to_status();
+  #endif
+}
+void menu_action_gcode(const char* pgcode);
+
+int number_of_coilbot_turns = 1;
+void coilbot_go() {
+  static char buf[256] = "";
+  sprintf( buf, "G0 E%d F600", (int)number_of_coilbot_turns );
+  //enqueue_and_echo_commands_P(PSTR("G0 E1 F60"));
+  //menu_action_gcode(buf);
+  _coilbot_lcd_user_gcode(buf);
+}
+
   void coilbot_menu() {
     START_MENU();
     MENU_BACK(MSG_MAIN);
+    MENU_MULTIPLIER_ITEM_EDIT(int3, "Num Turns", &number_of_coilbot_turns, 1, 999);
+    MENU_ITEM(function, "Go!", coilbot_go);
     MENU_ITEM(gcode, "Turn 1", PSTR("G0 E1 F60")); // coilbot
     MENU_ITEM(gcode, "Turn 5", PSTR("G0 E5 F120")); // coilbot
     MENU_ITEM(gcode, "Turn 20", PSTR("G0 E20 F480")); // coilbot
