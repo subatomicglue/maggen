@@ -16,7 +16,8 @@ Ideas?  Discussion?  Edits?
 Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues) here, or submit a [Pull Request](https://github.com/subatomicglue/maggen/pulls) with your changes!
 
 ## Build Something
-[Notes for actully building something!](build_notes)
+ - [Notes for actually building something!](build_notes)
+ - [Coilbot - coil winding robot](coilbot) - reproducable magnetic coils
 
 ## Future Work
 
