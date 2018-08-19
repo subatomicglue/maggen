@@ -1,6 +1,6 @@
 # maggen:coilbot - magnetic coil winding robot
 
-The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Our customizations to Marlin accomplishes this by making Axis E controlable with `G0 E<rev>` gcode, where `rev` is number of revolutions to rotate.
+The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.
 
 
 [Read about the maggen Designer for axial flux generator cells](https://github.com/subatomicglue/maggen/tree/master/)
