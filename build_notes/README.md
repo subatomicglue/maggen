@@ -140,7 +140,7 @@ todo: organize this...
 
 - Iron Disc for Rotor: “the idea is to complete the magnetic circuit from pole to pole on the rotor, so low carbon steel is the best. With 1/2" thick neo magnets you'll want to use minimum 1/4" steel. With 3/4" neos use 3/8" steel to prevent saturation of the rotor. With all the magnets installed on the rotor a paperclip should not hang on the back side of the rotor. If it does the rotor is saturated and you got too much flux leakage thru the rotor.
 
-It is normal to get a paperclip to stick on the backside perimeter of an uncaged rotor due to flux leakage around the perimeter. However, when the generator is assembled, this perimeter leakage should be close to zero and the paperclip should not stick there.” from https://forum.solar-electric.com/discussion/18276/material-for-rotor-axial-flux
+- It is normal to get a paperclip to stick on the backside perimeter of an uncaged rotor due to flux leakage around the perimeter. However, when the generator is assembled, this perimeter leakage should be close to zero and the paperclip should not stick there.” from https://forum.solar-electric.com/discussion/18276/material-for-rotor-axial-flux
 
 - Relationship between flux and wire:
    1. Basically you want to pass straight wires through a changing flux field.  We can do that with coils.  But round coils aren't ideal.  Trapezoidal will maximize the amount of straight wire.
