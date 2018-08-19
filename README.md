@@ -46,20 +46,4 @@ Inspiring work
 * 3D Printed [Axial Flux Generator](https://www.thingiverse.com/thing:1416740) and her amazing [Halbach Array](https://www.thingiverse.com/thing:1693579)
 * Wind Turbine from [Caleb Engineering - Serpentine Windings](https://www.calebengineering.com/new-wind-generator.html)
 
-## Design notes & anecdotes
-
-- Magnet Size:  "...round magnets cancel most of the energy generated when sweeping across the shoulders of the coil. If rectangular magnets are used with a width less than the minimum hole width of the coil, the power generation can be optimized."  found in comments section here: https://www.youtube.com/watch?v=flHOGE7EcCU
-
-- Iron Disc for Rotor: “the idea is to complete the magnetic circuit from pole to pole on the rotor, so low carbon steel is the best. With 1/2" thick neo magnets you'll want to use minimum 1/4" steel. With 3/4" neos use 3/8" steel to prevent saturation of the rotor. With all the magnets installed on the rotor a paperclip should not hang on the back side of the rotor. If it does the rotor is saturated and you got too much flux leakage thru the rotor.
-
-It is normal to get a paperclip to stick on the backside perimeter of an uncaged rotor due to flux leakage around the perimeter. However, when the generator is assembled, this perimeter leakage should be close to zero and the paperclip should not stick there.” from https://forum.solar-electric.com/discussion/18276/material-for-rotor-axial-flux
-
-- Relationship between flux and wire:
-   1. Basically you want to pass straight wires through a changing flux field.  We can do that with coils.  But round coils aren't ideal.  Trapezoidal will maximize the amount of straight wire.
-   2. You want to make the flux as perpendicular as possible to the copper windings.  Following design choices follow:
-   3. maximize radial 'spokes' for wire.  minimize copper length on the inside/outside diameter
-   4. magnet on both sides of the coil ensures flux doesnt curve.
-   5. what to do with curved flux 'behind' the end magnets? use iron core behind the end magnets to route the curved flux, redirecting to the back of 2 adjacent magnets.  keeps this 'end' curved flux from interfering with the field across the coil.
-
-- serpentine configuration of wire can simplify wiring (less soldering, less errors)
 
