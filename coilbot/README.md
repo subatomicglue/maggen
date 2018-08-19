@@ -8,8 +8,8 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 ## CAD Files:
  - 1x [Lasercut Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)
  - 1x [shaft coupler](shaft-coupler-squareToD.scad)  (unfinished - in progress)
- - 6x 8mm [standoff](3mm-standoff-8mm-2.7ID.stl)
- - 4x 5mm [spacer](3mm-standoff-5mm-3.1ID.stl)
+ - 6x [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl)
+ - 4x [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
 
 ## Hardware List:
  - 1x  ABEC skatebearing
