@@ -13,10 +13,11 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 ## Hardware List:
  - 1x  ABEC skatebearing
- - 10x M3 sockethead screws (10mm long) - for stepper & boxtop
- - 4x  M3 sockethead screws (18mm long) - for display
+ - 10x M3 sockethead screws (10mm long) - for stepper mount & boxtop
+ - 4x  M3 sockethead screws (18mm long) - for display mount
+ - 12x M3 panhead screws (6mm long) - for arduino mount
  - 6x  M3 standoffs (8mm tall) - for arduino mount
- - 4x  M3 spacers   (5mm tall) - for display screws
+ - 4x  M3 spacers   (5mm tall) - for display mount
  - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13)
 
 ## Electronics:
