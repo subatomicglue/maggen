@@ -1,6 +1,6 @@
 # maggen:coilbot - magnetic coil winding robot
 
-<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'>
 
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.
 
@@ -31,8 +31,8 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
    - 1x LCD 12864 (RepRapDiscount Full Graphic Smart Controller Display)
  - [1x NEMA17 stepper motor (Bipolar 40mm 64oz.in(45Ncm) 2A 4 Lead)](https://www.amazon.com/gp/product/B00PNEQI7W/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
  - 1x black rocker panelmount powerswitch (8 x 12.8mm hole)
- - 1x [5.7mm outer 2.5mm inner panelmount "barrel shaped" DC power-inlet](https://www.mouser.com/ProductDetail/CUI/PJ-005B?qs=sGAEpiMZZMtnOp%252bbbqA009lE0K0K%252bPZGHDa8R3T3fghCv9kHIJIT1g%3d%3d)
- - USB cable
+ - 1x [5.7mm outer 2.5mm inner panelmount "barrel shaped" DC power-inlet](https://www.mouser.com/ProductDetail/CUI/PJ-005B?qs=sGAEpiMZZMtnOp%252bbbqA009lE0K0K%252bPZGHDa8R3T3fghCv9kHIJIT1g%3d%3d) (7.8mm hole)
+ - USB cable (type B to type A)
  - 12V power supply with barrel connector (2.5mm inner, 5.7mm outer)
 
 ## Firmware:
@@ -43,29 +43,29 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 Lasercut out of 20x12" acrylic
 
-<img alt='coilbot' title='coilbot' src="coilbot1.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot1.jpg" width='200px'>
 
 Loose pieces
 
-<img alt='coilbot' title='coilbot' src="coilbot2.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot2.jpg" width='200px'>
 
 Display
 
-<img alt='coilbot' title='coilbot' src="coilbot3.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot3.jpg" width='200px'>
 
 Glueing (welding) with Acetone/Acrylic solution
 
-<img alt='coilbot' title='coilbot' src="coilbot4.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot4.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot5.jpg" width='200px'>
 
 Standoffs and Spacers printed
 
-<img alt='coilbot' title='coilbot' src="coilbot60.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot60.jpg" width='200px'>
 
 Arduino / RAMPS / LCD boards mounted, power wired
 
-<img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot6.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot7.jpg" width='200px'>
 
 Power on / Test fire
 
-<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot9.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot10.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot9.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot10.jpg" width='200px'>
 
