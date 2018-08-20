@@ -37,7 +37,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 ## Firmware:
 
-[Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
+[Read about the maggen:coilbot firmware](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver)  (based on Marlin)
 
 # Build!
 
