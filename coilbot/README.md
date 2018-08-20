@@ -14,14 +14,14 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
  - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
 
 ## Hardware List:
- - 1x  ABEC skatebearing
+ - 1x  ABEC skatebearing <img alt='coilbot' title='coilbot' src="pics/bearingABEC.jpg" width='60px'>
  - 10x M3 sockethead screws (10mm long) - for stepper mount & boxtop <img alt='coilbot' title='coilbot' src="pics/M3sockethead.png" width='60px'>
- - 4x  M3 sockethead screws (18mm long) - for display mount
+ - 4x  M3 sockethead screws (18mm long) - for display mount <img alt='coilbot' title='coilbot' src="pics/M3sockethead.png" width='60px'>
  - 12x M3 flathead screws (10mm long) - for arduino mount <img alt='coilbot' title='coilbot' src="pics/M3flathead.png" width='60px'>
  - 6x  M3 standoffs (8mm tall) - for arduino mount <img alt='coilbot' title='coilbot' src="pics/M3standoff8mm.jpg" width='60px'>
  - 4x  M3 spacers   (5mm tall) - for display mount <img alt='coilbot' title='coilbot' src="pics/M3spacer5mm.jpg" width='60px'>
- - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13)
- - 1/4" (6.3mm) square rod (10" long) - spinning axle for coil winding
+ - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13) <img alt='coilbot' title='coilbot' src="pics/OrangeAcrylic.jpg" width='60px'>
+ - 1/4" (6.3mm) square rod (10" long) - spinning axle for coil winding <img alt='coilbot' title='coilbot' src="pics/squareRod.jpg" width='60px'>
 
 ## Electronics:
  - [OSOYOO 3D Printer Kit](https://www.amazon.com/gp/product/B0111ZSS2O/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
