@@ -30,8 +30,8 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
    - 1x A4988 Stepper Motor Drivers
    - 1x LCD 12864 (RepRapDiscount Full Graphic Smart Controller Display)
  - [1x NEMA17 stepper motor (Bipolar 40mm 64oz.in(45Ncm) 2A 4 Lead)](https://www.amazon.com/gp/product/B00PNEQI7W/ref=oh_aui_search_detailpage?ie=UTF8&psc=1)
- - 1x [black rocker panelmount powerswitch KCD1-11 (8 x 12.8mm hole)](https://www.aliexpress.com/item/10pcs-G130-10-15mm-SPST-2PIN-ON-OFF-Boat-Rocker-Switch-3A-250V-Car-Dash-Dashboard/32739231057.html?spm=a2g0s.9042311.0.0.27424c4d8Zu7Se) <img alt='coilbot' title='coilbot' src="pics/switch-kcd1-11.jpg" width='200px'>
- - 1x [5.7mm outer 2.5mm inner panelmount "barrel shaped" DC power-inlet](https://www.mouser.com/ProductDetail/CUI/PJ-005B?qs=sGAEpiMZZMtnOp%252bbbqA009lE0K0K%252bPZGHDa8R3T3fghCv9kHIJIT1g%3d%3d) (7.8mm hole) <img alt='coilbot' title='coilbot' src="pics/powerinlet.jpg" width='200px'>
+ - 1x [black rocker panelmount powerswitch KCD1-11 (8 x 12.8mm hole)](https://www.aliexpress.com/item/10pcs-G130-10-15mm-SPST-2PIN-ON-OFF-Boat-Rocker-Switch-3A-250V-Car-Dash-Dashboard/32739231057.html?spm=a2g0s.9042311.0.0.27424c4d8Zu7Se) <img alt='coilbot' title='coilbot' src="pics/switch-kcd1-11.jpg" width='60px'>
+ - 1x [5.7mm outer 2.5mm inner panelmount "barrel shaped" DC power-inlet](https://www.mouser.com/ProductDetail/CUI/PJ-005B?qs=sGAEpiMZZMtnOp%252bbbqA009lE0K0K%252bPZGHDa8R3T3fghCv9kHIJIT1g%3d%3d) (7.8mm hole) <img alt='coilbot' title='coilbot' src="pics/powerinlet.jpg" width='60px'>
  - USB cable (type B to type A)
  - 12V DC power supply with barrel connector (2.5mm inner, 5.7mm outer)
 
