@@ -2,7 +2,7 @@
 
 <img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'>
 
-The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.
+The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.  Avoid tedium.
 
 
 [Read about the maggen Designer for axial flux generator cells](https://github.com/subatomicglue/maggen/tree/master/)
