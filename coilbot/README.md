@@ -59,13 +59,9 @@ Glueing (welding) with Acetone/Acrylic solution
 
 Arduino / RAMPS boards mounted, power wired
 
-<img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'>
-<img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'>
-<img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
 
 Power on / Test fire
 
-<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'>
-<img alt='coilbot' title='coilbot' src="coilbot9.jpg" width='200px'>
-<img alt='coilbot' title='coilbot' src="coilbot10.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot9.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot10.jpg" width='200px'>
 
