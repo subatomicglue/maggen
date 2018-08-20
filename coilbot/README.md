@@ -57,9 +57,13 @@ Glueing (welding) with Acetone/Acrylic solution
 
 <img alt='coilbot' title='coilbot' src="coilbot4.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'>
 
-Arduino / RAMPS boards mounted, power wired
+Standoffs and Spacers printed
 
-<img alt='coilbot' title='coilbot' src="coilbot60.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot60.jpg" width='200px'>
+
+Arduino / RAMPS / LCD boards mounted, power wired
+
+<img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'><img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
 
 Power on / Test fire
 
