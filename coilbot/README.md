@@ -1,5 +1,7 @@
 # maggen:coilbot - magnetic coil winding robot
 
+<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'>
+
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.
 
 
@@ -36,4 +38,28 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 ## Firmware:
 
 [Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
+
+# Build!
+
+Lasercut out of 20x12" acrylic
+<img alt='coilbot' title='coilbot' src="coilbot1.jpg" width='200px'>
+
+Loose pieces
+<img alt='coilbot' title='coilbot' src="coilbot2.jpg" width='200px'>
+
+Display
+<img alt='coilbot' title='coilbot' src="coilbot3.jpg" width='200px'>
+
+Glueing (welding) with Acetone/Acrylic solution
+<img alt='coilbot' title='coilbot' src="coilbot4.jpg" width='200px'>
+
+Arduino / RAMPS boards mounted, power wired
+<img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
+
+Power on / Test fire
+<img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot9.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="coilbot10.jpg" width='200px'>
 
