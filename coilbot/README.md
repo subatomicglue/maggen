@@ -42,23 +42,29 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 # Build!
 
 Lasercut out of 20x12" acrylic
+
 <img alt='coilbot' title='coilbot' src="coilbot1.jpg" width='200px'>
 
 Loose pieces
+
 <img alt='coilbot' title='coilbot' src="coilbot2.jpg" width='200px'>
 
 Display
+
 <img alt='coilbot' title='coilbot' src="coilbot3.jpg" width='200px'>
 
 Glueing (welding) with Acetone/Acrylic solution
+
 <img alt='coilbot' title='coilbot' src="coilbot4.jpg" width='200px'>
 
 Arduino / RAMPS boards mounted, power wired
+
 <img alt='coilbot' title='coilbot' src="coilbot5.jpg" width='200px'>
 <img alt='coilbot' title='coilbot' src="coilbot6.jpg" width='200px'>
 <img alt='coilbot' title='coilbot' src="coilbot7.jpg" width='200px'>
 
 Power on / Test fire
+
 <img alt='coilbot' title='coilbot' src="coilbot8.jpg" width='200px'>
 <img alt='coilbot' title='coilbot' src="coilbot9.jpg" width='200px'>
 <img alt='coilbot' title='coilbot' src="coilbot10.jpg" width='200px'>
