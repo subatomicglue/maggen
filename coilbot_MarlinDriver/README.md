@@ -10,9 +10,9 @@ Hardware List:
 
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Our customizations to Marlin accomplishes this by making Axis E controlable with `G0 E<rev>` gcode, where `rev` is number of revolutions to rotate.
 
-[Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
-
-The structure to house the hardware ca be found [here](../coilbot)
+* [Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
+* The structure to house the hardware can be found [here](../coilbot)
+* To install, pull a copy of this github repo, and follow the standard marlin installation instructions for your model of Arduino
 
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
