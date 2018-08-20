@@ -1,6 +1,6 @@
 # maggen - build notes
 
-Use [maggen](/../) to design your own axial flux generator.
+Use [maggen](/../../) to design your own axial flux generator.
 
 ## Parts list
 The parts to a maggen generator are as follows:
