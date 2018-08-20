@@ -12,7 +12,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 [Read about the maggen:coilbot customizations to Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver/customizations)
 
-The structure to house the hardware above is an exercise left to the reader :)
+The structure to house the hardware ca be found [here](../coilbot)
 
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
