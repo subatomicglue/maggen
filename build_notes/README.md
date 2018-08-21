@@ -1,6 +1,6 @@
 # maggen - build notes
 
-- [Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
+- [..Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
 
 
 ## Parts list
