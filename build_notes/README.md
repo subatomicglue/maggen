@@ -1,6 +1,7 @@
 # maggen - build notes
 
-Use [maggen](/../../) to design your own axial flux generator.
+- [Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
+
 
 ## Parts list
 The parts to a maggen generator are as follows:

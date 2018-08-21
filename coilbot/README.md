@@ -5,7 +5,7 @@
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.  Avoid tedium.
 
 
-[Read about the maggen Designer for axial flux generator cells](https://github.com/subatomicglue/maggen/tree/master/)
+- [...Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
 
 ## CAD Files:
  - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)

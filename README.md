@@ -1,23 +1,17 @@
-# MAGGEN - Designer for Axial Flux Generators.
-MAGGEN is a design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
-Cut out production-ready forms for your rotors, stators, custom wirewrapping tools, epoxy molds.  Plasma-Cut iron discs, Laser-Cut acrylic/delrin/wood, 3D-Print ABS/PLA, etc...
+# MAGGEN - tools for Axial Flux Generators.
+MAGGEN is a set of tools for designing and building Axial Flux electrical generators.
+Generate CAD files for production-ready rotors, stators, custom coil winding tools, epoxy molds, Plasma-Cut iron discs, Laser-Cut acrylic/delrin/wood, 3D-Print ABS/PLA, etc...
 
-
-NOTE: Here is [MAGGEN for OpenSCAD](maggen.scad) (slightly more features)
-
-## Demo
-[Try out a live version of the designer here](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/index.html)
-
-## Examples
-<img alt='Vectors for 6-magnet "axial flux generator" cell (loop coils)' title='Vectors for 6-magnet "axial flux generator" cell (loop coils)' src="examples/6loops.svg" width='200px'><img alt='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' title='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' src="examples/8serpentine.svg" width='200px'><img alt='Vectors for 10-magnet "axial flux generator" cell (loop coils)' title='Vectors for 10-magnet "axial flux generator (loop coils)" cell' src="examples/10loops.svg" width='200px'><img alt='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' title='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' src="examples/12serpentine.svg" width='200px'>
+## Tools
+- [MAGGEN:designer](designer)
+   - [live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) (simple 2D shapes)
+   - [OpenSCAD](maggen.scad) - (slightly more features - 3D)
+- [MAGGEN:coilbot](coilbot) - coil winding robot for reproducable magnetic coils
+- [MAGGEN Build Notes](build_notes) - engineerings notes for designing axial flux generators
 
 ## Contribute / Collaborate / Get Help!
 Ideas?  Discussion?  Edits?
 Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues) here, or submit a [Pull Request](https://github.com/subatomicglue/maggen/pulls) with your changes!
-
-## Build Something
- - [Notes for actually building something!](build_notes)
- - [Coilbot - coil winding robot](coilbot) - reproducable magnetic coils
 
 ## Future Work
 
@@ -45,5 +39,4 @@ Inspiring work
 * 3D Printed [Axial Drone Motor](https://www.youtube.com/watch?v=JkwLpAAfBVI)
 * 3D Printed [Axial Flux Generator](https://www.thingiverse.com/thing:1416740) and her amazing [Halbach Array](https://www.thingiverse.com/thing:1693579)
 * Wind Turbine from [Caleb Engineering - Serpentine Windings](https://www.calebengineering.com/new-wind-generator.html)
-
 
