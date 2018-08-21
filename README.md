@@ -13,12 +13,6 @@ Generate CAD files for production-ready rotors, stators, custom coil winding too
 Ideas?  Discussion?  Edits?
 Post them in the [Issue tracker](https://github.com/subatomicglue/maggen/issues) here, or submit a [Pull Request](https://github.com/subatomicglue/maggen/pulls) with your changes!
 
-## Future Work
-
-* Calculator tools for how parameters relate to power generated:  (# windings, wire thickness, magnet dimensions / strength / number, speeds, force).
-* Document some methods of rotor attachment to axel: set-screw collar, etc.
-* 3D vis of the cell (or at least a side view), for thickness & air-gap design as a parameter input
-
 ## Resources for Learning
 
 * [Magnax - Wind](https://www.magnax.com/wind)
