@@ -12,8 +12,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 * [Customizations](customizations) - Read about the customizations to Marlin for MAGGEN:coilbot
 * **Install** - pull a copy of this github repo, and follow the standard [marlin installation instructions](http://marlinfw.org/docs/basics/install.html) for Marlin 1.1.x and your model of Arduino (Mega 2560)
-* [...Back to MAGGEN:Coilbot](../coilbot) - Coilbot, magnetic coil winding robot (The structure to house this coilbot hardware/firmware)
-* [...Back to MAGGEN](https://github.com/subatomicglue/maggen)
+* [...Back to MAGGEN:coilbot](../coilbot) - Coilbot, magnetic coil winding robot (The structure to house this coilbot hardware/firmware)
 
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
