@@ -1,8 +1,8 @@
-# MAGGEN - Designer for Axial Flux Generators.
-MAGGEN is a design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
+# MAGGEN:designer - Designer for Axial Flux Generators.
+MAGGEN:designer is a design tool which outputs SVG vector paths intended for cutting the parts needed for electrical generators.
 Cut out production-ready forms for your rotors, stators, custom wirewrapping tools, epoxy molds.  Plasma-Cut iron discs, Laser-Cut acrylic/delrin/wood, 3D-Print ABS/PLA, etc...
 
-- [...Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
+[...Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
 
 ## Demo
 - [Try out a live version of the designer here](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html)
