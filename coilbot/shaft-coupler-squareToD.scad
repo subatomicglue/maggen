@@ -22,7 +22,7 @@ bobbinRod_nut_depth = 6.5;       // depth into the coupler to put the nut
 bobbinRod_thumb_screw_pos_below_top = (coupler_height/2)/2; // thumbscrew hole position below top of coupler
 
 // bottom hole is for the stepper shaft
-stepper_dia = 6.35;          // true measure of the stepper shaft diameter
+stepper_dia = 5;             // true measure of the stepper shaft diameter
 stepper_clearance = tol-0.1; // tolerance larger, to allow shaft to slide into the coupler
 stepper_nut_depth = 6.5;     // depth into the coupler to put the nut
 stepper_thumb_screw_pos_above_bottom = (coupler_height/2)/2; // thumbscrew hole position above bottom of coupler
