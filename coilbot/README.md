@@ -34,7 +34,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
  - 1x [black rocker panelmount powerswitch KCD1-11 (8 x 12.8mm hole)](https://www.aliexpress.com/item/10pcs-G130-10-15mm-SPST-2PIN-ON-OFF-Boat-Rocker-Switch-3A-250V-Car-Dash-Dashboard/32739231057.html?spm=a2g0s.9042311.0.0.27424c4d8Zu7Se) <img alt='coilbot' title='coilbot' src="pics/switch-kcd1-11.jpg" width='60px'>
  - 1x [5.7mm outer 2.5mm inner panelmount "barrel shaped" DC power-inlet](https://www.mouser.com/ProductDetail/CUI/PJ-005B?qs=sGAEpiMZZMtnOp%252bbbqA009lE0K0K%252bPZGHDa8R3T3fghCv9kHIJIT1g%3d%3d) (7.8mm hole) <img alt='coilbot' title='coilbot' src="pics/powerinlet.jpg" width='60px'>
  - USB cable (type B to type A) <img alt='coilbot' title='coilbot' src="pics/usb.png" width='60px'>
- - 12V DC 2.5A [power supply](https://www.amazon.com/12-Volt-Power-Supply-12vAdapters-com/dp/B009ZZKUPG) with barrel connector (2.5mm inner, 5.7mm outer) <img alt='coilbot' title='coilbot' src="pics/powersupply.jpg" width='60px'>
+ - 12V DC 2.5A [power supply](https://www.amazon.com/12-Volt-Power-Supply-12vAdapters-com/dp/B009ZZKUPG) with barrel connector (2.5mm inner, 5.5mm outer) <img alt='coilbot' title='coilbot' src="pics/powersupply.jpg" width='60px'>
 
 ## Firmware:
 
