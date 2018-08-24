@@ -3,11 +3,10 @@ MAGGEN is a set of tools for designing and building Axial Flux electrical genera
 Generate CAD files for production-ready rotors, stators, custom coil winding tools, epoxy molds, Plasma-Cut iron discs, Laser-Cut acrylic/delrin/wood, 3D-Print ABS/PLA, etc...
 
 ## Tools
-- [MAGGEN:designer](designer)
-   - [<img alt='maggen' title='maggen' src="pics/designer2D.svg" width='60px'> live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) (simple 2D shapes)
-   - [<img alt='maggen' title='maggen' src="pics/designerSCAD.png" width='60px'> OpenSCAD](maggen.scad) - (slightly more features - 3D)
+- [<img alt='maggen' title='maggen' src="pics/designer2D.svg" width='60px'> MAGGEN:designer2D - live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) (simple 2D shapes)
+- [<img alt='maggen' title='maggen' src="pics/designerSCAD.png" width='60px'> MAGGEN:designer3D - OpenSCAD](maggen.scad) - (slightly more features - 3D)
 - [<img alt='maggen' title='maggen' src="pics/coilbot10.jpg" width='60px'> MAGGEN:coilbot](coilbot) - coil winding robot for reproducable magnetic coils 
-- [MAGGEN Build Notes](build_notes) - engineerings notes for designing axial flux generators
+- [<img alt='maggen' title='maggen' src="pics/buildnotes.png" width='60px'> MAGGEN Build Notes](build_notes) - engineerings notes for designing axial flux generators
 
 ## Contribute / Collaborate / Get Help!
 Ideas?  Discussion?  Edits?
