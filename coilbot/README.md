@@ -9,7 +9,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 ## CAD Files:
  - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)
- - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad)  (unfinished - in progress)
+ - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad)
  - 6x 3D Printed [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl)
  - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
 
@@ -22,6 +22,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
  - 4x  M3 spacers   (5mm tall) - for display mount <img alt='coilbot' title='coilbot' src="pics/M3spacer5mm.jpg" width='60px'>
  - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13) <img alt='coilbot' title='coilbot' src="pics/OrangeAcrylic.jpg" width='60px'>
  - 1/4" (6.3mm) square rod (10" long) - spinning axle for coil winding <img alt='coilbot' title='coilbot' src="pics/squareRod.jpg" width='60px'>
+ - 1x [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='60px'>
 
 ## Electronics:
  - [OSOYOO 3D Printer Kit](https://www.amazon.com/gp/product/B0111ZSS2O/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
