@@ -8,10 +8,10 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 [...Back to MAGGEN tools for axial flux generators](https://github.com/subatomicglue/maggen)
 
 ## CAD Files:
- - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic)
- - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad)
- - 6x 3D Printed [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl)
- - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl)
+ - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic) <img alt='coilbot' title='coilbot' src="pics/box.png" width='60px'>
+ - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.png" width='60px'>
+ - 6x 3D Printed [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl) <img alt='coilbot' title='coilbot' src="pics/M3standoff8mm-cad.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/M3standoff8mm-printed.png" width='60px'>
+ - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl) <img alt='coilbot' title='coilbot' src="pics/M3spacer5mm-cad.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/M3spacer5mm-printed.png" width='60px'>
 
 ## Hardware List:
  - 1x  ABEC skatebearing <img alt='coilbot' title='coilbot' src="pics/bearingABEC.jpg" width='60px'>
@@ -22,7 +22,9 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
  - 4x  M3 spacers   (5mm tall) - for display mount <img alt='coilbot' title='coilbot' src="pics/M3spacer5mm.jpg" width='60px'>
  - 12x20in  1/8in (3.15mm) [acrylic sheet (Glowforge)](https://shop.glowforge.com/products/medium-orange-acrylic-cast-opaque-glossy?taxon_id=13) <img alt='coilbot' title='coilbot' src="pics/OrangeAcrylic.jpg" width='60px'>
  - 1/4" (6.3mm) square rod (10" long) - spinning axle for coil winding <img alt='coilbot' title='coilbot' src="pics/squareRod.jpg" width='60px'>
- - 1x [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.png" width='60px'>
+ - 1x [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='60px'>
+ - 2x [M3x12mm Knurled Head Thumb Screws](https://www.amazon.com/gp/product/B01MRJYG7K/ref=oh_aui_search_detailpage?ie=UTF8&psc=1) <img alt='coilbot' title='coilbot' src="pics/thumbscrews.jpg" width='60px'>
+ - 2x [M3xsquare nuts](https://www.aliexpress.com/item/50Pcs-DIN562-M3-M4-M5-M6-M8-Color-Square-Nuts-Block-with-Zinc-Plate-Square-Galvanized/32809791010.html?spm=a2g0s.9042311.0.0.27424c4duLfj5B) <img alt='coilbot' title='coilbot' src="pics/squarenuts.png" width='60px'>
 
 ## Electronics:
  - [OSOYOO 3D Printer Kit](https://www.amazon.com/gp/product/B0111ZSS2O/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
@@ -60,7 +62,7 @@ Glueing (welding) with Acetone/Acrylic solution
 
 Standoffs and Spacers printed
 
-<img alt='coilbot' title='coilbot' src="pics/coilbot60.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/3dprintStandoffsSpacers.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot60.jpg" width='200px'>
 
 Arduino / RAMPS / LCD boards mounted, power wired
 
@@ -69,4 +71,10 @@ Arduino / RAMPS / LCD boards mounted, power wired
 Power on / Test fire
 
 <img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot9.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot10.jpg" width='200px'>
+
+Attach the Bobbin Shaft
+
+<img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='200px'>
+
+<img alt='coilbot' title='coilbot' src="pics/coilbot11.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot12.jpg" width='200px'>
 
