@@ -9,7 +9,7 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 ## CAD Files:
  - 1x Lasercut [Box](coilbotBox-3.15mm-sheet.svg) for 3.15mm sheet (wood or acrylic) <img alt='coilbot' title='coilbot' src="pics/box.png" width='60px'>
- - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.png" width='60px'>
+ - 1x 3D Printed [shaft coupler](shaft-coupler-squareToD.scad) <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='60px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='60px'>
  - 6x 3D Printed [M3 standoffs (8mm tall)](3mm-standoff-8mm-2.7ID.stl) <img alt='coilbot' title='coilbot' src="pics/M3standoff8mm-cad.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/M3standoff8mm-printed.png" width='60px'>
  - 4x 3D Printed [M3 spacers (5mm tall)](3mm-standoff-5mm-3.1ID.stl) <img alt='coilbot' title='coilbot' src="pics/M3spacer5mm-cad.png" width='60px'><img alt='coilbot' title='coilbot' src="pics/M3spacer5mm-printed.png" width='60px'>
 
