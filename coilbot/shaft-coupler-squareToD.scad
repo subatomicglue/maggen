@@ -1,6 +1,6 @@
 include <screw.scad>
 
-////////   Print with infill first (perimiters 2nd)
+////////   When flexible_coupling is true, Print with infill first (perimiters 2nd)
   
 tol=0.8;                      // general tolerance.   0.2 per side (squish), and extra .4
 
@@ -29,6 +29,8 @@ stepper_dia = 5;             // true measure of the stepper shaft diameter
 stepper_clearance = tol-0.1; // tolerance larger, to allow shaft to slide into the coupler
 stepper_nut_depth = 6.5;     // depth into the coupler to put the nut
 stepper_thumb_screw_pos_above_bottom = (coupler_height/2)/2-1; // thumbscrew hole position above bottom of coupler
+
+flexible_coupling = true;        // make the coupler flexible, to eliminate slight angular differences
 
 cyl_res = 100;                   // resolution (number of polygons) for the coupler / holes
 
@@ -112,24 +114,25 @@ difference() {
       rotate([0,0,180])
       cube([20,4,coupler_height+1]);
     
-    // cavity
-    translate([0,0,-5.5])
-      cylinder( 10, stepper_dia/2 + 2.3, stepper_dia/2 + 2.3 );
+    if (flexible_coupling) {
+      // cavity
+      translate([0,0,-5.5])
+        cylinder( 10, stepper_dia/2 + 2.3, stepper_dia/2 + 2.3 );
 
-    // make it flexible with a screw pattern
-    translate([0,0,-7.6]) {      
-      // screw pattern
-      rotate([0,0,-60])
-      screw(
-          id=stepper_dia/2-tol,
-          od=coupler_radius+tol,
-          inc=360/cyl_res,
-          thickness=0.8,
-          height_inc=3.4,
-          angle=3.05*360
-        );
-    }
-    
+      // make it flexible with a screw pattern
+      translate([0,0,-7.6]) {      
+        // screw pattern
+        rotate([0,0,-60])
+        screw(
+            id=stepper_dia/2-tol,
+            od=coupler_radius+tol,
+            inc=360/cyl_res,
+            thickness=0.8,
+            height_inc=3.4,
+            angle=2.95*360
+          );
+      }
+    }    
     
   }
 }
