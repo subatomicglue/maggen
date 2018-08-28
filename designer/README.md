@@ -11,6 +11,8 @@ Cut out production-ready forms for your rotors, stators, custom wirewrapping too
 ## Examples
 <img alt='Vectors for 6-magnet "axial flux generator" cell (loop coils)' title='Vectors for 6-magnet "axial flux generator" cell (loop coils)' src="examples/6loops.svg" width='200px'><img alt='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' title='Vectors for 8-magnet "axial flux generator (serpentine coil)" cell' src="examples/8serpentine.svg" width='200px'><img alt='Vectors for 10-magnet "axial flux generator" cell (loop coils)' title='Vectors for 10-magnet "axial flux generator (loop coils)" cell' src="examples/10loops.svg" width='200px'><img alt='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' title='Vectors for 12-magnet "axial flux generator" cell (serpentine coil)' src="examples/12serpentine.svg" width='200px'>
 
+<img alt='stacked "axial flux generator" cells' title='stacked "axial flux generator" cells' src="examples/designerSCAD.png" width='200px'>
+
 ## Future Work
 
 * Calculator tools for how parameters relate to power generated:  (# windings, wire thickness, magnet dimensions / strength / number, speeds, force).
