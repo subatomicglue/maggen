@@ -73,7 +73,8 @@ Power on / Test fire
 
 <img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot9.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot10.jpg" width='200px'>
 
-Attach the Bobbin Shaft
+Flexible shaft coupler connects the bobbin rod to the stepper motor (left).
+ABEC skate bearing (right) allows frictionless rotation.
 
 <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='200px'>
 
