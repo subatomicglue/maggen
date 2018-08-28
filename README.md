@@ -4,7 +4,7 @@ Generate CAD files for production-ready rotors, stators, custom coil winding too
 
 ## Tools
 
-[<img alt='maggen' title='maggen' src="pics/designer2D.svg" width='60px'><img alt='maggen' title='maggen' src="pics/designerSCAD.png" width='60px'> MAGGEN:designer](designer) - learn about the designer(s) for axial flux generators
+[<img alt='maggen' title='maggen' src="pics/designer.png" width='60px'> MAGGEN:designer](designer) - learn about the designer(s) for axial flux generators
 - [2D - live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) - (simple 2D shapes)
 - [3D - OpenSCAD](maggen.scad) - (slightly more features - 3D)
 
