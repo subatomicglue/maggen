@@ -5,8 +5,8 @@ Generate CAD files for production-ready rotors, stators, custom coil winding too
 ## Tools
 
 [MAGGEN:designer](designer) - learn about the designer(s) for axial flux generators
-- [<img alt='maggen' title='maggen' src="pics/designer2D.svg" width='60px'> MAGGEN:designer2D - live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) - (simple 2D shapes)
-- [<img alt='maggen' title='maggen' src="pics/designerSCAD.png" width='60px'> MAGGEN:designer3D - OpenSCAD](maggen.scad) - (slightly more features - 3D)
+- [<img alt='maggen' title='maggen' src="pics/designer2D.svg" width='60px'> 2D - live web app](http://htmlpreview.github.io/?https://raw.githubusercontent.com/subatomicglue/maggen/master/designer/index.html) - (simple 2D shapes)
+- [<img alt='maggen' title='maggen' src="pics/designerSCAD.png" width='60px'> 3D - OpenSCAD](maggen.scad) - (slightly more features - 3D)
 
 [<img alt='maggen' title='maggen' src="pics/coilbot10.jpg" width='60px'> MAGGEN:coilbot](coilbot) - coil winding robot for reproducable magnetic coils 
 
