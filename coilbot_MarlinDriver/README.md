@@ -1,3 +1,5 @@
+<img alt='coilbot' title='coilbot' src="pics/firmware.jpg" width='200px'>
+
 # maggen:coilbot firmware - based on Marlin 3D Printer Firmware
 Here is a fork of the 1.1.8 [Marlin](https://github.com/MarlinFirmware/Marlin) firmware customized for the [maggen](https://github.com/subatomicglue/maggen) coilbot, magnetic coil winder for axial flux generators.
 

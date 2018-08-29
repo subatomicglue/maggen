@@ -1,7 +1,6 @@
 # maggen:coilbot - magnetic coil winding robot
 
-<img alt='coilbot' title='coilbot' src="pics/coilbot8.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot13.jpg" width='200px'>
-
+<img alt='coilbot' title='coilbot' src="pics/coilbot13.jpg" width='200px'>
 
 The goal is to have a stepper motor wind our magnetic coils for us, by counting the turns, smoothly accelerating / decelerating.  Gaurentee consistent number of turns in our magnetic coils.  Avoid tedium.
 
@@ -78,5 +77,5 @@ ABEC skate bearing (right) allows frictionless rotation.
 
 <img alt='coilbot' title='coilbot' src="pics/shaftcoupler-bot.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/shaftcoupler-top.jpg" width='200px'>
 
-<img alt='coilbot' title='coilbot' src="pics/coilbot11.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot12.jpg" width='200px'>
+<img alt='coilbot' title='coilbot' src="pics/coilbot13.jpg" width='200px'><img alt='coilbot' title='coilbot' src="pics/coilbot14.jpg" width='200px'>
 
