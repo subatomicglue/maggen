@@ -1,14 +1,23 @@
 
+// red:      stator w/ coils
+// darkgrey: iron
+// grey:     rotor w/magnets
+// yellow:   rotor mount w/ shaft coupler
+// units:    mm
+
+// export CAD files:
+RENDER_FOR_SHEET_MATERIALS = false;  // set true, render/f6, then export SVG file.
+RENDER_FOR_3D_PRINTER = false;       // set true, render/f6, then export STL file
+
 // DISPLAY settings
-RENDER_FOR_SHEET_MATERIALS = false;  // render, then export svg file.
-RENDER_FOR_3D_PRINTER = false;
 SHAFT_MOUNT_ATTACH=false; // attach the shaftmount to the rotor in the exploded 3D view.
 SHOW_MAGNETS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : true;
 SHOW_SCREWS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : true;
 
 // config:
-DISTANCE_APART_3D = 10*3;
-EMBED_SHAFT_MOUNT = true;
+DISTANCE_APART_3D = 30; // how far apart to display each disc in the 3D scene
+SHAFT_MOUNT_POSTS = false; // true: embeded screw posts, or false: flat flange
+EMBED_SHAFT_MOUNT = false; // true: embeded hub into rotor, or false: external mount
 SHAFT_MOUNT_RAISED_HOLES_WHEN_EMBEDDED = true;
 SHAFT_MOUNT_RAISED_HOLES_WHEN_NOT_EMBEDDED = false;
 SHAFT_MOUNT_RAISED_HOLES = EMBED_SHAFT_MOUNT ? SHAFT_MOUNT_RAISED_HOLES_WHEN_EMBEDDED : SHAFT_MOUNT_RAISED_HOLES_WHEN_NOT_EMBEDDED;
@@ -18,7 +27,7 @@ SCREW_HEAD_RADIUS_MM=2.2;  // size of screw head
 SCREW_NUT_RADIUS_MM=2.2;  // size of nut
 SHAFT_MOUNT_SCREW_CENTER=false; // center the shaft mount collar set screw (true), or set it flush with the flange (false)
 MAGNET_USE_RECTS=true; // use rectangles (true) or circles (false) for magnets
-STATOR_HALVES=true;
+STATOR_HALVES=true; // want your stator in one unweildy donut, or in drop-in-able halves?
 TOL=0.2;
 $fn=40;    // resolution of circles
 overall_radius=30;
