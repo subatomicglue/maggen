@@ -4,23 +4,24 @@
 // grey:     rotor w/magnets
 // yellow:   rotor mount w/ shaft coupler
 // units:    mm
+// _ means it's a calculated value:  do not edit
 
 // export CAD files:
 RENDER_FOR_SHEET_MATERIALS = false;  // set true, render/f6, then export SVG file.
 RENDER_FOR_3D_PRINTER = false;       // set true, render/f6, then export STL file
 
 // DISPLAY settings
-SHAFT_MOUNT_ATTACH=false; // attach the shaftmount to the rotor in the exploded 3D view.
-SHOW_MAGNETS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : true;
-SHOW_SCREWS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : true;
+SHAFT_MOUNT_ATTACH = false; // true: attach shaftmount to rotor in exploded 3D view, false: explode
+SHOW_MAGNETS = true;      // show magnets in exploded 3D view
+SHOW_SCREWS = true;       // show screws in exploded 3D view
+_SHOW_MAGNETS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : SHOW_MAGNETS;
+_SHOW_SCREWS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : SHOW_SCREWS;
 
 // config:
 DISTANCE_APART_3D = 30; // how far apart to display each disc in the 3D scene
-SHAFT_MOUNT_POSTS = false; // true: embeded screw posts, or false: flat flange
-EMBED_SHAFT_MOUNT = false; // true: embeded hub into rotor, or false: external mount
-SHAFT_MOUNT_RAISED_HOLES_WHEN_EMBEDDED = true;
-SHAFT_MOUNT_RAISED_HOLES_WHEN_NOT_EMBEDDED = false;
-SHAFT_MOUNT_RAISED_HOLES = EMBED_SHAFT_MOUNT ? SHAFT_MOUNT_RAISED_HOLES_WHEN_EMBEDDED : SHAFT_MOUNT_RAISED_HOLES_WHEN_NOT_EMBEDDED;
+EMBED_SHAFT_MOUNT = true; // true: embed shaftmount hub inside rotor, or false: external mount
+SHAFT_MOUNT_POSTS = true; // true: use raised screw posts when embedded, false: flat flange
+_SHAFT_MOUNT_POSTS = !EMBED_SHAFT_MOUNT ? false : SHAFT_MOUNT_POSTS; // true: raised screw posts, or false: flat flange
 SCREW_HOLE_RADIUS_MM=1.25; // size of screw holes with threads
 SCREW_WASHERHOLE_RADIUS_MM=1.5; // size of screw holes without threads
 SCREW_HEAD_RADIUS_MM=2.2;  // size of screw head
@@ -45,7 +46,7 @@ rotor_outer_radius_mm = overall_radius;
 rotor_thickness_mm = 3;
 rotor_mounting_holes_radius = 10;
 rotor_mounting_hole_radius_when_sm_raised = 1.7;
-rotor_mounting_hole_radius = SHAFT_MOUNT_RAISED_HOLES ? rotor_mounting_hole_radius_when_sm_raised : SCREW_HOLE_RADIUS_MM;
+rotor_mounting_hole_radius = _SHAFT_MOUNT_POSTS ? rotor_mounting_hole_radius_when_sm_raised : SCREW_HOLE_RADIUS_MM;
 shaftmountcollar_numholes = 6;
 shaftmountcollar_clampingslot_width_mm = 1;
 shaftmountcollar_clampingslot_screwpad_mm = 3;
@@ -58,10 +59,10 @@ shaftmountcollar_mounting_holes_radius = rotor_mounting_holes_radius;
 shaftmountcollar_mounting_hole_inner_radius = SCREW_HOLE_RADIUS_MM;
 shaftmountcollar_mounting_hole_outer_radius_when_raised = rotor_mounting_hole_radius_when_sm_raised;
 shaftmountcollar_mounting_hole_outer_radius_when_not_raised = 0;
-shaftmountcollar_mounting_hole_outer_radius = SHAFT_MOUNT_RAISED_HOLES ? shaftmountcollar_mounting_hole_outer_radius_when_raised : shaftmountcollar_mounting_hole_outer_radius_when_not_raised; 
+shaftmountcollar_mounting_hole_outer_radius = _SHAFT_MOUNT_POSTS ? shaftmountcollar_mounting_hole_outer_radius_when_raised : shaftmountcollar_mounting_hole_outer_radius_when_not_raised; 
 shaftmountcollar_mounting_hole_thickness = rotor_thickness_mm - 0.1; 
-shaftmountcollar_outer_radius_mm = rotor_mounting_holes_radius + rotor_mounting_hole_radius + (EMBED_SHAFT_MOUNT ? 0 : SCREW_HEAD_RADIUS_MM);
-rotor_inner_radius_mm = EMBED_SHAFT_MOUNT ? shaftmountcollar_middl_radius_mm+TOL : axle_radius;
+shaftmountcollar_outer_radius_mm = rotor_mounting_holes_radius + rotor_mounting_hole_radius + (_SHAFT_MOUNT_POSTS ? 0 : SCREW_HEAD_RADIUS_MM);
+rotor_inner_radius_mm = EMBED_SHAFT_MOUNT ? shaftmountcollar_middl_radius_mm+TOL : axle_radius + TOL;
 stator_outer_radius_mm = overall_radius;
 stator_inner_radius_mm = shaftmountcollar_outer_radius_mm;
 stator_thickness_mm = 3;
@@ -274,7 +275,7 @@ module _mountingScrews( holes_radius, hole_radius, thickness, num ) {
 }
 
 module mountingScrews() {
-  if (SHOW_SCREWS && !RENDER_FOR_SHEET_MATERIALS && !RENDER_FOR_3D_PRINTER)
+  if (_SHOW_SCREWS && !RENDER_FOR_SHEET_MATERIALS && !RENDER_FOR_3D_PRINTER)
     translate([0,0,SHAFT_MOUNT_ATTACH ? 0 : -10])
     _mountingScrews( rotor_mounting_holes_radius, rotor_mounting_hole_radius, rotor_thickness_mm, shaftmountcollar_numholes );
 }
@@ -351,10 +352,10 @@ module axle( length ) {
 }
 
 module explodedRotor() {
-  translate([0, 0, SHAFT_MOUNT_ATTACH?0:DISTANCE_APART_3D*0.5]) shaftMountCollar();
+  translate([0, 0, SHAFT_MOUNT_ATTACH ? 0 : (_SHAFT_MOUNT_POSTS || EMBED_SHAFT_MOUNT) ? DISTANCE_APART_3D*0.5 : -DISTANCE_APART_3D*0.2]) shaftMountCollar();
 
   translate([0, 0, 0]) rotorDisc();
-  if (SHOW_MAGNETS) translate([0, 0, 0]) magnets();
+  if (_SHOW_MAGNETS) translate([0, 0, 0]) magnets();
 
   translate([0, 0, SHAFT_MOUNT_ATTACH?0:-DISTANCE_APART_3D*0.05]) mountingScrews();
 }
