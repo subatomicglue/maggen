@@ -6,6 +6,7 @@
 // darkgrey: iron
 // grey:     rotor w/magnets
 // yellow:   rotor mount w/ shaft coupler
+// orange:   coils / coil-bobbin
 // units:    mm
 // _ means it's a calculated value:  do not edit
 
@@ -36,7 +37,7 @@ TOL=0.2;            // general tolerance of cuts.  laser kerf is ~0.2mm (0.008in
 $fn=40;             // polygonal resolution of circles
 overall_radius=30;   // radius of all discs:  stator, iron, rotor
 axle_radius = 2.5;   // radius of the axle
-magnets_number = 12; // how many magnets on the rotor
+magnets_number = 8; // how many magnets on the rotor
 magnets_radius=20;   // how far out to place all the magnets (radius to magnet's centerpoint)
 magnets_width=7;     // width of each rectangle magnet
 magnets_height=12;   // height of each rectangle magnet
@@ -71,12 +72,18 @@ stator_inner_radius_mm = shaftmountcollar_outer_radius_mm;
 stator_thickness_mm = 3;
 
 // coils:
-coil_outside_radius=28;
-coil_inside_radius=13;
-coil_thickness=3;                    // coil thickness (width on the bobbin)
-coil_thickness2=stator_thickness_mm; // coil thickness (should be < stator_thickness_mm)
-bobbin_axle_type = true;    // true: square, false: round
-bobbin_axle_radius = 3.175; // radius (or 1/2 width) of bobbin axle
+coils_number = 8;                     // number of coils
+coils_outside_radius=30;              // stator disc radius for outermost coils
+coils_inside_radius=13;               // stator disc radius for innermost coils
+coil_spacing=0.6;                     // space between each coil
+coil_thickness=4;                     // coil thickness (depth of wire wrapped on the bobbin)
+coil_thickness2=stator_thickness_mm;  // coil thickness (width of wire on bobbin, should be <= stator_thickness_mm)
+bobbin_axle_type = true;              // true: square, false: round
+//bobbin_axle_radius = 6.35/2;        // radius (or 1/2 width) of bobbin axle
+bobbin_axle_radius = 4.762/2;         // radius (or 1/2 width) of bobbin axle
+bobbin_axle_offset = 1.5;            // you can manually center the axle in the bobbin... not automatic yet, sorry
+bobbin_wall_thickness=0.5;            // thickness of the bobbin plastic walls
+bobbin_display_apart=7;               // in preview, how far apart to show bobbin halves
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -345,6 +352,9 @@ module statorDisc() {
     // cut stator in half
     if (STATOR_HALVES) color( "red" ) translate([0,0, 0]) cube([1,999,999], true);
   }
+}
+
+module statorCoils() {
   if (_SHOW_MAGNETS) translate([0, 0, 0]) coils();
 }
 
@@ -362,19 +372,15 @@ module axle( length ) {
   cylinder( length, axle_radius, axle_radius );
 }
 
-module bobbin_axle( length ) {
+module bobbin_axle( length, tol=0 ) {
   color("darkgrey")
   if (bobbin_axle_type)
-    cube( [bobbin_axle_radius*2, bobbin_axle_radius*2, length], true );
+    cube( [bobbin_axle_radius*2+tol*2, bobbin_axle_radius*2+tol*2, length], true );
   else
     translate([0,0,-length/2])
-    cylinder( length, bobbin_axle_radius, bobbin_axle_radius );
+    cylinder( length, bobbin_axle_radius+tol, bobbin_axle_radius+tol );
 }
 
-module bobbin() {
-  //color("orange")
-  
-}
 
 // given an x,y offset, a radius and an angle (rad)
 // return the computed x,y point
@@ -418,21 +424,27 @@ module makeLoop( ox, oy, x, pos, rot, num_magnets, mag_in_radius, mag_out_radius
   // 0 3
   inner_end_prev  = radialToCartesian( pos, mag_in_radius, s );
   outer_start     = radialToCartesian( pos, mag_out_radius, s );
+  outer_mid       = radialToCartesian( pos, mag_out_radius, (s+s1)/2 );
   outer_end       = radialToCartesian( pos, mag_out_radius, s1 );
   inner_start     = radialToCartesian( pos, mag_in_radius, s1 );
+  inner_mid       = radialToCartesian( pos, mag_in_radius, (s+s1)/2 );
+  up  = mul( dir( outer_mid, inner_mid ), vec( coilt ) );
   up1 = mul( dir( outer_start, inner_end_prev ), vec( coilt ) );
   up2 = mul( dir( outer_end, inner_start ), vec( coilt ) );
+  dn  = inv( up );
   dn1 = inv( up1 );
   dn2 = inv( up2 );
   lt = mul( dir( outer_start, outer_end ), vec( coilt ) );
   rt = mul( dir( outer_end, outer_start ), vec( coilt ) );
   p0 = add( add( add( inner_end_prev, up1 ), rt ), vec(ox,oy) );
   p1 = add( add( add( outer_start, dn1 ),    rt ), vec(ox,oy) );
-  p2 = add( add( add( outer_end, dn2 ),      lt ), vec(ox,oy) );
-  p3 = add( add( add( inner_start, up2 ),    lt ), vec(ox,oy) );
-  polygon(points=[p0,p1,p2,p3]);
+  p2 = add( add( outer_mid, dn ), vec(ox,oy) );
+  p3 = add( add( add( outer_end, dn2 ),      lt ), vec(ox,oy) );
+  p4 = add( add( add( inner_start, up2 ),    lt ), vec(ox,oy) );
+  polygon(points=[p0,p1,p3,p4]);
 }
 module makeLoops( pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
+  rotate([0,0,90])
    for (x = [0:num_magnets-1]) {
      makeLoop( 0,0, x, pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt );
    }
@@ -441,45 +453,88 @@ module makeLoops( pos, rot, num_magnets, mag_in_dia, mag_out_dia, coilt ) {
 
 module coil() {
   color("DarkOrange")
-  linear_extrude(height = 4, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
-  makeLoop( 0,0, 0, [0,0], 0, magnets_number, coil_inside_radius, coil_outside_radius, 0 );
-  color("DarkOrange")
-  linear_extrude(height = 5, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
-  makeLoop( 0,0, 0, [0,0], 0, magnets_number, coil_inside_radius, coil_outside_radius, coil_thickness );
+  difference() {
+    linear_extrude(height = coil_thickness2, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+    makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_spacing );
+    linear_extrude(height = coil_thickness2+1, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+    makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing );
+  }
 }
 module coils() {
-  translate([0,0,-coil_thickness/2])
+  translate([0,0,-coil_thickness2/2])
   scale([1,1,1.01])
   color("DarkOrange")
   difference() {
     linear_extrude(height = coil_thickness2, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
-    makeLoops( [0,0], 0, magnets_number, coil_inside_radius, coil_outside_radius, 0.1 );
+    makeLoops( [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_spacing );
 
     //translate([0,0,-0.5])
     linear_extrude(height = coil_thickness2+1, center = true, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
-    makeLoops( [0,0], 0, magnets_number, coil_inside_radius, coil_outside_radius, coil_thickness );
+    makeLoops( [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing );
   }
-/*
-  if (!MAGNET_USE_RECTS) {
-    color("SlateGray")
-    union() {
-      for (i = [0:magnets_number-1]) {
-        rotate(i * 360/magnets_number,0,0)
-        translate([0,0,-rotor_thickness_mm/2])
-        coil(); // todo: round coil
+}
+
+
+module bobbin1() {
+  arc_len_deg = 360/coils_number;
+  
+  color("DarkOrange")
+  translate([0,0,0])
+  difference() {
+    translate([-(coils_inside_radius + (coils_outside_radius-coils_inside_radius) / 2) + bobbin_axle_offset,0,0])
+    rotate([0,0,-arc_len_deg/2])
+    difference() {
+      union() {
+        // plate
+        linear_extrude(height = bobbin_wall_thickness, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_spacing );
+
+        // inside
+        linear_extrude(height = bobbin_wall_thickness + coil_thickness2, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing );
+      }
+      
+      // remove
+      union() {
+        translate([0,0,bobbin_wall_thickness])
+        linear_extrude(height = coil_thickness2 + TOL, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing+bobbin_wall_thickness );
       }
     }
-  } else  {
-    color("SlateGray")
-    union() {
-      for (i = [0:magnets_number-1]) {
-        rotate(i * 360/magnets_number,0,0)
-        translate([0,0,-rotor_thickness_mm/2 ])
-        coil();
+    
+    bobbin_axle( 1000, TOL );
+  }
+}
+module bobbin2() {
+  arc_len_deg = 360/coils_number;
+  
+  color("DarkOrange")
+  translate([0,0,0])
+  //scale([1,1,-1])
+  difference() {
+    translate([-(coils_inside_radius + (coils_outside_radius-coils_inside_radius) / 2) + bobbin_axle_offset,0,0])
+    rotate([0,0,-arc_len_deg/2])
+    difference() {
+      union() {
+        // plate
+        linear_extrude(height = bobbin_wall_thickness, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_spacing );
+
+        // inside
+        linear_extrude(height = bobbin_wall_thickness + coil_thickness2, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing+bobbin_wall_thickness );
+      }
+      
+      // remove
+      union() {
+        translate([0,0,bobbin_wall_thickness])
+        linear_extrude(height = coil_thickness2 + TOL, center = false, convexity = 10, twist = 0, slices = 1, scale = 1.0) 
+        makeLoop( 0,0, 0, [0,0], 0, coils_number, coils_inside_radius, coils_outside_radius, coil_thickness+coil_spacing+bobbin_wall_thickness*2 );
       }
     }
+    
+    bobbin_axle( 1000, TOL );
   }
-  */
 }
 
 module explodedRotor() {
@@ -500,6 +555,8 @@ if (RENDER_FOR_3D_PRINTER) {
   translate([0, 0]) rotate([0,180,0]) shaftMountCollar();
   translate([-rotor_outer_radius_mm*2.1, 0]) rotate([0,180,0]) statorMold();
   translate([rotor_outer_radius_mm*2.1, 0]) rotate([0,180,0]) rotorFixture();
+  translate([rotor_outer_radius_mm*3.5, 0]) rotate([0,0,0]) bobbin1();
+  translate([rotor_outer_radius_mm*4.5, 0]) rotate([0,0,0]) bobbin2();
 } else {
   rotate([0,90,0]) {
     translate([0, 0, 0]) axle( DISTANCE_APART_3D*5 );
@@ -509,9 +566,12 @@ if (RENDER_FOR_3D_PRINTER) {
     translate([0, 0, DISTANCE_APART_3D*2]) ironDisc();
     translate([0, 0, DISTANCE_APART_3D*1]) explodedRotor();    
     translate([0, 0, 0]) statorDisc();
+    translate([0, 0, 0]) statorCoils();
     translate([0, 0, -DISTANCE_APART_3D*1]) explodedRotor();      
     translate([0, 0, -DISTANCE_APART_3D*2]) ironDisc();
     
     translate([0, 80, 0]) bobbin_axle( DISTANCE_APART_3D*5 );
+    translate([0, 80, 0]) bobbin1();
+    translate([0, 80, bobbin_display_apart + (bobbin_wall_thickness*2 + coil_thickness2)]) scale([1,1,-1]) bobbin2();
   }
 }
