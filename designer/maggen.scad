@@ -26,23 +26,28 @@ DISTANCE_APART_3D = 30; // how far apart to display each disc in the 3D scene
 EMBED_SHAFT_MOUNT = true; // true: embed shaftmount hub inside rotor, or false: external mount
 SHAFT_MOUNT_POSTS = true; // true: use raised screw posts when embedded, false: flat flange
 _SHAFT_MOUNT_POSTS = !EMBED_SHAFT_MOUNT ? false : SHAFT_MOUNT_POSTS; // true: raised screw posts, or false: flat flange
-SCREW_HOLE_RADIUS_MM=1.25; // size of screw holes with threads
+SCREW_HOLE_RADIUS_MM=1.25;  // size of screw holes with threads
 SCREW_WASHERHOLE_RADIUS_MM=1.5; // size of screw holes without threads
-SCREW_HEAD_RADIUS_MM=2.2;  // size of screw head
-SCREW_NUT_RADIUS_MM=2.2;  // size of nut
+SCREW_HEAD_RADIUS_MM=2.2;   // size of screw head
+SCREW_NUT_RADIUS_MM=2.2;    // size of nut
 SHAFT_MOUNT_SCREW_CENTER=false; // center the shaft mount collar set screw (true), or set it flush with the flange (false)
-MAGNET_USE_RECTS=true; // true: use rectangles for magnets, false: use circles
-STATOR_HALVES=true; // false: stator as one unweildy disc (must be threaded onto the axel), true: drop-in-able halves
-TOL=0.2;            // general tolerance of cuts.  laser kerf is ~0.2mm (0.008in)
-$fn=40;             // polygonal resolution of circles
-overall_radius=30;   // radius of all discs:  stator, iron, rotor
-axle_radius = 2.5;   // radius of the axle
-magnets_number = 8; // how many magnets on the rotor
-magnets_radius=20;   // how far out to place all the magnets (radius to magnet's centerpoint)
-magnets_width=7;     // width of each rectangle magnet
-magnets_height=12;   // height of each rectangle magnet
-magnet_radius=5;     // radius for each circle magnet
-magnets_thickness=5; // thickness of each magnet 
+STATOR_HALVES=true;     // false: stator as one unweildy disc (must be threaded onto the axel), true: drop-in-able halves
+TOL=0.2;                // general tolerance of cuts.  laser kerf is ~0.2mm (0.008in)
+$fn=40;                 // polygonal resolution of circles
+overall_radius=40;      // radius of all discs:  stator, iron, rotor
+axle_radius = 2.5;      // radius of the axle
+magnets_number = 8;     // how many magnets on the rotor
+magnets_radius=27;      // how far out to place all the magnets (radius to magnet's centerpoint)
+
+// 3/4 x 1/2 x 1/4 magnet
+// https://www.magnet4sale.com/n52-3-4x1-2x1-4-neodymium-rare-earth-block-magnets/
+MAGNET_USE_RECTS=true;  // true: use rectangles for magnets, false: use circles
+magnet_radius=0;        // radius for each [circle] magnet
+magnets_width=12.7;     // width of each [rectangle] magnet
+magnets_height=19.05;   // height of each [rectangle] magnet
+magnets_thickness=6.35; // thickness of each magnet 
+
+// iron
 iron_outer_radius_mm = overall_radius;
 iron_inner_radius_mm = 15;
 iron_thickness_mm = 3;
@@ -73,8 +78,10 @@ stator_thickness_mm = 3;
 
 // coils:
 coils_number = 8;                     // number of coils
-coils_outside_radius=30;              // stator disc radius for outermost coils
-coils_inside_radius=13;               // stator disc radius for innermost coils
+coils_radius = magnets_radius;        // how far out to place all the coils (radius to coil's centerpoint)
+coils_height = magnets_height+5;      // height of each coil
+coils_outside_radius=coils_radius+coils_height/2; // stator disc radius for outermost coils
+coils_inside_radius=coils_radius-coils_height/2;  // stator disc radius for innermost coils
 coil_spacing=0.6;                     // space between each coil
 coil_thickness=4;                     // coil thickness (depth of wire wrapped on the bobbin)
 coil_thickness2=stator_thickness_mm;  // coil thickness (width of wire on bobbin, should be <= stator_thickness_mm)
@@ -84,6 +91,7 @@ bobbin_axle_radius = 4.762/2;         // radius (or 1/2 width) of bobbin axle
 bobbin_axle_offset = 1.5;            // you can manually center the axle in the bobbin... not automatic yet, sorry
 bobbin_wall_thickness=0.5;            // thickness of the bobbin plastic walls
 bobbin_display_apart=7;               // in preview, how far apart to show bobbin halves
+
 
 ////////////////////////////////////////////////////////////////////////////
 
