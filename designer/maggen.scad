@@ -10,19 +10,25 @@
 // units:    mm
 // _ means it's a calculated value:  do not edit
 
+// todo:
+// stator mount
+// stator halves mount holes
+
 // export CAD files:
 RENDER_FOR_SHEET_MATERIALS = false;  // set true, render/f6, then export SVG file.
 RENDER_FOR_3D_PRINTER = false;       // set true, render/f6, then export STL file
 
 // DISPLAY settings
-SHAFT_MOUNT_ATTACH = false; // true: attach shaftmount to rotor in exploded 3D view, false: explode
-SHOW_MAGNETS = true;      // show magnets in exploded 3D view
-SHOW_SCREWS = true;       // show screws in exploded 3D view
+SHOW_EXPLODED = true;         // true: explode the discs apart, false: display them with proper air gap
+SHAFT_MOUNT_EXPLODE = true;  // true: attach shaftmount to rotor in exploded 3D view, false: explode the shaftmount & screws
+SHOW_MAGNETS = true;          // show magnets in exploded 3D view
+SHOW_SCREWS = true;           // show screws in exploded 3D view
 _SHOW_MAGNETS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : SHOW_MAGNETS;
 _SHOW_SCREWS = RENDER_FOR_SHEET_MATERIALS || RENDER_FOR_3D_PRINTER ? false : SHOW_SCREWS;
 
 // config:
-DISTANCE_APART_3D = 30; // how far apart to display each disc in the 3D scene
+AIR_GAP_DISTANCE = 2;     // how far apart to mount the discs
+EXPLODE_DISTANCE = 30;    // how far apart to display each disc in the 3D scene
 EMBED_SHAFT_MOUNT = true; // true: embed shaftmount hub inside rotor, or false: external mount
 SHAFT_MOUNT_POSTS = true; // true: use raised screw posts when embedded, false: flat flange
 _SHAFT_MOUNT_POSTS = !EMBED_SHAFT_MOUNT ? false : SHAFT_MOUNT_POSTS; // true: raised screw posts, or false: flat flange
@@ -31,7 +37,7 @@ SCREW_WASHERHOLE_RADIUS_MM=1.5; // size of screw holes without threads
 SCREW_HEAD_RADIUS_MM=2.2;   // size of screw head
 SCREW_NUT_RADIUS_MM=2.2;    // size of nut
 SHAFT_MOUNT_SCREW_CENTER=false; // center the shaft mount collar set screw (true), or set it flush with the flange (false)
-STATOR_HALVES=true;     // false: stator as one unweildy disc (must be threaded onto the axel), true: drop-in-able halves
+STATOR_HALVES=false;     // false: stator as one unweildy disc (must be threaded onto the axel), true: drop-in-able halves
 TOL=0.2;                // general tolerance of cuts.  laser kerf is ~0.2mm (0.008in)
 $fn=40;                 // polygonal resolution of circles
 overall_radius=40;      // radius of all discs:  stator, iron, rotor
@@ -89,21 +95,13 @@ bobbin_axle_type = true;              // true: square, false: round
 //bobbin_axle_radius = 6.35/2;        // radius (or 1/2 width) of bobbin axle
 bobbin_axle_radius = 4.762/2;         // radius (or 1/2 width) of bobbin axle
 bobbin_axle_offset = 1.5;            // you can manually center the axle in the bobbin... not automatic yet, sorry
-bobbin_wall_thickness=0.5;            // thickness of the bobbin plastic walls
+bobbin_wall_thickness=0.6;            // thickness of the bobbin plastic walls
 bobbin_display_apart=7;               // in preview, how far apart to show bobbin halves
 
 
 ////////////////////////////////////////////////////////////////////////////
 
-//Round head screw
-in=25.4;  // Set "in" variable to make it easier to work in inches
-          // and still output a metric STL file
-dt=0.132*in;               // screw shaft diameter
-lt=.5*in;
-dh=.26*in;
-hh=.103*in;
-r=dh*dh/(8*hh)+hh/2;
-dc=hh-r;
+in=25.4;  // number of mm in an inch
 hole_clearance = -0.008 * in;      // +amount diameter to add for probe/collet/screw hole (0.008 kerf)
 
 module washer()
@@ -170,7 +168,7 @@ module rh_m3screw( lt=8, dia=3, head_height=1.5, head_dia=5.5, AS_HOLE = false )
       }
       cylinder(head_height, head_dia/2, head_dia/2); 
     }
-    m3screwshaft( lt, dt );
+    m3screwshaft( lt, dia );
   }
 }
 
@@ -301,7 +299,7 @@ module _mountingScrews( holes_radius, hole_radius, thickness, num ) {
 
 module mountingScrews() {
   if (_SHOW_SCREWS && !RENDER_FOR_SHEET_MATERIALS && !RENDER_FOR_3D_PRINTER)
-    translate([0,0,SHAFT_MOUNT_ATTACH ? 0 : -10])
+    translate([0,0,SHAFT_MOUNT_EXPLODE ? -10 : 0])
     _mountingScrews( rotor_mounting_holes_radius, rotor_mounting_hole_radius, rotor_thickness_mm, shaftmountcollar_numholes );
 }
 
@@ -546,12 +544,12 @@ module bobbin2() {
 }
 
 module explodedRotor() {
-  translate([0, 0, SHAFT_MOUNT_ATTACH ? 0 : (_SHAFT_MOUNT_POSTS || EMBED_SHAFT_MOUNT) ? DISTANCE_APART_3D*0.5 : -DISTANCE_APART_3D*0.2]) shaftMountCollar();
+  translate([0, 0, !SHOW_EXPLODED || !SHAFT_MOUNT_EXPLODE ? 0 : (_SHAFT_MOUNT_POSTS || EMBED_SHAFT_MOUNT) ? EXPLODE_DISTANCE*0.5 : -EXPLODE_DISTANCE*0.2]) shaftMountCollar();
 
   translate([0, 0, 0]) rotorDisc();
   if (_SHOW_MAGNETS) translate([0, 0, 0]) magnets();
 
-  translate([0, 0, SHAFT_MOUNT_ATTACH?0:-DISTANCE_APART_3D*0.05]) mountingScrews();
+  translate([0, 0, !SHOW_EXPLODED || !SHAFT_MOUNT_EXPLODE ? 0 : -EXPLODE_DISTANCE*0.05]) mountingScrews();
 }
 
 if (RENDER_FOR_SHEET_MATERIALS) {
@@ -567,19 +565,32 @@ if (RENDER_FOR_3D_PRINTER) {
   translate([rotor_outer_radius_mm*4.5, 0]) rotate([0,0,0]) bobbin2();
 } else {
   rotate([0,90,0]) {
-    translate([0, 0, 0]) axle( DISTANCE_APART_3D*5 );
-    translate([0, 0, DISTANCE_APART_3D*6]) rotorFixture();
-    translate([0, 0, DISTANCE_APART_3D*4]) statorMold();
-    
-    translate([0, 0, DISTANCE_APART_3D*2]) ironDisc();
-    translate([0, 0, DISTANCE_APART_3D*1]) explodedRotor();    
-    translate([0, 0, 0]) statorDisc();
-    translate([0, 0, 0]) statorCoils();
-    translate([0, 0, -DISTANCE_APART_3D*1]) explodedRotor();      
-    translate([0, 0, -DISTANCE_APART_3D*2]) ironDisc();
-    
-    translate([0, 80, 0]) bobbin_axle( DISTANCE_APART_3D*5 );
-    translate([0, 80, 0]) bobbin1();
-    translate([0, 80, bobbin_display_apart + (bobbin_wall_thickness*2 + coil_thickness2)]) scale([1,1,-1]) bobbin2();
+    rotor_offset = magnets_thickness;
+    iron_offset = iron_thickness_mm/2 + magnets_thickness/2;
+    stator_offset = stator_thickness_mm;
+    apart = (rotor_offset + stator_offset + AIR_GAP_DISTANCE);
+    num_cells = 2;
+
+    // parts
+    translate([0, -100, -EXPLODE_DISTANCE*1]) rotorFixture();
+    translate([0, -100, EXPLODE_DISTANCE*1]) statorMold();
+    translate([0, 100, 0]) bobbin_axle( EXPLODE_DISTANCE*5 );
+    translate([0, 100, 0]) bobbin1();
+    translate([0, 100, (SHOW_EXPLODED ? bobbin_display_apart : 0) + (bobbin_wall_thickness*2 + coil_thickness2)]) scale([1,1,-1]) bobbin2();
+
+    // axle
+    translate([0, 0, 0]) axle( SHOW_EXPLODED ? EXPLODE_DISTANCE*(num_cells*2 + 2) : (num_cells) * (apart*2) );
+
+    // cells
+    translate([0,0,SHOW_EXPLODED ? -EXPLODE_DISTANCE*(num_cells*2 + 2)/2 : -(num_cells * apart)/2]) {
+      translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*0 : -iron_offset]) ironDisc();
+      for (x = [0:num_cells-1]) {
+        translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*(x*2 + 1) : apart * x]) explodedRotor();
+        translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*(x*2 + 2) : apart/2 + apart * x]) statorDisc();
+        translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*(x*2 + 2) : apart/2 + apart * x]) statorCoils();
+      }
+      translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*(num_cells*2 + 1) : apart * num_cells]) explodedRotor();      
+      translate([0, 0, SHOW_EXPLODED ? EXPLODE_DISTANCE*(num_cells*2 + 2) : apart * num_cells + iron_offset]) ironDisc();
+    }    
   }
 }
