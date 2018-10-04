@@ -1,5 +1,5 @@
 //////////////////////////////////////
-// math and vector math  {x: 0, y: 0}
+// math and 2D vector math  {x: 0, y: 0}
 //////////////////////////////////////
 
 // given an x,y offset, a radius and an angle (rad)
@@ -68,8 +68,23 @@ function line_intersect(v1, v2, v3, v4) {
    return {
       x: v1.x + ua * (v2.x - v1.x),
       y: v1.y + ua * (v2.y - v1.y),
-      seg1: ua >= 0 && ua <= 1, // if both are true, then line SEGMENTS intersect, 
+      seg1: ua >= 0 && ua <= 1, // if both are true, then line SEGMENTS intersect,
       seg2: ub >= 0 && ub <= 1  // if either are false, then lines intersect
    };
+}
+function dot( v1, v2 ) {
+  return v1.x * v2.x + v1.y * v2.y;
+}
+// 2D cross product doesn't makes sense, or does it?
+// do the 3D cross product of 2D vectors, result.x and .y will be 0, so
+// simply return the z component only.  You can test for >0 or <0
+function cross( v1, v2 ) {
+  return (v1.x * v2.y) - (v1.y * v2.x);
+}
+// returns angle in radians
+function angle( v1, v2 ) {
+  let z = cross( v1, v2 );
+  let a = Math.acos( dot( norm( v1 ), norm( v2 ) ) );
+  return z > 0 ? a : -a;
 }
 
