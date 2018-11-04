@@ -6,14 +6,16 @@
 #include <SPI.h>
 //#include <U8glib.h> // older deprecated glib
 #include <U8g2lib.h> // https://github.com/olikraus/u8g2
+                     // https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 
 // This optional setting causes Encoder to use more optimized code,
 // It must be defined before Encoder.h is included.
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h> // https://github.com/PaulStoffregen/Encoder
-// alternate AdaEncoder: https://playground.arduino.cc/Main/RotaryEncoders
 
-#include <PinChangeInterrupt.h>
+// alternate ways to read encoders
+// AdaEncoder: https://playground.arduino.cc/Main/RotaryEncoders
+//#include <PinChangeInterrupt.h> // alternate PinChangeInterrupt for encoders on interrupt pins
 /* 
  Arduino Uno/Nano/Mini: All pins are usable  
  Arduino Mega: 10, 11, 12, 13, 50, 51, 52, 53, A8 (62), A9 (63), A10 (64),
@@ -27,6 +29,9 @@
  ATmega644P/ATmega1284P: All pins are usable
 */
 
+//////////////////////////////////////
+// RAMPS14 pins:
+//////////////////////////////////////
 #define X_STEP_PIN         54
 #define X_DIR_PIN          55
 #define X_ENABLE_PIN       38
@@ -67,32 +72,29 @@
 #define TEMP_0_PIN          13   // ANALOG NUMBERING
 #define TEMP_1_PIN          14   // ANALOG NUMBERING
 
-// https://reprap.org/wiki/RepRapDiscount_Smart_Controller
+///////////////////////////////////////////////////////////////////////////
+// https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
+///////////////////////////////////////////////////////////////////////////
 
-//encoder pins  
-#define BTN_EN1 31 //[RAMPS14-SMART-ADAPTER]  
+// encoder pins  (look in Marlin, or there is a chart here: https://github.com/MarlinFirmware/Marlin/issues/7647, or they're the same as https://reprap.org/wiki/RepRapDiscount_Smart_Controller)
+#define BTN_EN1 31 //[RAMPS14-SMART-ADAPTER]
 #define BTN_EN2 33 //[RAMPS14-SMART-ADAPTER]  
 #define BTN_ENC 35 //[RAMPS14-SMART-ADAPTER]  
-Encoder myEnc(BTN_EN1, BTN_EN2);
 
-//#define BTN_EN1          11
-//    #define BTN_EN2          10
-//    #define BTN_ENC          16
-
-//#define BTN_EN2           75   // J4, UP
-//  #define BTN_EN1           73   // J3, DOWN
-//#define BTN_CENTER        15   // J0
-//  #define BTN_ENC           BTN_CENTER
-
- //beeper  
+// beeper  
 #define BEEPER 37 //[RAMPS14-SMART-ADAPTER] / 37 = enabled; -1 = dissabled / (if you don't like the beep sound ;-)
 
- //SD card detect pin  
+// SD card detect pin  
 #define SDCARDDETECT 49 //[RAMPS14-SMART-ADAPTER]
 
+// LCD interface:
 //U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);  // SPI Com: SCK = en = 23, MOSI = rw = 17, CS = di = 16
 U8G2_ST7920_128X64_1_SW_SPI u8g2(U8G2_R0, 23, 17, 16);
 
+// Encoder interface
+Encoder myEnc(BTN_EN1, BTN_EN2);
+
+// draw some text to the screen
 void drawText( char* buf ) {
   u8g2.firstPage();
   do {
@@ -101,14 +103,42 @@ void drawText( char* buf ) {
   } while ( u8g2.nextPage() );
 }
 
-int e1 = 0;
-int e2 = 0;
-void enc1() {
-  e1 += 1;
+class Button {
+private:
+ byte mPin;
+ byte mLastVal;
+ byte mCurVal;
+public:
+ Button(int pin);
+ void update();
+ bool isEdgeHigh();
+ bool isEdgeLow();
+ bool isHigh();
+ bool isLow();
+};
+Button::Button(int pin)
+{
+  mPin = pin;
 }
-void enc2() {
-  e2 += 1;
+void Button::update() {
+  mLastVal = mCurVal;
+  mCurVal = digitalRead(mPin) == LOW;
 }
+bool Button::isEdgeHigh() {
+  return mCurVal == HIGH && mLastVal == LOW;
+}
+bool Button::isEdgeLow() {
+  return mCurVal == LOW && mLastVal == HIGH;
+}
+bool Button::isHigh() {
+  return mCurVal == HIGH;
+}
+bool Button::isLow() {
+  return mCurVal == LOW;
+}
+
+Button encbut( BTN_ENC );
+
  
 void setup() {
   u8g2.begin();
@@ -149,13 +179,22 @@ void setup() {
   digitalWrite(E_ENABLE_PIN    , LOW); // HIGH disable, LOW enable
   digitalWrite(Q_ENABLE_PIN    , HIGH);
 
+  encbut.update();
+
+  //
   //attachPCINT( digitalPinToPCINT( BTN_EN1 ), enc1, CHANGE ); 
   //attachPCINT( digitalPinToPCINT( BTN_EN2 ), enc2, CHANGE ); 
 
   drawText( "Coilbot" );
+  delay(1000);
 }
 
-int x = 0;
+byte direction = 1; // pos => fwd, neg => backward
+boolean running = false;
+long x = 0;
+long count = 0;
+
+
 void loop () {  
   /* 
   u8g.firstPage();
@@ -165,18 +204,39 @@ void loop () {
     u8g.drawStr( 0, 20, "Hello World!");
   } while( u8g.nextPage() );
   */
-    
-  //while(1) {
-    int encoderbutton = digitalRead(BTN_ENC) == LOW;
-    int enc = myEnc.read();
-    //myEnc.write( enc % 10 ); // change/correct the value
-    if ((x%5000) == 0) {
-      char buf[256];
-      sprintf( buf, "Press: %d %d", (x%1000), -enc );
-      drawText( buf );
+
+  encbut.update();
+  bool encoderbutton = encbut.isEdgeHigh();
+  if (!running) {
+    int enc = -myEnc.read();
+    myEnc.write( -(enc >= 1 ? enc : 1) ); // change/correct the value
+    if (encoderbutton) {
+      running = true;
+      x = 0;
+      count = enc;
+      drawText( "Running" );
+      return;
     }
-    ++x;
-  //}
+    if ((x%5000) == 0) { // draw every 5000'th time
+      char buf[256];
+      sprintf( buf, "Count: %d", enc );
+      drawText( buf );
+    } else {
+      //delayMicroseconds(1);
+    }
+  } else {
+    if (direction > 0)
+      digitalWrite(E_DIR_PIN    , HIGH);
+    else 
+      digitalWrite(E_DIR_PIN    , LOW);
+    digitalWrite(E_STEP_PIN    , HIGH);
+    delayMicroseconds(40);
+    digitalWrite(E_STEP_PIN    , LOW);
+    if (encoderbutton || x > (count*200*16)) {
+      running = false;
+    }
+  }
+  ++x;
   
   //delay(1);
   /*
