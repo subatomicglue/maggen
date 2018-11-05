@@ -40,7 +40,8 @@ The goal is to have a stepper motor wind our magnetic coils for us, by counting 
 
 ## Firmware:
 
-[Read about the maggen:coilbot firmware](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver)  (based on Marlin)
+- [maggen:coilbot firmware](https://github.com/subatomicglue/maggen/tree/master/coilbot_ArduinoRampsDriver)
+- [maggen:coilbot firmware - based on Marlin](https://github.com/subatomicglue/maggen/tree/master/coilbot_MarlinDriver)  (Deprecated)
 
 # Build!
 
