@@ -249,6 +249,8 @@ float xt = 0.0f;     // current loop time (or step time while turning)
 #define direction -1 // pos => fwd, neg => backward
 boolean running = false;  // is the stepper running
 long count = 0; // number of turns to take
+float amt_left = 0;
+int enc_left = 1;
 void loop () {
   wallclock.update();
   xt = wallclock.sinceStartf();
@@ -257,19 +259,27 @@ void loop () {
   bool encoderbutton = encbut.isEdgeHigh();
   if (!running) {
     int enc = -myEnc.read();
+    if (amt_left > 0.0f && enc_left != enc) {
+      amt_left = 0.0f;
+      //enc_left = 0.0f;
+      enc = enc_left;
+    }
     myEnc.write( -(enc >= 1 ? enc : 1) ); // change/correct the value
     if (encoderbutton) {
       running = true;
       x = 0;
       wallclock.init();
       drawText( "Computing..." );
-      ma.start( enc );
+      ma.start( amt_left > 0.0f ? amt_left : enc );
       drawText( "Running" );
       return;
     }
     if ((x%5000) == 0) { // draw every 5000'th time
       char buf[256];
-      sprintf( buf, "Count: %d", enc );
+      if (amt_left > 0.0f)
+        sprintf( buf, "Left: %d", (int)amt_left );
+      else
+        sprintf( buf, "Count: %d", enc );
       drawText( buf );
     } else {
       //delayMicroseconds(1);
@@ -281,6 +291,8 @@ void loop () {
     ma.next();
     digitalWrite(E_STEP_PIN, LOW);
     if (encoderbutton || !ma.isRunning()) {
+      amt_left = encoderbutton ? ma.amtLeft() : 0.0f;
+      enc_left = -myEnc.read();
       running = false;
       wallclock.init();
       return;

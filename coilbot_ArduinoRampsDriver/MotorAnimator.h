@@ -189,6 +189,10 @@ struct MotorAnimator {
   FORCE_INLINE bool isRunning() const {
     return steps <= steps_needed;
   }
+
+  float amtLeft() const {
+    return float((steps_needed - steps) / float(STEPS_PER_REV * MICROSTEPPING));
+  }
 };
 
 
