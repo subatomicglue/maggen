@@ -1,5 +1,5 @@
 /**
- * Marlin 3D Printer Firmware
+ * Marlin 3D Printer Firmware - (maggen::coilbot)
  * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
@@ -92,7 +92,7 @@
 #define SHOW_CUSTOM_BOOTSCREEN
 // @section machine
 
-/// KEVIN:   128x64 1-bit bmp image.
+/// COILBOT:   128x64 1-bit bmp image.
 /// Use LCDAssistant.exe (Horizontal orientation, 128 width, 64 height, Little Endian, 8 px/byte), to convert to _Background.h file.
 /// wrap with:
 /// #include <avr/pgmspace.h>
