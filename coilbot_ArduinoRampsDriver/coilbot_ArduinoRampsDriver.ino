@@ -275,14 +275,11 @@ void loop () {
       //delayMicroseconds(1);
     }
   } else {
-    if (direction > 0)
-      digitalWrite(E_DIR_PIN    , HIGH);
-    else 
-      digitalWrite(E_DIR_PIN    , LOW);
-    digitalWrite(E_STEP_PIN    , HIGH);
+    digitalWrite(E_DIR_PIN , direction > 0 ? HIGH : LOW);
+    digitalWrite(E_STEP_PIN, HIGH);
     delayMicroseconds(ma.getDelay());
     ma.next();
-    digitalWrite(E_STEP_PIN    , LOW);
+    digitalWrite(E_STEP_PIN, LOW);
     if (encoderbutton || !ma.isRunning()) {
       running = false;
       wallclock.init();
