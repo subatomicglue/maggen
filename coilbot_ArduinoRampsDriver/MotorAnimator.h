@@ -1,12 +1,23 @@
+#include <assert.h>
+#include <stdint.h>
+#include <math.h>
 
-
-inline float interp( float i, float val1, float val2 ) {
+inline float interp( const float i, const float val1, const float val2 ) {
   return (val2 - val1) * i + val1;
 }
 
-inline float interp( float number, float lo, float hi, float val1, float val2 ) {
-  assert( lo <= hi && "lo should be < hi" );
-  float i = (number - lo) / (hi-lo);
+inline float interp( const float number, const float lo, const float hi, const float val1, const float val2 ) {
+  //assert( lo <= hi && "lo should be < hi" );
+  const float i = (number - lo) / (hi-lo);
+  return interp( i, val1, val2 );
+}
+
+inline float interp_preComputeHILO( const float lo, const float hi ) {
+  return 1.0f / (hi-lo);
+}
+inline float interpHILO( const float number, const float lo, const float HILO, const float val1, const float val2 ) {
+  //assert( lo <= hi && "lo should be < hi" );
+  const float i = (number - lo) * HILO;
   return interp( i, val1, val2 );
 }
 
@@ -14,18 +25,21 @@ inline float clamp( float val, float lo, float hi ) {
   return val < lo ? lo : hi < val ? hi : val;
 }
 
+/*
 inline uint32_t round( float val ) {
   return uint32_t(val + 0.5f);
 }
+*/
 
 // simulate it forward until S1 is known
-inline uint32_t calcS1( float t0, float t1, const uint32_t LO_DELAY, const uint32_t HI_DELAY ) {
+inline uint32_t calcS1( float t1, const float LO_DELAY, const float HI_DELAY ) {
   uint32_t steps = 0;
-  float time_elapsed = t0;
+  float time_elapsed = 0.0f; // t0
   float delay = 0.0f;
+  const float t0t1HILO = interp_preComputeHILO( 0.0f, t1 );
   while (1) {
-    if (t0 <= time_elapsed && time_elapsed < t1)
-      delay = interp( time_elapsed, t0, t1, LO_DELAY, HI_DELAY );
+    if (/*t0 <= time_elapsed && */time_elapsed < t1)
+      delay = interpHILO( time_elapsed, 0.0f, t0t1HILO, LO_DELAY, HI_DELAY );
 
     time_elapsed += delay;
     ++steps;
@@ -60,14 +74,22 @@ struct MotorAnimator {
   float t1;
   float t2;
   float t3;
-
+  float t0t1HILO;
+  float t1t2HILO;
+  float t2t3HILO;
+  void precacheHILO() {
+    t0t1HILO = interp_preComputeHILO( t0, t1 );
+    t1t2HILO = interp_preComputeHILO( t1, t2 );
+    t2t3HILO = interp_preComputeHILO( t2, t3 );
+  }
+ 
   bool needs_adjusting_midflight;
 
   uint32_t steps;
   float time_elapsed;
   float delay;
-  uint32_t lo;
-  uint32_t hi;
+  float lo;
+  float hi;
 
   void init(const uint32_t STEPS_PER_REV = 200, // Stepper configuration
             const uint32_t MICROSTEPPING = 16,  // Stepper configuration
@@ -94,11 +116,12 @@ struct MotorAnimator {
     t0 = 0;
     t1 = ACCEL_TIME;
     s0 = 0;
-    s1 = calcS1( t0, t1, LO_DELAY, HI_DELAY );
+    s1 = calcS1( t1, LO_DELAY, HI_DELAY );
     s2 = steps_needed - s1;
     s3 = steps_needed;
     t2 = t1 + (s2-s1) * HI_DELAY;
     t3 = t2 + t1;
+    precacheHILO();
 
     // if we dont have enough runway to get up to speed, the step stages will be off.
     // correct s1 & s2 for this now, and then later (on the fly) we'll correct t1 & t2 & t3 at the midpoint of steps elapsed
@@ -116,17 +139,18 @@ struct MotorAnimator {
   }
 
   // call once after each motor step
-  void next() {
-    if (steps <= steps_needed) {
-      time_elapsed = clamp( time_elapsed + delay, 0.0f, t3 );
+  // arduino is SLOW.   Speed of code here really matters!
+  inline void next() {
+    //if (steps <= steps_needed) {
+      time_elapsed += delay; // = clamp( time_elapsed + delay, 0.0f, t3 );
       ++steps;
 
-      if (t0 <= time_elapsed && time_elapsed < t1)
-        delay = interp( time_elapsed, t0, t1, lo, hi );
-      else if (t1 <= time_elapsed && time_elapsed < t2)
-        delay = interp( time_elapsed, t1, t2, hi, hi );
-      else if (t2 <= time_elapsed && time_elapsed <= t3)
-        delay = interp( time_elapsed, t2, t3, hi, lo );
+      if (/*t0 <= time_elapsed && */time_elapsed < t1)
+        delay = interpHILO( time_elapsed, t0, t0t1HILO, lo, hi );
+      else if (/*t1 <= time_elapsed && */time_elapsed < t2)
+        delay = interpHILO( time_elapsed, t1, t1t2HILO, hi, hi );
+      else if (/*t2 <= time_elapsed && */time_elapsed <= t3)
+        delay = interpHILO( time_elapsed, t2, t2t3HILO, hi, lo );
 
       // if (t2 <= time_elapsed && time_elapsed <= t3)
       //   printf( " - %f, %f, %f, %f, %d, %d\n", delay, time_elapsed, t2, t3, hi, lo );
@@ -140,25 +164,27 @@ struct MotorAnimator {
       if (needs_adjusting_midflight && s1 < steps) {
         t1 = t2 = time_elapsed;
         t3 = time_elapsed * 2.0f;
+        precacheHILO();
         hi = delay;
         needs_adjusting_midflight = false;
       }
-    }
+    //}
   }
 
   // get the delay in usecs to wait between stepper steps
   // before calling next(), wait between steps with:
   //   delay( getDelay() )
-  uint32_t getDelay() const {
-    return round( this->delay );
+  inline uint32_t getDelay() const {
+    //return round( this->delay ); /// correct
+    return delay;                /// fast
   }
 
   // get the delay in usecs to wait between stepper steps
-  float getDelayf() const {
+  inline float getDelayf() const {
     return this->delay;
   }
 
-  bool isRunning() const {
+  inline bool isRunning() const {
     return steps <= steps_needed;
   }
 };

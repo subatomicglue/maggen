@@ -13,6 +13,8 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h> // https://github.com/PaulStoffregen/Encoder
 
+#include "MotorAnimator.h"
+
 // alternate ways to read encoders
 // AdaEncoder: https://playground.arduino.cc/Main/RotaryEncoders
 //#include <PinChangeInterrupt.h> // alternate PinChangeInterrupt for encoders on interrupt pins
@@ -87,6 +89,13 @@
 // SD card detect pin  
 #define SDCARDDETECT 49 //[RAMPS14-SMART-ADAPTER]
 
+#define CONFIG_STEPPER_MICROSTEPPING 16     // number of microsteps on the stepper driver
+#define CONFIG_STEPPER_STEPS 200            // number of stepper steps for 1 revolution
+#define CONFIG_STEPPER_TOPSPEED_DELAY 1    // number of usec to delay between steps
+#define CONFIG_STEPPER_STARTSPEED_DELAY 1600 // number of usec to delay between steps
+#define CONFIG_STEPPER_ACCEL_TIME 1000000   // number of usec to reach topspeed
+MotorAnimator ma;
+
 // LCD interface:
 //U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);  // SPI Com: SCK = en = 23, MOSI = rw = 17, CS = di = 16
 U8G2_ST7920_128X64_1_SW_SPI u8g2(U8G2_R0, 23, 17, 16);
@@ -96,6 +105,15 @@ Encoder myEnc(BTN_EN1, BTN_EN2);
 
 // draw some text to the screen
 void drawText( char* buf ) {
+  /* 
+  u8g.firstPage();
+  do {
+    // graphic commands to redraw the complete screen should be placed here  
+    u8g.setFont(u8g_font_unifont);
+    u8g.drawStr( 0, 20, buf);
+  } while( u8g.nextPage() );
+  */
+  
   u8g2.firstPage();
   do {
     u8g2.setFont(u8g2_font_ncenB14_tr);
@@ -137,11 +155,39 @@ bool Button::isLow() {
   return mCurVal == LOW;
 }
 
+class WallClock {
+public:
+  unsigned long starttime;
+  unsigned long lasttime;
+  unsigned long curtime;
+  WallClock() { init(); }
+  void update() {
+    unsigned long t = curtime;
+    curtime = micros();
+    lasttime = t == 0 ? curtime : t;
+    starttime = starttime == 0 ? curtime : starttime;
+  }
+  void init() {
+    starttime = curtime = lasttime = 0;
+  }
+  void start() {
+    init();
+    update();
+  }
+  unsigned long diff() const { return curtime - lasttime; }
+  unsigned long sinceStart() const { return curtime - starttime; }
+  float difff() const { return ((float)diff())/1000000.0f; }
+  float sinceStartf() const { return ((float)sinceStart())/1000000.0f; }
+};
+WallClock wallclock;
+
 Button encbut( BTN_ENC );
 
  
 void setup() {
   u8g2.begin();
+  ma.init( CONFIG_STEPPER_STEPS, CONFIG_STEPPER_MICROSTEPPING, CONFIG_STEPPER_TOPSPEED_DELAY, CONFIG_STEPPER_STARTSPEED_DELAY, CONFIG_STEPPER_ACCEL_TIME );
+
   pinMode(FAN_PIN , OUTPUT);
   pinMode(HEATER_0_PIN , OUTPUT);
   pinMode(HEATER_1_PIN , OUTPUT);
@@ -181,30 +227,32 @@ void setup() {
 
   encbut.update();
 
-  //
   //attachPCINT( digitalPinToPCINT( BTN_EN1 ), enc1, CHANGE ); 
   //attachPCINT( digitalPinToPCINT( BTN_EN2 ), enc2, CHANGE ); 
 
+  // splashscreen
+  const int animBufSize = 25;
+  char animBuf[animBufSize];
+  for (int x = 0; x < animBufSize; ++x) {
+    int xx = x % animBufSize;
+    memset( animBuf, ' ', animBufSize-1 );
+    animBuf[animBufSize-1] = '\0';
+    animBuf[xx] = '*';
+    drawText( animBuf );
+  }
   drawText( "Coilbot" );
   delay(1000);
 }
 
-byte direction = 1; // pos => fwd, neg => backward
-boolean running = false;
-long x = 0;
-long count = 0;
-
-
-void loop () {  
-  /* 
-  u8g.firstPage();
-  do {
-    // graphic commands to redraw the complete screen should be placed here  
-    u8g.setFont(u8g_font_unifont);
-    u8g.drawStr( 0, 20, "Hello World!");
-  } while( u8g.nextPage() );
-  */
-
+long x = 0;     // current loop count (or step count while turning)
+float xt = 0.0f;     // current loop time (or step time while turning)
+#define direction -1 // pos => fwd, neg => backward
+boolean running = false;  // is the stepper running
+long count = 0; // number of turns to take
+void loop () {
+  wallclock.update();
+  xt = wallclock.sinceStartf();
+  
   encbut.update();
   bool encoderbutton = encbut.isEdgeHigh();
   if (!running) {
@@ -213,7 +261,9 @@ void loop () {
     if (encoderbutton) {
       running = true;
       x = 0;
-      count = enc;
+      wallclock.init();
+      drawText( "Computing..." );
+      ma.start( enc );
       drawText( "Running" );
       return;
     }
@@ -230,79 +280,14 @@ void loop () {
     else 
       digitalWrite(E_DIR_PIN    , LOW);
     digitalWrite(E_STEP_PIN    , HIGH);
-    delayMicroseconds(40);
+    delayMicroseconds(ma.getDelay());
+    ma.next();
     digitalWrite(E_STEP_PIN    , LOW);
-    if (encoderbutton || x > (count*200*16)) {
+    if (encoderbutton || !ma.isRunning()) {
       running = false;
+      wallclock.init();
+      return;
     }
   }
   ++x;
-  
-  //delay(1);
-  /*
-  int encoderbutton = digitalRead(BTN_ENC) == LOW;
-  if (encoderbutton) {
-    int speed = 4;
-    bool fwd = (millis() % (10000/speed) < (5000/speed));
-    if (fwd)
-      digitalWrite(E_DIR_PIN    , HIGH);
-    else 
-      digitalWrite(E_DIR_PIN    , LOW);
-    digitalWrite(E_STEP_PIN    , HIGH);
-    delayMicroseconds(40);
-    digitalWrite(E_STEP_PIN    , LOW);
-  }
-  */
-  
-
-  // examples
-  /*
-  if (millis() %1000 <500) 
-    digitalWrite(LED_PIN, HIGH);
-  else
-   digitalWrite(LED_PIN, LOW);
-  
-  if (millis() %1000 <300) {
-    digitalWrite(HEATER_0_PIN, HIGH);
-    digitalWrite(HEATER_1_PIN, LOW);
-    digitalWrite(FAN_PIN, LOW);
-  } else if (millis() %1000 <600) {
-    digitalWrite(HEATER_0_PIN, LOW);
-    digitalWrite(HEATER_1_PIN, HIGH);
-    digitalWrite(FAN_PIN, LOW);
-  } else  {
-    digitalWrite(HEATER_0_PIN, LOW);
-    digitalWrite(HEATER_1_PIN, LOW);
-    digitalWrite(FAN_PIN, HIGH);
-  }
-  
-  if (millis() %10000 <5000) {
-    digitalWrite(X_DIR_PIN    , HIGH);
-    digitalWrite(Y_DIR_PIN    , HIGH);
-    digitalWrite(Z_DIR_PIN    , HIGH);
-    digitalWrite(E_DIR_PIN    , HIGH);
-    digitalWrite(Q_DIR_PIN    , HIGH);
-  }
-  else {
-    digitalWrite(X_DIR_PIN    , LOW);
-    digitalWrite(Y_DIR_PIN    , LOW);
-    digitalWrite(Z_DIR_PIN    , LOW);
-    digitalWrite(E_DIR_PIN    , LOW);
-    digitalWrite(Q_DIR_PIN    , LOW);
-  }
-  
-  
-    digitalWrite(X_STEP_PIN    , HIGH);
-    digitalWrite(Y_STEP_PIN    , HIGH);
-    digitalWrite(Z_STEP_PIN    , HIGH);
-    digitalWrite(E_STEP_PIN    , HIGH);
-    digitalWrite(Q_STEP_PIN    , HIGH); 
-  delay(1);
-    
-    digitalWrite(X_STEP_PIN    , LOW);
-    digitalWrite(Y_STEP_PIN    , LOW);
-    digitalWrite(Z_STEP_PIN    , LOW);
-    digitalWrite(E_STEP_PIN    , LOW);
-    digitalWrite(Q_STEP_PIN    , LOW); 
-  */
 }
